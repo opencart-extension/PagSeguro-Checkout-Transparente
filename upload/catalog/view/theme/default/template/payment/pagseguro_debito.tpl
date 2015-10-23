@@ -9,13 +9,13 @@
 <div class="container">
   <div class="row-fluid">
 
-    <div class="alert alert-danger vhide" id="warning" role="alert"></div>
+    <div class="alert alert-danger col-sm-12 vhide" id="warning" role="alert"></div>
     
     <?php if (strlen($session_id) != 32) { ?>
-      <div class="alert alert-danger" id="warning" role="alert"><?php echo $session_id ?></div>
+      <div class="alert alert-danger col-sm-12" id="warning" role="alert"><?php echo $session_id ?></div>
     <?php exit(); } ?>
     
-    <div class="alert alert-info vhide" id="info" role="alert">Aguarde...</div>
+    <div class="alert alert-info col-sm-12 vhide" id="info" role="alert">Aguarde...</div>
 
     <div class="form-horizontal">
       <div class="form-group">
@@ -65,7 +65,7 @@
 		} else if (banco == '') {
 			$('#warning').html('Informe a bandeira do seu banco').show();
 		} else {
-			$('#warning').html('').hide();
+			$('#warning').empty().hide();
 		}
 		
 		$.ajax({
@@ -82,7 +82,7 @@
 					$('#warning').html(json.error.message).show();
 				} else {
 					$('#button-confirm').hide().attr('disabled');
-					$('#button div').append('<a href="' + json.paymentLink + '" target="_blank" class="btn btn-primary pull-right">Finalizar Pagametno</a>');
+					$('#button div').append('<a href="' + json.paymentLink + '" target="_blank" class="btn btn-success pull-right">Finalizar Pagametno</a>');
 					
 					$.ajax({
 						url: 'index.php?route=payment/pagseguro_debito/confirm',
@@ -98,7 +98,7 @@
 			},
 			complete: function(data) {
 				$('#info').hide();
-        $('#button-confirm').button('reset');
+        //$('#button-confirm').button('reset');
 			}
 		})
 	})
