@@ -25,6 +25,11 @@
 <link href="catalog/view/javascript/pagseguro/colorbox/colorbox.css" rel="stylesheet" media="all" />
 
 <script type="text/javascript">
+
+if (typeof(PagSeguroDirectPayment) == 'undefined') {
+  alert('Erro ao carregar JavaScript do PagSeguro.');
+}
+
 PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
 
 $(function(){	

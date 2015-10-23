@@ -41,6 +41,10 @@
 </div>
 
 <script type="text/javascript">
+  if (typeof(PagSeguroDirectPayment) == 'undefined') {
+    alert('Erro ao carregar JavaScript do PagSeguro.');
+  }
+
 	PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
 	
 	PagSeguroDirectPayment.getPaymentMethods({
