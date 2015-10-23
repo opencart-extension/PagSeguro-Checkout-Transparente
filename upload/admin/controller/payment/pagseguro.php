@@ -323,6 +323,16 @@ class ControllerPaymentPagseguro extends Controller {
 	}
 	
 	public function validate() {
+        
+        /* Status */
+        if ($this->request->post['pagseguro_status']) {
+            $this->request->post['pagseguro_desconto_status'] = 1;
+            $this->request->post['pagseguro_acrescimo_status'] = 1;
+        } else {
+            $this->request->post['pagseguro_desconto_status'] = 0;
+            $this->request->post['pagseguro_acrescimo_status'] = 0;
+        }
+        
 		/* Error Permission */
 		if (!$this->user->hasPermission('modify', 'payment/pagseguro')) {
 			$this->error['warning'] = $this->language->get('warning');
