@@ -22,24 +22,36 @@ class ModelPaymentPagseguro extends Controller {
 			'email' => $this->config->get('pagseguro_email'),
 			'token' => $this->config->get('pagseguro_token')
 		)));
+        
+        $curl_info = curl_getinfo($ch);
+        $curl_error = curl_error($ch);
 		
 		$response = curl_exec($ch);
 		
 		curl_close($ch);
 		
 		$this->session->data['xml'] = $url;
+        
+		libxml_use_internal_errors(true);
 		
 		if ($this->config->get('pagseguro_debug')) {
-			$message_log = http_build_query(array(
+			$message_log = array(
 				'email' => $this->config->get('pagseguro_email'),
 				'token' => $this->config->get('pagseguro_token')
-			));
+			);
 			
+            if (file_exists(DIR_LOGS . 'pagseguro.log')) {
+                unlink(DIR_LOGS . 'pagseguro.log');
+            }
+            
 			$logs = new Log('pagseguro.log');
 			$logs->write(array('Token' => $message_log));
+			$logs->write(array('Response' => $response));
+			$logs->write(array('Info' => $curl_info));
+			$logs->write(array('Error' => $curl_error));
+			$logs->write(array('Error XML' => libxml_get_errors()));
 		}
 		
-		libxml_use_internal_errors(true);
 		
 		$xml = simplexml_load_string($response);
 		
@@ -100,7 +112,7 @@ class ModelPaymentPagseguro extends Controller {
 	/* Captura o tipo de frete (1 - PAC; 2 - Sedex; 3 - Outros) */
 	public function getShippingType() {
 		if(preg_match('/correios/', $this->session->data['shipping_method']['code'])) {
-			if(preg_match('/(41106|41068)/', $this->session->data['shipping_method']['code'])) {
+			if(preg_match('/(41106|41262|41068|41300)/', $this->session->data['shipping_method']['code'])) {
 				return 1;
 			} else {
 				return 2;
