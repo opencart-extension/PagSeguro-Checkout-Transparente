@@ -91,7 +91,7 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		$data['shippingAddressStreet'] = $this->removeAcentos($order_info['payment_address_1']);
 		$data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
 		$data['shippingAddressDistrict'] = $this->removeAcentos($order_info['payment_address_2']);
-		$data['shippingAddressPostalCode'] = $order_info['payment_postcode'];
+		$data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
 		$data['shippingAddressCity'] = $this->removeAcentos($order_info['payment_city']);
 		$data['shippingAddressState'] = $order_info['payment_zone_code'];
 		$data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
@@ -117,7 +117,7 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		$data['billingAddressStreet'] = $this->removeAcentos($order_info['payment_address_1']);
 		$data['billingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
 		$data['billingAddressDistrict'] = $this->removeAcentos($order_info['payment_address_2']);
-		$data['billingAddressPostalCode'] = $order_info['payment_postcode'];
+		$data['billingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
 		$data['billingAddressCity'] = $this->removeAcentos($order_info['payment_city']);
 		$data['billingAddressState'] = $order_info['payment_zone_code'];
 		$data['billingAddressCountry'] = $order_info['payment_iso_code_3'];
