@@ -16,20 +16,6 @@
         } else {
           $this->document->addScript('https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js');
         }
-        
-        $data['pagseguro_modo_teste'] = $this->config->get('pagseguro_modo_teste');
-      ]]></add>
-    </operation>
-  </file>
-  <file path="catalog/view/theme/*/template/common/header.tpl">
-    <operation erro="log">
-      <search><![CDATA[<?php foreach ($scripts as $script) { ?>]]></search>
-      <add position="before"><![CDATA[
-        <?php if (!$pagseguro_modo_teste) { ?>
-          <script src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js" type="text/javascript"></script>
-        <?php } else { ?>
-          <script src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js" type="text/javascript"></script>
-        <?php } ?>
       ]]></add>
     </operation>
   </file>
