@@ -21,3 +21,6 @@ Os dados de pagamento dos seus clientes são direcionados diretamente do navegad
 
 ### Instalação
 https://www.youtube.com/watch?v=lvSVZr_V7AA
+
+### Suporte
+http://www.valdeirsantana.com.br/index.php?route=support/login
