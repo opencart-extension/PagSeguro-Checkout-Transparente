@@ -45,13 +45,14 @@
 
         <!-- Nav -->
         <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#config"><?php echo $tab_config ?></a></li>
+          <li><a data-toggle="tab" href="#config"><?php echo $tab_config ?></a></li>
           <li><a data-toggle="tab" href="#discount"><?php echo $tab_desconto ?></a></li>
           <li><a data-toggle="tab" href="#payment-status"><?php echo $tab_status_pagamento ?></a></li>
           <li><a data-toggle="tab" href="#area"><?php echo $tab_geo_zone ?></a></li>
           <li><a data-toggle="tab" href="#plots"><?php echo $tab_parcelas ?></a></li>
           <li><a data-toggle="tab" href="#payment-method"><?php echo $tab_formas_de_pagamento ?></a></li>
           <li><a data-toggle="tab" href="#debug"><?php echo $tab_debug ?></a></li>
+          <li class="active"><a data-toggle="tab" href="#doacao"><?php echo $tab_doacao ?></a></li>
         </ul>
 
         <!-- Form -->
@@ -59,7 +60,7 @@
           <div class="tab-content">
 	
             <!-- Tab Config -->
-            <div class="tab-pane active" id="config">
+            <div class="tab-pane" id="config">
 
               <!-- Status -->
               <div class="form-group required">
@@ -603,6 +604,26 @@
                     echo htmlspecialchars($value) . '<br/>';
                   }
                 ?>
+              </div>
+            </div>
+          
+            <!-- Tab Doação -->
+            <div class="tab-pane active" id="doacao">
+              <div class="col-sm-6">
+                <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
+                  <input type="hidden" name="currency" value="BRL" />
+                  <input type="hidden" name="receiverEmail" value="valdeirpsr@hotmail.com" />
+                  <input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/209x48-doar-assina.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" />
+                </form>
+              </div>
+              
+              <div class="col-sm-6">
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                  <input type="hidden" name="cmd" value="_s-xclick">
+                  <input type="hidden" name="hosted_button_id" value="HUBL785QDAXXG">
+                  <input type="image" src="https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - A maneira fácil e segura de enviar pagamentos online!">
+                  <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
+                </form>
               </div>
             </div>
           </div><!-- /.tab-content -->

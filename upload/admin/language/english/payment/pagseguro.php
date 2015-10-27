@@ -21,6 +21,7 @@ $_['tab_geo_zone']            = 'Área Geográfica';
 $_['tab_parcelas']            = 'Parcela';
 $_['tab_formas_de_pagamento'] = 'Métodos de Pagamento';
 $_['tab_debug'] 			  = 'Debug';
+$_['tab_doacao'] 			  = 'Doação';
 
 //Entry
 $_['entry_status']               = 'Situação:';

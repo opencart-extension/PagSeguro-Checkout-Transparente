@@ -82,6 +82,10 @@ class ModelPaymentPagseguro extends Controller {
 		curl_close($ch);
 		
 		if ($this->config->get('pagseguro_debug')) {
+            
+            if (file_exists(DIR_LOGS . 'pagseguro.log'))
+                unlink(DIR_LOGS . 'pagseguro.log');
+            
 			$logs = new Log('pagseguro.log');
 			
 			if (version_compare(phpversion(), '5.4.0', '>=') == true) {
