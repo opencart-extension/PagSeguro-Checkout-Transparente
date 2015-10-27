@@ -21,23 +21,23 @@ Os dados de pagamento dos seus clientes são direcionados diretamente do navegad
 
 ### Novidades
 **[1.1.1]**
-1. Alteração no layout de cartão de crédito
-2. Bugfix efeito de flip
-3. Update
-4. Adiciona suporte a CPF e Data de Nascimento no Admin e auto preenchimento no front da loja
+* 1. Alteração no layout de cartão de crédito
+* 2. Bugfix efeito de flip
+* 3. Update
+* 4. Adiciona suporte a CPF e Data de Nascimento no Admin e auto preenchimento no front da loja
     
 **[1.1.0]**
-1. Informações adicionais durante o debug
-2. Alerta quando houver falha no carregamento do JavaScript do PagSeguro
-3. Novo layout para cartão de crédito
-4.Suporte para desconto/acréscimo por forma de pagamento
+* 1. Informações adicionais durante o debug
+* 2. Alerta quando houver falha no carregamento do JavaScript do PagSeguro
+* 3. Novo layout para cartão de crédito
+* 4.Suporte para desconto/acréscimo por forma de pagamento
 
 **[1.0.2]**
-1. Correção com problemas com javascript
+* 1. Correção com problemas com javascript
 
 **[1.0.1]**
-1. Correção com problemas de acentuação
-2. Permissão de colagem do cartão de crédito<
+* 1. Correção com problemas de acentuação
+* 2. Permissão de colagem do cartão de crédito<
 
 ### Instalação
 https://www.youtube.com/watch?v=lvSVZr_V7AA

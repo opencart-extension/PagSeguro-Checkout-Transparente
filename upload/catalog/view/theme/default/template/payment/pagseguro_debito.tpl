@@ -26,7 +26,7 @@
       <div class="form-group">
         <label class="col-sm-4 control-label">CPF:</label>
         <div class="col-sm-4">
-          <input class="form-control" id="cpf" name="cpf" type="text" />
+          <input class="form-control" id="cpf" name="cpf" type="text" value="<?php echo $cpf ?>" />
           <input id="bandeira" name="bandeira" type="hidden" />
         </div>
       </div>

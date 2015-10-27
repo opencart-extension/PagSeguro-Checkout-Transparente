@@ -10,7 +10,7 @@
   <div class="form-group">
     <label class="col-sm-2 control-label">CPF</label>
     <div class="col-sm-10">
-      <input type="text" name="cpf" id="cpf" />
+      <input type="text" name="cpf" id="cpf" value="<?php echo $cpf ?>" />
     </div>
   </div>
   
@@ -25,11 +25,6 @@
 <link href="catalog/view/javascript/pagseguro/colorbox/colorbox.css" rel="stylesheet" media="all" />
 
 <script type="text/javascript">
-
-if (typeof(PagSeguroDirectPayment) == 'undefined') {
-  alert('Erro ao carregar JavaScript do PagSeguro.');
-}
-
 PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
 
 $(function(){	

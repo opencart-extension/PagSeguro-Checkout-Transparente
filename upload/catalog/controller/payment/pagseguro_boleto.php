@@ -5,9 +5,24 @@ class ControllerPaymentPagseguroBoleto extends Controller {
 	
 		$data = array();
 		
+		$this->load->model('checkout/order');
+        
+        $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+        
 		$this->load->model('payment/pagseguro');
 
 		$data['session_id'] = $this->model_payment_pagseguro->captureToken();
+        
+        /* CPF */
+        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
+            if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
+                $data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('pagseguro_cpf')]);
+            } else {
+                $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
+            }
+        } else {
+            $data['cpf'] = '';
+        }
 		
 		$data['continue'] = $this->url->link('checkout/success', '', 'SSL');
 		
