@@ -186,7 +186,7 @@
         <div class="form-group col-sm-12">
           <div class="col-sm-5 col-sm-offset-4" id="check">
             <div class="checkbox">
-              <input type="checkbox" name="check-titular" id="check-titular" checked>
+              <input type="checkbox" name="check-titular" id="check-titular" <?php echo (!$data_nascimento || !$cpf) ? '' : 'checked' ?>>
               <label for="check-titular">
                 Eu sou o títular do cartão
               </label>
@@ -197,21 +197,21 @@
         <div class="form-group col-sm-12 titular">
           <label class="col-sm-4 control-label">Data de Nascimento:</label>
           <div class="col-sm-8">
-            <input class="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 13/07/1993" />
+            <input class="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 13/07/1993" value="<?php echo $data_nascimento ?>" />
           </div>
         </div>
 
         <div class="form-group col-sm-12 titular">
           <label class="col-sm-4 control-label">CPF:</label>
           <div class="col-sm-8">
-            <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" />
+            <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" value="<?php echo $cpf ?>" />
           </div>
         </div>
 
         <div class="form-group col-sm-12 titular">
           <label class="col-sm-4 control-label">Telefone:</label>
           <div class="col-sm-8">
-            <input class="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11)98765-4321" />
+            <input class="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11)98765-4321" value="<?php echo $telephone ?>" />
           </div>
         </div>
         
@@ -450,4 +450,6 @@
       opacity:0
     }, 1000);
   });
+  
+  $('#check-titular').trigger('change');
 </script>

@@ -127,6 +127,20 @@ class ControllerPaymentPagseguro extends Controller {
 			$data['pagseguro_numero_residencia'] = $this->config->get('pagseguro_numero_residencia');
 		}
 		
+		/* Custom Field Data de Nascimento */
+		if (isset($this->request->post['pagseguro_data_nascimento'])) {
+			$data['pagseguro_data_nascimento'] = $this->request->post['pagseguro_data_nascimento'];
+		} else {
+			$data['pagseguro_data_nascimento'] = $this->config->get('pagseguro_data_nascimento');
+		}
+		
+		/* Custom Field CPF */
+		if (isset($this->request->post['pagseguro_cpf'])) {
+			$data['pagseguro_cpf'] = $this->request->post['pagseguro_cpf'];
+		} else {
+			$data['pagseguro_cpf'] = $this->config->get('pagseguro_cpf');
+		}
+		
 		/* Desconto Boleto */
 		if (isset($this->request->post['pagseguro_desconto_boleto'])) {
 			$data['pagseguro_desconto_boleto'] = $this->request->post['pagseguro_desconto_boleto'];
@@ -313,7 +327,12 @@ class ControllerPaymentPagseguro extends Controller {
 		/* Links */
 		$data['action'] = $this->url->link('payment/pagseguro', 'token=' . $this->session->data['token'], 'SSL');
 		$data['cancel'] = $this->url->link('extension/payment', 'token=' . $this->session->data['token'], 'SSL');
-		$data['link_custom_field'] = $this->url->link('sale/custom_field', 'token=' . $this->session->data['token'], 'SSL');
+		
+        if (VERSION < '2.1') {
+            $data['link_custom_field'] = $this->url->link('sale/custom_field', 'token=' . $this->session->data['token'], 'SSL');
+        } else {
+            $data['link_custom_field'] = $this->url->link('customer/custom_field', 'token=' . $this->session->data['token'], 'SSL');
+        }
 		
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

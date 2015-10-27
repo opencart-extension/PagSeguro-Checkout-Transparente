@@ -20,6 +20,31 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		
 		/* Quantidade de Parcelas */
 		$data['qntParcelas'] = (int)$this->config->get('pagseguro_qnt_parcelas');
+        
+        /* Telefone do titular */
+        if (!preg_match('/(\(|\)|-| )/', $order_info['telephone'])) {
+            $data['telephone'] = preg_replace('/([\d]{2})([\d]{5})(\d.*)/', '($1) $2-$3', $order_info['telephone']);
+        } else {
+            $data['telephone'] = $order_info['telephone'];
+        }
+        
+        /* Data de Nascimento */
+        if (isset($order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')])) {
+            $data['data_nascimento'] = $order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')];
+        } else {
+            $data['data_nascimento'] = false;
+        }
+        
+        /* CPF */
+        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
+            if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
+                $data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('pagseguro_cpf')]);
+            } else {
+                $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
+            }
+        } else {
+            $data['cpf'] = false;
+        }
 		
 		/* Quantidade parcelas sem juros */
 		$data['max_parcelas_sem_juros'] = (int)$this->config->get('pagseguro_parcelas_sem_juros');

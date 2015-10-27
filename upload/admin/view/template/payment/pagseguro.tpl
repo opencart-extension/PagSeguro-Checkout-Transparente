@@ -170,16 +170,65 @@
               <div class="form-group required">
                 <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $help_numero ?>"><?php echo $entry_numero ?></span></label>
                 <div class="col-sm-10">
-                  <select name="pagseguro_numero_residencia" class="form-control">
+                  <span class="input-group">
+                    <select name="pagseguro_numero_residencia" class="form-control">
                     <?php foreach($custom_fields as $custom_field) { ?>
-                  <?php if ($pagseguro_numero_residencia == $custom_field['custom_field_id']) { ?>
-                  <option value="<?php echo $custom_field['custom_field_id'] ?>" selected><?php echo $custom_field['name'] ?></option>
-                  <?php } else { ?>
-                  <option value="<?php echo $custom_field['custom_field_id'] ?>"><?php echo $custom_field['name'] ?></option>
-                  <?php } ?>
-                  <?php } ?>
-                  </select>
-                  <a href="<?php echo $link_custom_field ?>" class="btn btn-primary"><?php echo $text_custom_field ?></a>
+                    <?php if ($pagseguro_numero_residencia == $custom_field['custom_field_id']) { ?>
+                    <option value="<?php echo $custom_field['custom_field_id'] ?>" selected><?php echo $custom_field['name'] ?></option>
+                    <?php } else { ?>
+                    <option value="<?php echo $custom_field['custom_field_id'] ?>"><?php echo $custom_field['name'] ?></option>
+                    <?php } ?>
+                    <?php } ?>
+                    </select>
+                    
+                    <span class="input-group-btn">
+                      <a href="<?php echo $link_custom_field ?>" class="btn btn-primary"><?php echo $text_custom_field ?></a>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Custom Field (Data de Nascimento) -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $help_data_nascimento ?>"><?php echo $entry_data_nascimento ?></span></label>
+                <div class="col-sm-10">
+                  <span class="input-group">
+                    <select name="pagseguro_data_nascimento" class="form-control">
+                    <?php foreach($custom_fields as $custom_field) { ?>
+                    <?php if ($pagseguro_data_nascimento == $custom_field['custom_field_id']) { ?>
+                    <option value="<?php echo $custom_field['custom_field_id'] ?>" selected><?php echo $custom_field['name'] ?></option>
+                    <?php } else { ?>
+                    <option value="<?php echo $custom_field['custom_field_id'] ?>"><?php echo $custom_field['name'] ?></option>
+                    <?php } ?>
+                    <?php } ?>
+                    </select>
+                    
+                    <span class="input-group-btn">
+                      <a href="<?php echo $link_custom_field ?>" class="btn btn-primary"><?php echo $text_custom_field ?></a>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Custom Field (CPF) -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $help_cpf ?>"><?php echo $entry_cpf ?></span></label>
+                <div class="col-sm-10">
+                  <span class="input-group">
+                    <select name="pagseguro_cpf" class="form-control">
+                    <?php foreach($custom_fields as $custom_field) { ?>
+                    <?php if ($pagseguro_cpf == $custom_field['custom_field_id']) { ?>
+                    <option value="<?php echo $custom_field['custom_field_id'] ?>" selected><?php echo $custom_field['name'] ?></option>
+                    <?php } else { ?>
+                    <option value="<?php echo $custom_field['custom_field_id'] ?>"><?php echo $custom_field['name'] ?></option>
+                    <?php } ?>
+                    <?php } ?>
+                    </select>
+                    
+                    <span class="input-group-btn">
+                      <a href="<?php echo $link_custom_field ?>" class="btn btn-primary"><?php echo $text_custom_field ?></a>
+                    </span>
+                  </span>
                 </div>
               </div>
 			  
