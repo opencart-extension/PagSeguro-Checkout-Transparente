@@ -610,14 +610,6 @@
             <!-- Tab Doação -->
             <div class="tab-pane active" id="doacao">
               <div class="col-sm-6">
-                <form action="https://pagseguro.uol.com.br/checkout/v2/donation.html" method="post">
-                  <input type="hidden" name="currency" value="BRL" />
-                  <input type="hidden" name="receiverEmail" value="valdeirpsr@hotmail.com" />
-                  <input type="image" src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/209x48-doar-assina.gif" name="submit" alt="Pague com PagSeguro - é rápido, grátis e seguro!" />
-                </form>
-              </div>
-              
-              <div class="col-sm-6">
                 <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                   <input type="hidden" name="cmd" value="_s-xclick">
                   <input type="hidden" name="hosted_button_id" value="HUBL785QDAXXG">
