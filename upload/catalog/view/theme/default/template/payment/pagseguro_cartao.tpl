@@ -1,7 +1,90 @@
 <style type="text/css">
+#check .checkbox {
+  padding-left: 20px;
+  zoom:1.2 }
+  #check .checkbox label {
+    display: inline-block;
+    position: relative;
+    padding-left: 5px; }
+    #check .checkbox label::before {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      left: 0;
+      margin-left: -20px;
+      border: 1px solid #cccccc;
+      border-radius: 3px;
+      background-color: #fff;
+      -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+      -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+      transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
+    #check .checkbox label::after {
+      display: inline-block;
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 0;
+      top: 0;
+      margin-left: -20px;
+      padding-left: 3px;
+      padding-top: 1px;
+      font-size: 11px;
+      color: #555555; }
+  #check .checkbox input[type="checkbox"] {
+    opacity: 0; }
+    #check .checkbox input[type="checkbox"]:focus + label::before {
+      outline: thin dotted;
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px; }
+    #check .checkbox input[type="checkbox"]:checked + label::after {
+      font-family: 'FontAwesome';
+      content: "\f00c"; }
+    #check .checkbox input[type="checkbox"]:disabled + label {
+      opacity: 0.65; }
+      #check .checkbox input[type="checkbox"]:disabled + label::before {
+        background-color: #eeeeee;
+        cursor: not-allowed; }
+  #check .checkbox#check .checkbox-circle label::before {
+    border-radius: 50%; }
+  #check .checkbox#check .checkbox-inline {
+    margin-top: 0; }
+
+#check .checkbox-primary input[type="checkbox"]:checked + label::before {
+  background-color: #428bca;
+  border-color: #428bca; }
+#check .checkbox-primary input[type="checkbox"]:checked + label::after {
+  color: #fff; }
+
+#check .checkbox-danger input[type="checkbox"]:checked + label::before {
+  background-color: #d9534f;
+  border-color: #d9534f; }
+#check .checkbox-danger input[type="checkbox"]:checked + label::after {
+  color: #fff; }
+
+#check .checkbox-info input[type="checkbox"]:checked + label::before {
+  background-color: #5bc0de;
+  border-color: #5bc0de; }
+#check .checkbox-info input[type="checkbox"]:checked + label::after {
+  color: #fff; }
+
+#check .checkbox-warning input[type="checkbox"]:checked + label::before {
+  background-color: #f0ad4e;
+  border-color: #f0ad4e; }
+#check .checkbox-warning input[type="checkbox"]:checked + label::after {
+  color: #fff; }
+
+#check .checkbox-success input[type="checkbox"]:checked + label::before {
+  background-color: #5cb85c;
+  border-color: #5cb85c; }
+#check .checkbox-success input[type="checkbox"]:checked + label::after {
+  color: #fff; }
+</style>
+<style type="text/css">
   .overlay {height: 30px;width: 68px;background: #FFF;position: absolute;opacity: 0.7;}
   .overlay:hover {opacity: 0;}
-  .vhide, .vlhide {display:none}
+  .vhide, .vlhide, .titular {display:none}
   /* entire container, keeps perspective */
 .flip-container {
 	perspective: 1000;
@@ -78,27 +161,6 @@
             <input type="hidden" id="bandeira" name="bandeira" />
           </div>
         </div>
-
-        <div class="form-group col-sm-12">
-          <label class="col-sm-4 control-label">Data de Nascimento:</label>
-          <div class="col-sm-8">
-            <input class="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 13/07/1993" />
-          </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-          <label class="col-sm-4 control-label">CPF:</label>
-          <div class="col-sm-8">
-            <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" />
-          </div>
-        </div>
-
-        <div class="form-group col-sm-12">
-          <label class="col-sm-4 control-label">Telefone:</label>
-          <div class="col-sm-8">
-            <input class="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11)98765-4321" />
-          </div>
-        </div>
         
         <div class="form-group col-sm-12">
           <label class="col-sm-4 control-label">Número do Cartão:</label>
@@ -118,6 +180,38 @@
           <label class="col-sm-4 control-label">Código de Segurança:</label>
           <div class="col-sm-8">
             <input class="form-control" type="text" id="cvv" name="cvv" placeholder="Ex: 123 ou 1234" />
+          </div>
+        </div>
+        
+        <div class="form-group col-sm-12">
+          <div class="col-sm-5 col-sm-offset-4" id="check">
+            <div class="checkbox">
+              <input type="checkbox" name="check-titular" id="check-titular" checked>
+              <label for="check-titular">
+                Eu sou o títular do cartão
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 titular">
+          <label class="col-sm-4 control-label">Data de Nascimento:</label>
+          <div class="col-sm-8">
+            <input class="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 13/07/1993" />
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 titular">
+          <label class="col-sm-4 control-label">CPF:</label>
+          <div class="col-sm-8">
+            <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" />
+          </div>
+        </div>
+
+        <div class="form-group col-sm-12 titular">
+          <label class="col-sm-4 control-label">Telefone:</label>
+          <div class="col-sm-8">
+            <input class="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11)98765-4321" />
           </div>
         </div>
         
@@ -313,6 +407,14 @@
   $('#numero-cartao').bind("paste",function(e) {
     selecionaBandeira();
     getInstallments();
+  });
+  
+  $('#check-titular').change(function(){
+    if ($(this).is(':checked')) {
+      $('.titular').slideUp('show');
+    } else {
+      $('.titular').slideDown('show');
+    }
   });
   
   $('#cvv').focus(function(){
