@@ -421,6 +421,14 @@
     $('.flip-container').toggleClass('flip-container-hover');
   });
   
+  $('input:not(#cvv)').focus(function(){
+    $('.flip-container').removeClass('flip-container-hover');
+  });
+  
+  $('#cvv').blur(function(){
+    $('.flip-container').removeClass('flip-container-hover');
+  });
+  
   $('#numero-cartao').focus(function(){
     $('#credit-card-example-number').stop().animate({
       opacity:1
