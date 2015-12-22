@@ -183,7 +183,7 @@ class ModelPaymentPagseguro extends Controller {
 	}
 
 	/* Shipping Free */
-	public function shippingFree() {
+	public function checkShippingFree() {
 		if (isset($this->session->data['coupon'])) {
 			$this->load->language('total/coupon');
 

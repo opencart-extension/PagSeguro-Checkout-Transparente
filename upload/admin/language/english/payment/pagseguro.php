@@ -72,6 +72,7 @@ $_['help_disputa']              = 'O comprador, dentro do prazo de liberação d
 $_['help_devolvida']            = 'O valor da transação foi devolvido para o comprador.';
 $_['help_cancelada']            = '';
 $_['help_exemplo_parcela']      = 'Máximo: 18';
+$_['help_parcela_sem_juros']    = 'Mínimo: 2';
 
 //Error
 $_['warning']                           = 'Você não tem permissão para modificar esse módulo';

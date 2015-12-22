@@ -52,7 +52,7 @@
           <li><a data-toggle="tab" href="#plots"><?php echo $tab_parcelas ?></a></li>
           <li><a data-toggle="tab" href="#payment-method"><?php echo $tab_formas_de_pagamento ?></a></li>
           <li><a data-toggle="tab" href="#debug"><?php echo $tab_debug ?></a></li>
-          <li class="active"><a data-toggle="tab" href="#doacao"><?php echo $tab_doacao ?></a></li>
+          <li><a data-toggle="tab" href="#doacao"><?php echo $tab_doacao ?></a></li>
         </ul>
 
         <!-- Form -->
@@ -465,7 +465,7 @@
               
               <!-- Quantidade de Parcelas sem Juros -->
               <div class="form-group required">
-                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $help_exemplo_parcela ?>"><?php echo $entry_parcelas_sem_juros ?></span></label>
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="<?php echo $help_parcela_sem_juros ?>"><?php echo $entry_parcelas_sem_juros ?></span></label>
                 <div class="col-sm-10">
                   <input type="text" name="pagseguro_parcelas_sem_juros" value="<?php echo $pagseguro_parcelas_sem_juros ?>" class="form-control" />
                   <?php if ($error_parcelas_sem_juros) { ?>
@@ -608,14 +608,16 @@
             </div>
           
             <!-- Tab Doação -->
-            <div class="tab-pane active" id="doacao">
+            <div class="tab-pane" id="doacao">
               <div class="col-sm-6">
-                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                  <input type="hidden" name="cmd" value="_s-xclick">
-                  <input type="hidden" name="hosted_button_id" value="HUBL785QDAXXG">
-                  <input type="image" src="https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - A maneira fácil e segura de enviar pagamentos online!">
-                  <img alt="" border="0" src="https://www.paypalobjects.com/pt_BR/i/scr/pixel.gif" width="1" height="1">
-                </form>
+                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5262W5FHDE6KA" target="_blank">
+                  <img src="https://www.paypalobjects.com/pt_BR/BR/i/btn/btn_donateCC_LG.gif" alt="Contribua" title="Contribua" />
+                </a>
+              </div>
+              <div class="col-sm-6">
+                <a href="https://pagseguro.uol.com.br/checkout/v2/donation.html?currency=BRL&receiverEmail=valdeirpsr@hotmail.com.br" target="_blank">
+                  <img src="https://p.simg.uol.com.br/out/pagseguro/i/botoes/doacoes/209x48-doar-assina.gif" alt="Contribua" title="Contribua" />
+                </a>
               </div>
             </div>
           </div><!-- /.tab-content -->
@@ -626,6 +628,13 @@
 </div><!-- /#content -->
 
 <script type="text/javascript">
+<?php if (empty($pagseguro_token)) { ?>
+$('.nav-tabs li:first').addClass('active');
+$('.tab-content div:first').addClass('active');
+<?php } else { ?>
+$('.nav-tabs li:last').addClass('active');
+$('#doacao').addClass('active');
+<?php } ?>
 
 $('fieldset legend').css('cursor', 'pointer');
 $('fieldset').css('margin-bottom', 30);

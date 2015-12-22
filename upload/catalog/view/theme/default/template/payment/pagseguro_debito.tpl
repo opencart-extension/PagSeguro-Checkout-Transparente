@@ -6,7 +6,7 @@
   #button-confirm {margin-right: 40px}
 </style>
 
-<div class="container">
+<div class="content">
   <div class="row-fluid">
 
     <div class="alert alert-danger col-sm-12 vhide" id="warning" role="alert"></div>
@@ -19,8 +19,8 @@
 
     <div class="form-horizontal">
       <div class="form-group">
-        <label class="col-sm-4 col-sm-offset-4">Selecione seu banco</label>
-        <div id="bandeiras" class="col-sm-4 col-sm-offset-4"></div>
+        <label class="col-sm-4 control-label">Selecione seu banco</label>
+        <div id="bandeiras" class="col-sm-4"></div>
       </div>
 
       <div class="form-group">
@@ -33,7 +33,7 @@
 
       <div class="form-group" id="button">
         <div class="col-sm-4 col-sm-offset-4">
-          <a id="button-confirm" class="btn btn-primary pull-right">Confirmar</a>
+          <a id="button-confirm" class="btn btn-primary" data-loading-text="Aguarde...">Confirmar</a>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@
 
 <script type="text/javascript">
   if (typeof(PagSeguroDirectPayment) == 'undefined') {
-    alert('Erro ao carregar JavaScript do PagSeguro.');
+    alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br para obter mais informações.');
   }
 
 	PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
@@ -86,7 +86,7 @@
 					$('#warning').html(json.error.message).show();
 				} else {
 					$('#button-confirm').hide().attr('disabled');
-					$('#button div').append('<a href="' + json.paymentLink + '" target="_blank" class="btn btn-success pull-right">Finalizar Pagametno</a>');
+					$('#button div').append('<a href="' + json.paymentLink + '" target="_blank" class="btn btn-success">Finalizar Pagametno</a>');
 					
 					$.ajax({
 						url: 'index.php?route=payment/pagseguro_debito/confirm',

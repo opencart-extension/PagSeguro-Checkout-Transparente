@@ -1,22 +1,25 @@
-<div id="warning" class="alert alert-danger" role="alert" style="display:none"></div>
-
 <?php if (strlen($session_id) != 32) { ?>
   <div class="alert alert-danger" id="warning" role="alert"><?php echo $session_id ?></div>
-<?php exit(); } ?>
+<?php exit(); } else { ?>
+  <div id="warning" class="alert alert-danger" role="alert" style="display:none"></div>
+<?php } ?>
 
 <div id="info" class="alert alert-info" role="alert" style="display:none">Aguarde....</div>
 
 <div class="form-horizontal col-sm-offset-3">
   <div class="form-group">
     <label class="col-sm-2 control-label">CPF</label>
-    <div class="col-sm-10">
-      <input type="text" name="cpf" id="cpf" value="<?php echo $cpf ?>" />
+    <div class="col-sm-3">
+      <input type="text" name="cpf" id="cpf" value="<?php echo $cpf ?>" class="form-control" />
     </div>
   </div>
   
   <div class="form-group">
     <div class="col-sm-10 col-sm-offset-2">
-      <button type="button" id="button-confirm" class="btn btn-primary">Pagar</button>
+      <button type="button" id="button-confirm" class="btn btn-primary" data-loading-text="Aguarde...">
+        <i class="fa fa-barcode"></i> 
+        Imprimir Boleto
+      </button>
     </div>
   </div>
 </div>
@@ -25,12 +28,16 @@
 <link href="catalog/view/javascript/pagseguro/colorbox/colorbox.css" rel="stylesheet" media="all" />
 
 <script type="text/javascript">
+if (typeof(PagSeguroDirectPayment) == 'undefined') {
+  alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br para obter mais informações.');
+}
+
 PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
 
 $(function(){	
 	$('#button-confirm').click(function(){
 		
-		$('#warning').html('').hide();
+		$('#warning').empty().hide();
 		
 		$.ajax({
 			url: 'index.php?route=payment/pagseguro_boleto/transition',
@@ -52,6 +59,7 @@ $(function(){
 						innerHeight:'90%',
 						onClosed: function () {
 							
+              $('.form-horizontal').remove();
 							$('#info').show();
 							
 							$.ajax({

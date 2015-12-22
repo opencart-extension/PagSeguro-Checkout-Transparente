@@ -1,146 +1,7 @@
 <style type="text/css">
-#check .checkbox {
-  padding-left: 20px;
-  zoom:1.2 }
-  #check .checkbox label {
-    display: inline-block;
-    position: relative;
-    padding-left: 5px; }
-    #check .checkbox label::before {
-      content: "";
-      display: inline-block;
-      position: absolute;
-      width: 17px;
-      height: 17px;
-      left: 0;
-      margin-left: -20px;
-      border: 1px solid #cccccc;
-      border-radius: 3px;
-      background-color: #fff;
-      -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-      -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
-      transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
-    #check .checkbox label::after {
-      display: inline-block;
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      left: 0;
-      top: 0;
-      margin-left: -20px;
-      padding-left: 3px;
-      padding-top: 1px;
-      font-size: 11px;
-      color: #555555; }
-  #check .checkbox input[type="checkbox"] {
-    opacity: 0; }
-    #check .checkbox input[type="checkbox"]:focus + label::before {
-      outline: thin dotted;
-      outline: 5px auto -webkit-focus-ring-color;
-      outline-offset: -2px; }
-    #check .checkbox input[type="checkbox"]:checked + label::after {
-      font-family: 'FontAwesome';
-      content: "\f00c"; }
-    #check .checkbox input[type="checkbox"]:disabled + label {
-      opacity: 0.65; }
-      #check .checkbox input[type="checkbox"]:disabled + label::before {
-        background-color: #eeeeee;
-        cursor: not-allowed; }
-  #check .checkbox#check .checkbox-circle label::before {
-    border-radius: 50%; }
-  #check .checkbox#check .checkbox-inline {
-    margin-top: 0; }
-
-#check .checkbox-primary input[type="checkbox"]:checked + label::before {
-  background-color: #428bca;
-  border-color: #428bca; }
-#check .checkbox-primary input[type="checkbox"]:checked + label::after {
-  color: #fff; }
-
-#check .checkbox-danger input[type="checkbox"]:checked + label::before {
-  background-color: #d9534f;
-  border-color: #d9534f; }
-#check .checkbox-danger input[type="checkbox"]:checked + label::after {
-  color: #fff; }
-
-#check .checkbox-info input[type="checkbox"]:checked + label::before {
-  background-color: #5bc0de;
-  border-color: #5bc0de; }
-#check .checkbox-info input[type="checkbox"]:checked + label::after {
-  color: #fff; }
-
-#check .checkbox-warning input[type="checkbox"]:checked + label::before {
-  background-color: #f0ad4e;
-  border-color: #f0ad4e; }
-#check .checkbox-warning input[type="checkbox"]:checked + label::after {
-  color: #fff; }
-
-#check .checkbox-success input[type="checkbox"]:checked + label::before {
-  background-color: #5cb85c;
-  border-color: #5cb85c; }
-#check .checkbox-success input[type="checkbox"]:checked + label::after {
-  color: #fff; }
+  @import url('catalog/view/theme/default/stylesheet/pagseguro.cartao.css');
 </style>
-<style type="text/css">
-  .overlay {height: 30px;width: 68px;background: #FFF;position: absolute;opacity: 0.7;}
-  .overlay:hover {opacity: 0;}
-  .vhide, .vlhide, .titular {display:none}
-  /* entire container, keeps perspective */
-.flip-container {
-	perspective: 1000;
-	transform-style: preserve-3d;
-  height:180px
-}
-	/*  UPDATED! flip the pane when hovered */
-	.flip-container-hover .back {
-		transform: rotateY(0deg);
-	}
-	.flip-container-hover .front {
-	    transform: rotateY(180deg);
-	}
-
-.flip-container, .front, .back {
-	height: 180px;
-}
-
-/* flip speed goes here */
-.flipper {
-	transition: 0.6s;
-	transform-style: preserve-3d;
-
-	position: relative;
-}
-
-/* hide back of pane during swap */
-.front, .back {
-	backface-visibility: hidden;
-	transition: 0.6s;
-	transform-style: preserve-3d;
-
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-/*  UPDATED! front pane, placed above back */
-.front {
-	z-index: 2;
-	transform: rotateY(0deg);
-}
-
-/* back, initially hidden pane */
-.back {
-	transform: rotateY(-180deg);
-}
-
-.logo-iugu {
-  position: absolute;
-  bottom: -200px;
-  right: 27px;
-}
-</style>
-
-<div class="container">
+<div class="content">
   <div class="row-fluid">
     <div class="alert alert-danger vlhide" id="warning" role="alert"></div>
     
@@ -186,7 +47,7 @@
         <div class="form-group col-sm-12">
           <div class="col-sm-5 col-sm-offset-4" id="check">
             <div class="checkbox">
-              <input type="checkbox" name="check-titular" id="check-titular" <?php echo (!$data_nascimento || !$cpf) ? '' : 'checked' ?>>
+              <input type="checkbox" name="check-titular" id="check-titular" <?php echo (!$data_nascimento || !$cpf) ? '' : 'checked' ?> />
               <label for="check-titular">
                 Eu sou o títular do cartão
               </label>
@@ -197,7 +58,7 @@
         <div class="form-group col-sm-12 titular">
           <label class="col-sm-4 control-label">Data de Nascimento:</label>
           <div class="col-sm-8">
-            <input class="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 13/07/1993" value="<?php echo $data_nascimento ?>" />
+            <input class="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 03/07/1808" value="<?php echo $data_nascimento ?>" />
           </div>
         </div>
 
@@ -211,7 +72,7 @@
         <div class="form-group col-sm-12 titular">
           <label class="col-sm-4 control-label">Telefone:</label>
           <div class="col-sm-8">
-            <input class="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11)98765-4321" value="<?php echo $telephone ?>" />
+            <input class="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11) 9 8765-4321" value="<?php echo $telefone ?>" />
           </div>
         </div>
         
@@ -226,7 +87,10 @@
         
         <div class="form-group col-sm-12 vhide">
           <div class="col-sm-5 col-sm-offset-4">
-            <button type="button" id="button-confirm" class="btn btn-primaty">Pagar</button>
+            <button type="button" id="button-confirm" class="btn btn-primary">
+              <i class="fa fa-credit-card-alt"></i> 
+              Pagar
+            </button>
           </div>
         </div>
       </div>
@@ -237,7 +101,7 @@
             <div id="credit-card-example-number" style="border: 3px solid #F00;position: absolute;height: 27px;width: 207px;top: 90px;left: 20px;opacity: 0;z-index:1"></div>
             <div id="credit-card-example-validate" style="border: 3px solid #F00;position: absolute;height: 32px;width: 67px;top: 111px;left: 122px;opacity: 0"></div>
             <div id="credit-card-example-customer" style="border: 3px solid #F00;position: absolute;height: 27px;width: 130px;top: 141px;left: 20px;opacity: 0"></div>
-            <div id="credit-card-example-logo" style="background: #FFF url(catalog/view/theme/default/image/pg_credit_card_brands.png) center 8px no-repeat;position: absolute;height: 43px;width: 63px;top: 114px;left: 208px;border-radius: 8px;opacity: 0"></div>
+            <div id="credit-card-example-logo" style="position: absolute;height: 43px;width: 63px;top: 114px;left: 208px;border-radius: 8px;opacity: 0"></div>
             <img src="catalog/view/theme/default/image/CreditCardFront.gif" style="height:180px" />
           </div>
           <div class="back">
@@ -252,7 +116,7 @@
 
 <script type="text/javascript">
   if (typeof(PagSeguroDirectPayment) == 'undefined') {
-    alert('Erro ao carregar JavaScript do PagSeguro.');
+    alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br para obter mais informações.');
   }
 
 	PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
@@ -306,7 +170,7 @@
     if ($('#numero-cartao').val().length >= 6) {
       $('.alert-info-installments').addClass('in');
       PagSeguroDirectPayment.getBrand({
-        cardBin: $('#numero-cartao').val(),
+        cardBin: $('#numero-cartao').val().replace(/\s+/g, ''),
         success: function(card){
           $('#bandeiras').find('.overlay').css('opacity', '0.7');
           $('#bandeiras #' + card.brand.name.toUpperCase()).find('.overlay').css('opacity', 0);
@@ -340,15 +204,14 @@
   }
 	
 	function formatMoney(val) {
-		var n = val.toString().indexOf('.');
-		var str = val.toString();
-		
-		if (n == '-1') {
-			return 'R$' + str + ',00';
-		} else {
-			return 'R$' + str.replace('.', ',');
-		}
-	}
+    var valor = val.toString();
+
+    if (valor.search(/.([\d]{2})$/) < 0) {
+      return "R$ " + valor.replace('.', ',') + "0";
+    } else {
+      return "R$ " + valor.replace('.', ',');
+    }
+  }
 	
 	$('#button-confirm').click(function() {
 		
@@ -375,7 +238,7 @@
 						if (data.error) {
 							$('#warning').html(data.error.message).show();
 						} else {
-							$(this).attr('disabled');
+							$('#button-confirm').attr('disabled');
 							
 							$.ajax({
 								url: 'index.php?route=payment/pagseguro_cartao/confirm',

@@ -23,7 +23,7 @@ class ControllerPaymentPagseguro extends Controller {
 		/* Load Models */
 		$this->load->model('localisation/order_status');
 		$this->load->model('localisation/geo_zone');
-		$this->load->model('sale/custom_field');
+		$this->load->model('customer/custom_field');
 		
 		
 		/* Warning */
@@ -309,7 +309,7 @@ class ControllerPaymentPagseguro extends Controller {
 		$data['zones'] = $this->model_localisation_geo_zone->getGeoZones();
 		
 		/* Custom Field */
-		$data['custom_fields'] = $this->model_sale_custom_field->getCustomFields();
+		$data['custom_fields'] = $this->model_customer_custom_field->getCustomFields();
 		
 		/* Debug */
 		if (file_exists(DIR_LOGS . 'pagseguro.log')) {
@@ -328,11 +328,7 @@ class ControllerPaymentPagseguro extends Controller {
 		$data['action'] = $this->url->link('payment/pagseguro', 'token=' . $this->session->data['token'], 'SSL');
 		$data['cancel'] = $this->url->link('extension/payment', 'token=' . $this->session->data['token'], 'SSL');
 		
-        if (VERSION < '2.1') {
-            $data['link_custom_field'] = $this->url->link('sale/custom_field', 'token=' . $this->session->data['token'], 'SSL');
-        } else {
-            $data['link_custom_field'] = $this->url->link('customer/custom_field', 'token=' . $this->session->data['token'], 'SSL');
-        }
+        $data['link_custom_field'] = $this->url->link('customer/custom_field', 'token=' . $this->session->data['token'], 'SSL');
 		
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -405,11 +401,19 @@ class ControllerPaymentPagseguro extends Controller {
 		return !$this->error;
 	}
 	
-	public function install(){
+	public function install() {
 		$this->db->query("INSERT INTO `" . DB_PREFIX . "extension` (`type`, `code`) VALUES ('payment', 'pagseguro_boleto') ");
 		$this->db->query("INSERT INTO `" . DB_PREFIX . "extension` (`type`, `code`) VALUES ('payment', 'pagseguro_cartao') ");
 		$this->db->query("INSERT INTO `" . DB_PREFIX . "extension` (`type`, `code`) VALUES ('payment', 'pagseguro_debito') ");
-		//$this->db->query("INSERT INTO `" . DB_PREFIX . "extension` (`type`, `code`) VALUES ('total', 'pagseguro_discount') ");
+		$this->db->query("INSERT INTO `" . DB_PREFIX . "extension` (`type`, `code`) VALUES ('total', 'pagseguro_acrescimo') ");
+		$this->db->query("INSERT INTO `" . DB_PREFIX . "extension` (`type`, `code`) VALUES ('total', 'pagseguro_desconto') ");
 	}
 	
+    public function uninstall() {
+		$this->db->query("DELETE FROM `" . DB_PREFIX . "extension` WHERE `code` = 'pagseguro_boleto';");
+		$this->db->query("DELETE FROM `" . DB_PREFIX . "extension` WHERE `code` = 'pagseguro_cartao';");
+		$this->db->query("DELETE FROM `" . DB_PREFIX . "extension` WHERE `code` = 'pagseguro_debito';");
+		$this->db->query("DELETE FROM `" . DB_PREFIX . "extension` WHERE `code` = 'pagseguro_acrescimo';");
+		$this->db->query("DELETE FROM `" . DB_PREFIX . "extension` WHERE `code` = 'pagseguro_desconto';");
+	}
 }

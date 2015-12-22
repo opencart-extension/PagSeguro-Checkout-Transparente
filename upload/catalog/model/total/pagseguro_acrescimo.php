@@ -11,8 +11,6 @@ class ModelTotalPagSeguroAcrescimo extends Model {
         
         $acrescimo = 0;
         
-        $this->config->set('pagseguro_acrescimo_boleto', 4);
-        
         if ($this->session->data['payment_method']['code'] == 'pagseguro_boleto') {            
             if (preg_match('#%#', $this->config->get('pagseguro_acrescimo_boleto'))) {
                 $acrescimo = preg_replace('/[^\d\.]/', '', $this->config->get('pagseguro_acrescimo_boleto'));

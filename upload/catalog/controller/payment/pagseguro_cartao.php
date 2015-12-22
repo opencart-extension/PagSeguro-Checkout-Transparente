@@ -17,20 +17,24 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		
 		/* Total */
 		$data['total'] = (float)number_format($order_info['total'], 2, '.', '');
+        
+        /* Nome do Cliente */
+        $data['cliente'] = $order_info['firstname'] . ' ' . $order_info['lastname'];
 		
 		/* Quantidade de Parcelas */
 		$data['qntParcelas'] = (int)$this->config->get('pagseguro_qnt_parcelas');
         
         /* Telefone do titular */
         if (!preg_match('/(\(|\)|-| )/', $order_info['telephone'])) {
-            $data['telephone'] = preg_replace('/([\d]{2})([\d]{5})(\d.*)/', '($1) $2-$3', $order_info['telephone']);
+            $data['telefone'] = preg_replace('/([\d]{2})([\d]{4})(\d.*)/', '($1) $2-$3', $order_info['telephone']);
         } else {
-            $data['telephone'] = $order_info['telephone'];
+            $data['telefone'] = $order_info['telephone'];
         }
         
         /* Data de Nascimento */
         if (isset($order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')])) {
-            $data['data_nascimento'] = $order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')];
+            $date = $order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')];
+            $data['data_nascimento'] = preg_replace('/^([\d]{4})-([\d]{2})-([\d]{2})$/', '$3/$2/$1', $date);
         } else {
             $data['data_nascimento'] = false;
         }
@@ -85,17 +89,19 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		/* Produtos */
 		$count = 1;
 		
-		foreach($this->cart->getProducts() as $product) {	
-			$data['itemId' . $count] = $product['product_id'];
-			$data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-			$data['itemAmount' . $count] = $this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false);
-			$data['itemQuantity' . $count] = $product['quantity'];
-			
-			$count++;
+		foreach($this->cart->getProducts() as $product) {
+            if ($product['price'] > 0) {
+                $data['itemId' . $count] = $product['product_id'];
+                $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
+                $data['itemAmount' . $count] = $this->currency->format($this->model_payment_pagseguro->discount($product['price']), $order_info['currency_code'], $order_info['currency_value'], false);
+                $data['itemQuantity' . $count] = $product['quantity'];
+                
+                $count++;
+            }
 		}
 
 		/* Nome do Cliente */
-		$data['senderName'] = $this->removeAcentos(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));
+		$data['senderName'] = utf8_decode(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));
 		
 		/* CPF do Cliete */
 		$data['senderCPF'] = preg_replace('/[^0-9]/', '', $this->request->post['creditCardHolderCPF']);
@@ -113,16 +119,28 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		$data['senderHash'] = $this->request->post['senderHash'];
 		
 		/* Endereço do Cliente */
-		$data['shippingAddressStreet'] = $this->removeAcentos($order_info['payment_address_1']);
-		$data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
-		$data['shippingAddressDistrict'] = $this->removeAcentos($order_info['payment_address_2']);
-		$data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
-		$data['shippingAddressCity'] = $this->removeAcentos($order_info['payment_city']);
-		$data['shippingAddressState'] = $order_info['payment_zone_code'];
-		$data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
+		if (isset($this->session->data['shipping_address'])) {
+            $data['shippingAddressStreet'] = utf8_decode($order_info['shipping_address_1']);
+            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['shipping_custom_field']);
+            $data['shippingAddressDistrict'] = utf8_decode($order_info['shipping_address_2']);
+            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['shipping_postcode']);
+            $data['shippingAddressCity'] = utf8_decode($order_info['shipping_city']);
+            $data['shippingAddressState'] = $order_info['shipping_zone_code'];
+            $data['shippingAddressCountry'] = $order_info['shipping_iso_code_3'];
+        } else {
+            $data['shippingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
+            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
+            $data['shippingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
+            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
+            $data['shippingAddressCity'] = utf8_decode($order_info['payment_city']);
+            $data['shippingAddressState'] = $order_info['payment_zone_code'];
+            $data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
+        }
+		
+		$shipping_free = $this->model_payment_pagseguro->checkShippingFree();
 		
 		/* Tipo e Valor do Frete */
-		if ($this->cart->hasShipping()){
+		if ($this->cart->hasShipping() && !$shipping_free){
 			$data['shippingType'] = $this->model_payment_pagseguro->getShippingType();
 		
 			$data['shippingCost'] = number_format($this->session->data['shipping_method']['cost'], 2, '.', '');
@@ -139,11 +157,11 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		$data['creditCardHolderPhone'] = substr(preg_replace('/[^0-9]/', '', $this->request->post['creditCardHolderPhone']), 2);
 
 		/* Endereço de Pagamento */
-		$data['billingAddressStreet'] = $this->removeAcentos($order_info['payment_address_1']);
+		$data['billingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
 		$data['billingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
-		$data['billingAddressDistrict'] = $this->removeAcentos($order_info['payment_address_2']);
+		$data['billingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
 		$data['billingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
-		$data['billingAddressCity'] = $this->removeAcentos($order_info['payment_city']);
+		$data['billingAddressCity'] = utf8_decode($order_info['payment_city']);
 		$data['billingAddressState'] = $order_info['payment_zone_code'];
 		$data['billingAddressCountry'] = $order_info['payment_iso_code_3'];
 
@@ -197,12 +215,5 @@ class ControllerPaymentPagseguroCartao extends Controller {
 			unset($this->session->data['comment']);
 			unset($this->session->data['coupon']);
 		}
-	}
-	
-	private function removeAcentos($text) {
-		$acentos = array('Á','À','Â','Ã','É','Ê','Í','Ó','Ô','Õ','Ú','Ç','á','à','â','ã','é','ê','í','ó','ô','õ','ú','ç','æ');
-		$sAcentos = array('A','A','A','A','E','E','I','O','O','O','U','C','a','a','a','a','e','e','i','o','o','o','u','c','AE');
-		
-		return str_replace($acentos, $sAcentos, $text);
 	}
 }
