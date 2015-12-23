@@ -20,6 +20,10 @@ Você pode ter um aumento de até 30% na conversão de suas vendas, uma vez que,
 Os dados de pagamento dos seus clientes são direcionados diretamente do navegador para o PagSeguro. Sem passar por seus servidores, assim não precisa se preocupar com a segurança destas informações.
 
 ### Novidades
+**[1.2.8]**
+* 1. Suporte ao OpenCart 2.1.x
+* 2. Correção de bugs
+
 **[1.1.1]**
 * 1. Alteração no layout de cartão de crédito
 * 2. Bugfix efeito de flip

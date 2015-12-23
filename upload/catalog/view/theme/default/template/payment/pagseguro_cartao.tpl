@@ -87,7 +87,7 @@
         
         <div class="form-group col-sm-12 vhide">
           <div class="col-sm-5 col-sm-offset-4">
-            <button type="button" id="button-confirm" class="btn btn-primary">
+            <button type="button" id="button-confirm" class="btn btn-primary" data-loading-text="Aguarde...">
               <i class="fa fa-credit-card-alt"></i> 
               Pagar
             </button>
