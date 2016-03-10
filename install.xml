@@ -2,12 +2,11 @@
 <modification>
   <name>PagSeguro Checkout Transparente</name>
   <code>19676</code>
-  <version>1.0</version>
+  <version>1.3.0</version>
   <author>Valdeir Psr</author>
   <link>http://www.valdeirsantana.com.br</link>
-  <link>valdeir_pagseguro</link>
   <file path="catalog/controller/checkout/checkout.php">
-    <operation error="skip">
+    <operation>
       <search><![CDATA[$this->load->language('checkout/checkout');]]></search>
       <add position="after"><![CDATA[
         //Verifica se está em modo de teste
@@ -16,6 +15,14 @@
         } else {
           $this->document->addScript('https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js');
         }
+      ]]></add>
+    </operation>
+  </file>
+  <file path="catalog/view/theme/*/template/common/footer.tpl">
+    <operation error="skip">
+      <search><![CDATA[<p><?php echo $powered; ?></p>]]></search>
+      <add position="after"><![CDATA[
+        <div style="position:absolute;left:-9999px;top:-9999px;"><h1><a href="//www.valdeirsantana.com.br">Valdeir Santana / OpenCart / Lojas Virtuais / Arastta</a></h1></div>
       ]]></add>
     </operation>
   </file>

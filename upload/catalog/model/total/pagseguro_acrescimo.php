@@ -21,7 +21,7 @@ class ModelTotalPagSeguroAcrescimo extends Model {
             }
         }
         
-        if ($this->session->data['payment_method']['code'] == 'pagseguro_credito') {
+        if ($this->session->data['payment_method']['code'] == 'pagseguro_cartao') {
             if (preg_match('#%#', $this->config->get('pagseguro_acrescimo_cartao'))) {
                 $acrescimo = preg_replace('/[^\d\.]/', '', $this->config->get('pagseguro_acrescimo_cartao'));
                 

@@ -13,7 +13,7 @@ class ModelTotalPagSeguroDesconto extends Model {
         
         if ($this->session->data['payment_method']['code'] == 'pagseguro_boleto') {            
             if (preg_match('#%#', $this->config->get('pagseguro_desconto_boleto'))) {
-                $desconto = preg_replace('/[^\d\.]/', '', $this->config->get('pagseguro_desconto_boleto'));
+                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('pagseguro_desconto_boleto'));
                 
                 $desconto = (($desconto / 100) * $this->cart->getSubTotal());
             } else {
@@ -21,9 +21,9 @@ class ModelTotalPagSeguroDesconto extends Model {
             }
         }
         
-        if ($this->session->data['payment_method']['code'] == 'pagseguro_credito') {
+        if ($this->session->data['payment_method']['code'] == 'pagseguro_cartao') {
             if (preg_match('#%#', $this->config->get('pagseguro_desconto_cartao'))) {
-                $desconto = preg_replace('/[^\d\.]/', '', $this->config->get('pagseguro_desconto_cartao'));
+                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('pagseguro_desconto_cartao'));
                 
                 $desconto = (($desconto / 100) * $this->cart->getSubTotal());
             } else {
@@ -33,7 +33,7 @@ class ModelTotalPagSeguroDesconto extends Model {
         
         if ($this->session->data['payment_method']['code'] == 'pagseguro_debito') {
             if (preg_match('#%#', $this->config->get('pagseguro_desconto_debito'))) {
-                $desconto = preg_replace('/[^\d\.]/', '', $this->config->get('pagseguro_desconto_debito'));
+                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('pagseguro_desconto_debito'));
                 
                 $desconto = (($desconto / 100) * $this->cart->getSubTotal());
             } else {
@@ -48,7 +48,7 @@ class ModelTotalPagSeguroDesconto extends Model {
                 'code'       => 'pagseguro_desconto',
                 'title'      => sprintf($this->language->get('text_desconto'), $this->currency->format($desconto)),
                 'value'      => -$desconto,
-                'sort_order' => ($this->config->get('total_sort_order') - 1)
+                'sort_order' => ($this->config->get('sub_total_sort_order') + 1)
             );
         }
     }

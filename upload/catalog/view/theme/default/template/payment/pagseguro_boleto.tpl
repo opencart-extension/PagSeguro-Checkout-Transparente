@@ -1,6 +1,7 @@
 <?php if (strlen($session_id) != 32) { ?>
   <div class="alert alert-danger" id="warning" role="alert"><?php echo $session_id ?></div>
-<?php exit(); } else { ?>
+  <?php exit(); ?>
+<?php } else { ?>
   <div id="warning" class="alert alert-danger" role="alert" style="display:none"></div>
 <?php } ?>
 
@@ -29,7 +30,7 @@
 
 <script type="text/javascript">
 if (typeof(PagSeguroDirectPayment) == 'undefined') {
-  alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br para obter mais informações.');
+  alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br / Procure pelo módulo / Clique na aba FAQ para obter mais informações.');
 }
 
 PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');

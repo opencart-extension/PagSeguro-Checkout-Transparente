@@ -42,7 +42,7 @@
 
 <script type="text/javascript">
   if (typeof(PagSeguroDirectPayment) == 'undefined') {
-    alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br para obter mais informações.');
+    alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br / Procure pelo módulo / Clique na aba FAQ para obter mais informações.');
   }
 
 	PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
@@ -102,7 +102,6 @@
 			},
 			complete: function(data) {
 				$('#info').hide();
-        //$('#button-confirm').button('reset');
 			}
 		})
 	})

@@ -595,11 +595,6 @@
               </div>
               <div class="well" style="min-height:150px">
                 <?php
-                  /*if (version_compare(phpversion(), '5.4.0', '>=') == true) {
-                    echo json_encode($debug, JSON_PRETTY_PRINT);
-                  } else {
-                    echo json_encode($debug);
-                  }*/
                   foreach($debug as $value) {
                     echo htmlspecialchars($value) . '<br/>';
                   }

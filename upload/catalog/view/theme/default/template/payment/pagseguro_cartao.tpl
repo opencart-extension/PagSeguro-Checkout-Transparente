@@ -7,7 +7,8 @@
     
     <?php if (strlen($session_id) != 32) { ?>
     <div class="alert alert-danger" id="warning" role="alert"><?php echo $session_id ?></div>
-    <?php exit(); } ?>
+    <?php exit(); ?>
+    <?php } ?>
 
     <div class="form-horizontal">
       <div class="form-group">
@@ -16,7 +17,7 @@
 
       <div id="form" class="col-sm-offset-1 col-sm-6">
         <div class="form-group col-sm-12">
-          <label class="col-sm-4 control-label">Nome:</label>
+          <label class="col-sm-4 control-label" for="nome">Nome:</label>
           <div class="col-sm-8">
             <input class="form-control" type="text" id="nome" name="nome" placeholder="Ex: Valdeir Santana" />
             <input type="hidden" id="bandeira" name="bandeira" />
@@ -24,21 +25,21 @@
         </div>
         
         <div class="form-group col-sm-12">
-          <label class="col-sm-4 control-label">Número do Cartão:</label>
+          <label class="col-sm-4 control-label" for="numero-cartao">Número do Cartão:</label>
           <div class="col-sm-8">
             <input class="form-control" type="text" id="numero-cartao" name="numero-cartao" />
           </div>
         </div>
         
         <div class="form-group col-sm-12">
-          <label class="col-sm-4 control-label">Validade:</label>
+          <label class="col-sm-4 control-label" for="validade">Validade:</label>
           <div class="col-sm-8">
             <input class="form-control" type="text" id="validade" name="validade" placeholder="Ex: 12/2015" />
           </div>
         </div>
 
         <div class="form-group col-sm-12">
-          <label class="col-sm-4 control-label">Código de Segurança:</label>
+          <label class="col-sm-4 control-label" for="cvv">Código de Segurança:</label>
           <div class="col-sm-8">
             <input class="form-control" type="text" id="cvv" name="cvv" placeholder="Ex: 123 ou 1234" />
           </div>
@@ -56,21 +57,21 @@
         </div>
 
         <div class="form-group col-sm-12 titular">
-          <label class="col-sm-4 control-label">Data de Nascimento:</label>
+          <label class="col-sm-4 control-label" for="data-nascimento">Data de Nascimento:</label>
           <div class="col-sm-8">
             <input class="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 03/07/1808" value="<?php echo $data_nascimento ?>" />
           </div>
         </div>
 
         <div class="form-group col-sm-12 titular">
-          <label class="col-sm-4 control-label">CPF:</label>
+          <label class="col-sm-4 control-label" for="cpf">CPF:</label>
           <div class="col-sm-8">
             <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" value="<?php echo $cpf ?>" />
           </div>
         </div>
 
         <div class="form-group col-sm-12 titular">
-          <label class="col-sm-4 control-label">Telefone:</label>
+          <label class="col-sm-4 control-label" for="telefone">Telefone:</label>
           <div class="col-sm-8">
             <input class="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11) 9 8765-4321" value="<?php echo $telefone ?>" />
           </div>
@@ -79,7 +80,7 @@
         <div class="alert alert-info alert-info-installments fade col-sm-12">Carregando...</div>
         
         <div class="form-group col-sm-12 vhide">
-          <label class="col-sm-4 control-label">Parcelas:</label>
+          <label class="col-sm-4 control-label" for="parcelas">Parcelas:</label>
           <div class="col-sm-8">
             <select class="form-control" id="parcelas" name="parcelas"></select>
           </div>
@@ -116,7 +117,7 @@
 
 <script type="text/javascript">
   if (typeof(PagSeguroDirectPayment) == 'undefined') {
-    alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br para obter mais informações.');
+    alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br / Procure pelo módulo / Clique na aba FAQ para obter mais informações.');
   }
 
 	PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
@@ -203,13 +204,19 @@
     }
   }
 	
-	function formatMoney(val) {
+  function formatMoney(val) {
     var valor = val.toString();
 
-    if (valor.search(/.([\d]{2})$/) < 0) {
-      return "R$ " + valor.replace('.', ',') + "0";
-    } else {
-      return "R$ " + valor.replace('.', ',');
+    if (valor.match(/\./)) {
+      if (valor.match(/(\.[\d]{1})$/)) {
+        return "R$ " + valor.replace('.', ',') + "0";
+      }
+      else if (valor.match(/(\.[\d]{2})$/)) {
+        return "R$ " + valor.replace('.', ',');
+      }
+    }
+    else {
+      return "R$ " + valor.replace('.', ',') + ",00";
     }
   }
 	

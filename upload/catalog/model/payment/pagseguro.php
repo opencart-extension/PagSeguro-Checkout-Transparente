@@ -187,9 +187,9 @@ class ModelPaymentPagseguro extends Controller {
 		if (isset($this->session->data['coupon'])) {
 			$this->load->language('total/coupon');
 
-			$this->load->model('checkout/coupon');
+			$this->load->model('total/coupon');
 
-			$coupon_info = $this->model_checkout_coupon->getCoupon($this->session->data['coupon']);
+			$coupon_info = $this->model_total_coupon->getCoupon($this->session->data['coupon']);
 			
 			if ($coupon_info['shipping']) {
 				return true;
@@ -206,9 +206,9 @@ class ModelPaymentPagseguro extends Controller {
 		if (isset($this->session->data['coupon'])) {
 			$this->load->language('total/coupon');
 
-			$this->load->model('checkout/coupon');
+			$this->load->model('total/coupon');
 
-			$coupon_info = $this->model_checkout_coupon->getCoupon($this->session->data['coupon']);
+			$coupon_info = $this->model_total_coupon->getCoupon($this->session->data['coupon']);
 
 			if ($coupon_info) {
 				$discount_total = 0;

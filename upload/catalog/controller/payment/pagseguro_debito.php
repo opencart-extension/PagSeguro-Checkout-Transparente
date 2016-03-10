@@ -13,18 +13,14 @@ class ControllerPaymentPagseguroDebito extends Controller {
 
 		$data['session_id'] = $this->model_payment_pagseguro->captureToken();
         
-         /* CPF */
+        /* CPF */
         if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
-            if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
-                $data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('pagseguro_cpf')]);
-            } else {
-                $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
-            }
+            $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
         } else {
             $data['cpf'] = '';
         }
 		
-		$data['continue'] = $this->url->link('checkout/success', '', 'SSL');
+		$data['continue'] = $this->url->link('checkout/success', '', true);
 		
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/pagseguro_debito.tpl')) {
 			return $this->load->view($this->config->get('config_template') . '/template/payment/pagseguro_debito.tpl', $data);
@@ -63,12 +59,18 @@ class ControllerPaymentPagseguroDebito extends Controller {
             if ($product['price'] > 0) {
                 $data['itemId' . $count] = $product['product_id'];
                 $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-                $data['itemAmount' . $count] = $this->currency->format($this->model_payment_pagseguro->discount($product['price']), $order_info['currency_code'], $order_info['currency_value'], false);
+                $data['itemAmount' . $count] = $this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false);
                 $data['itemQuantity' . $count] = $product['quantity'];
                 
                 $count++;
             }
 		}
+        
+        /* Aplica Desconto */
+        $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
+        
+        /* Aplica Acréscimo */
+        $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
 		
 		/* Nome do Cliente */
 		$data['senderName'] = utf8_decode(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));
@@ -163,6 +165,8 @@ class ControllerPaymentPagseguroDebito extends Controller {
 			unset($this->session->data['payment_methods']);
 			unset($this->session->data['comment']);
 			unset($this->session->data['coupon']);
+            unset($this->session->data['pagseguro_desconto']);
+            unset($this->session->data['pagseguro_acrescimo']);
 		}
 	}
 }

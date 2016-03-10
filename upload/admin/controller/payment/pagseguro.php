@@ -380,21 +380,21 @@ class ControllerPaymentPagseguro extends Controller {
 		/* Error Boleto */
 		if ($this->request->post['pagseguro_boleto_status']) {
 			if (!filter_var($this->request->post['pagseguro_valor_minimo_boleto'], FILTER_VALIDATE_FLOAT)) {
-				$this->request->post['pagseguro_valor_minimo_boleto'] = '0.00';
+				$this->request->post['pagseguro_valor_minimo_boleto'] = 1.00;
 			}
 		}
 		
 		/* Error Cartão de Crédito */
 		if ($this->request->post['pagseguro_cartao_status']) {
 			if (!filter_var($this->request->post['pagseguro_valor_minimo_cartao'], FILTER_VALIDATE_FLOAT)) {
-				$this->request->post['pagseguro_valor_minimo_cartao'] = '0.00';
+				$this->request->post['pagseguro_valor_minimo_cartao'] = 1.00;
 			}
 		}
 		
 		/* Error Débito */
 		if ($this->request->post['pagseguro_debito_status']) {
 			if (!filter_var($this->request->post['pagseguro_valor_minimo_debito'], FILTER_VALIDATE_FLOAT)) {
-				$this->request->post['pagseguro_valor_minimo_debito'] = '0.00';
+				$this->request->post['pagseguro_valor_minimo_debito'] = 1.00;
 			}
 		}
 		

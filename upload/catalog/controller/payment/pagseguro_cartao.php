@@ -26,7 +26,7 @@ class ControllerPaymentPagseguroCartao extends Controller {
         
         /* Telefone do titular */
         if (!preg_match('/(\(|\)|-| )/', $order_info['telephone'])) {
-            $data['telefone'] = preg_replace('/([\d]{2})([\d]{4})(\d.*)/', '($1) $2-$3', $order_info['telephone']);
+            $data['telefone'] = preg_replace('/^([\d]{2})([\d]{4})(\d.*)$/', '($1) $2-$3', $order_info['telephone']);
         } else {
             $data['telefone'] = $order_info['telephone'];
         }
@@ -41,11 +41,7 @@ class ControllerPaymentPagseguroCartao extends Controller {
         
         /* CPF */
         if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
-            if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
-                $data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('pagseguro_cpf')]);
-            } else {
-                $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
-            }
+            $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
         } else {
             $data['cpf'] = false;
         }
@@ -54,7 +50,7 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		$data['max_parcelas_sem_juros'] = (int)$this->config->get('pagseguro_parcelas_sem_juros');
 		
 		/* Link */
-		$data['continue'] = $this->url->link('checkout/success', '', 'SSL');
+		$data['continue'] = $this->url->link('checkout/success', '', true);
 		
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/pagseguro_cartao.tpl')) {
 			return $this->load->view($this->config->get('config_template') . '/template/payment/pagseguro_cartao.tpl', $data);
@@ -93,12 +89,18 @@ class ControllerPaymentPagseguroCartao extends Controller {
             if ($product['price'] > 0) {
                 $data['itemId' . $count] = $product['product_id'];
                 $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-                $data['itemAmount' . $count] = $this->currency->format($this->model_payment_pagseguro->discount($product['price']), $order_info['currency_code'], $order_info['currency_value'], false);
+                $data['itemAmount' . $count] = $this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false);
                 $data['itemQuantity' . $count] = $product['quantity'];
                 
                 $count++;
             }
 		}
+        
+        /* Aplica Desconto */
+        $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
+        
+        /* Aplica Acréscimo */
+        $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
 
 		/* Nome do Cliente */
 		$data['senderName'] = utf8_decode(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));
@@ -214,6 +216,8 @@ class ControllerPaymentPagseguroCartao extends Controller {
 			unset($this->session->data['payment_methods']);
 			unset($this->session->data['comment']);
 			unset($this->session->data['coupon']);
+            unset($this->session->data['pagseguro_desconto']);
+            unset($this->session->data['pagseguro_acrescimo']);
 		}
 	}
 }
