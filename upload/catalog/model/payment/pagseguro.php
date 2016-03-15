@@ -187,7 +187,7 @@ class ModelPaymentPagseguro extends Controller {
 		if (isset($this->session->data['coupon'])) {
 			$this->load->language('total/coupon');
 
-			if (version_compare(VERSION, '2.1', '<') {
+			if (version_compare(VERSION, '2.1', '<')) {
                 $this->load->model('total/coupon');
 
                 $coupon_info = $this->model_total_coupon->getCoupon($this->session->data['coupon']);
@@ -213,7 +213,7 @@ class ModelPaymentPagseguro extends Controller {
 		if (isset($this->session->data['coupon'])) {
 			$this->load->language('total/coupon');
 
-            if (version_compare(VERSION, '2.1', '<') {
+            if (version_compare(VERSION, '2.1', '<')) {
                 $this->load->model('total/coupon');
 
                 $coupon_info = $this->model_total_coupon->getCoupon($this->session->data['coupon']);
