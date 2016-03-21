@@ -22,11 +22,7 @@ class ControllerPaymentPagseguroDebito extends Controller {
 		
 		$data['continue'] = $this->url->link('checkout/success', '', true);
 		
-		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/payment/pagseguro_debito.tpl')) {
-			return $this->load->view($this->config->get('config_template') . '/template/payment/pagseguro_debito.tpl', $data);
-		} else {
-			return $this->load->view('default/template/payment/pagseguro_debito.tpl', $data);
-		}
+		return $this->load->view('payment/pagseguro_debito.tpl', $data);
 		
 	}
 	
@@ -49,7 +45,7 @@ class ControllerPaymentPagseguroDebito extends Controller {
 		$data['paymentMethod'] = 'eft';
 		$data['bankName'] = $this->request->post['banco'];
 		$data['currency'] = 'BRL';
-		$data['notificationURL'] = $this->url->link('payment/pagseguro/callback');
+		$data['notificationURL'] = $this->url->link('payment/pagseguro/callback', '', true);
 		$data['reference'] = 'Pedido #' . $order_id;
 		
 		/* Produtos */
@@ -59,7 +55,7 @@ class ControllerPaymentPagseguroDebito extends Controller {
             if ($product['price'] > 0) {
                 $data['itemId' . $count] = $product['product_id'];
                 $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-                $data['itemAmount' . $count] = $this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false);
+                $data['itemAmount' . $count] = number_format($this->currency->format($this->model_payment_pagseguro->discount($product['price']), $order_info['currency_code'], $order_info['currency_value'], false), 2);
                 $data['itemQuantity' . $count] = $product['quantity'];
                 
                 $count++;
@@ -67,10 +63,12 @@ class ControllerPaymentPagseguroDebito extends Controller {
 		}
         
         /* Aplica Desconto */
-        $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
+        if (isset($this->session->data['pagseguro_desconto']))
+            $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
         
         /* Aplica Acréscimo */
-        $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
+        if (isset($this->session->data['pagseguro_desconto']))
+            $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
 		
 		/* Nome do Cliente */
 		$data['senderName'] = utf8_decode(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));

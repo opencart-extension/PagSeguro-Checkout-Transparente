@@ -1,7 +1,7 @@
 <?php
 class ModelTotalPagSeguroAcrescimo extends Model {
     
-    public function getTotal(&$total_data, &$total, &$taxes) {
+    public function getTotal($total) {
         
         if (!isset($this->session->data['payment_method']['code'])) {
             return false;
@@ -42,13 +42,13 @@ class ModelTotalPagSeguroAcrescimo extends Model {
         }
         
         if ($acrescimo > 0) {
-            $total += $acrescimo;
+            //$order_total =+ $acrescimo;
             
-            $total_data[] = array(
-                'code'       => 'pagseguro_desconto',
-                'title'      => sprintf($this->language->get('text_acrescimo'), $this->currency->format($acrescimo)),
+            $total['totals'][] = array(
+                'code'       => 'pagseguro_acrescimo',
+                'title'      => sprintf($this->language->get('text_acrescimo'), $this->currency->format($acrescimo, $this->session->data['currency'])),
                 'value'      => +$acrescimo,
-                'sort_order' => ($this->config->get('total_sort_order') - 1)
+                'sort_order' => ($this->config->get('sub_total_sort_order') + 1)
             );
         }
     }

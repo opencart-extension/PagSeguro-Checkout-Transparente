@@ -1,7 +1,7 @@
 <?php
 class ModelTotalPagSeguroDesconto extends Model {
     
-    public function getTotal(&$total_data, &$total, &$taxes) {
+    public function getTotal($total) {
         
         if (!isset($this->session->data['payment_method']['code'])) {
             return false;
@@ -42,11 +42,11 @@ class ModelTotalPagSeguroDesconto extends Model {
         }
         
         if ($desconto > 0) {
-            $total -= $desconto;
+            //$total =- $desconto;
             
-            $total_data[] = array(
+            $total['totals'][] = array(
                 'code'       => 'pagseguro_desconto',
-                'title'      => sprintf($this->language->get('text_desconto'), $this->currency->format($desconto)),
+                'title'      => sprintf($this->language->get('text_desconto'), $this->currency->format($desconto, $this->session->data['currency'])),
                 'value'      => -$desconto,
                 'sort_order' => ($this->config->get('sub_total_sort_order') + 1)
             );
