@@ -97,8 +97,14 @@ class ControllerPaymentPagseguroCartao extends Controller {
             $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
         
         /* Aplica Acréscimo */
-        if (isset($this->session->data['pagseguro_desconto']))
+        if (isset($this->session->data['pagseguro_acrescimo']))
             $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
+        
+        if (isset($data['extraAmount']))
+            $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
+        
+        if (isset($data['extraAmount']))
+            $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
 
 		/* Nome do Cliente */
 		$data['senderName'] = utf8_decode(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));

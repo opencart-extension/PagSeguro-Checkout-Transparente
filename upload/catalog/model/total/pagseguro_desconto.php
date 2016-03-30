@@ -44,6 +44,8 @@ class ModelTotalPagSeguroDesconto extends Model {
         if ($desconto > 0) {
             //$total =- $desconto;
             
+            $this->session->data['pagseguro_desconto'] = $desconto;
+            
             $total['totals'][] = array(
                 'code'       => 'pagseguro_desconto',
                 'title'      => sprintf($this->language->get('text_desconto'), $this->currency->format($desconto, $this->session->data['currency'])),

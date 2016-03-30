@@ -44,6 +44,8 @@ class ModelTotalPagSeguroAcrescimo extends Model {
         if ($acrescimo > 0) {
             //$order_total =+ $acrescimo;
             
+            $this->session->data['pagseguro_acrescimo'] = $desconto;
+            
             $total['totals'][] = array(
                 'code'       => 'pagseguro_acrescimo',
                 'title'      => sprintf($this->language->get('text_acrescimo'), $this->currency->format($acrescimo, $this->session->data['currency'])),
