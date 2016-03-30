@@ -20,8 +20,11 @@ Você pode ter um aumento de até 30% na conversão de suas vendas, uma vez que,
 Os dados de pagamento dos seus clientes são direcionados diretamente do navegador para o PagSeguro. Sem passar por seus servidores, assim não precisa se preocupar com a segurança destas informações.
 
 ### Novidades
-**[1.3]**
-1. Suporte para OpenCart 2.2.x
+**[1.3.1]**
+1. Bug fix discount and tax
+
+**[1.3.0]**
+1. Suporte para OpenCart 2.2.x (Support only OC 2.2.x)
 
 **[1.2.9]**
 1. Correção de bugs do Cupons
