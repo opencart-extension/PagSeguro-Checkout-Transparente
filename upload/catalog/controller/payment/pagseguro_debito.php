@@ -55,7 +55,7 @@ class ControllerPaymentPagseguroDebito extends Controller {
             if ($product['price'] > 0) {
                 $data['itemId' . $count] = $product['product_id'];
                 $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-                $data['itemAmount' . $count] = number_format($this->currency->format($this->model_payment_pagseguro->discount($product['price']), $order_info['currency_code'], $order_info['currency_value'], false), 2);
+                $data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2);
                 $data['itemQuantity' . $count] = $product['quantity'];
                 
                 $count++;
@@ -67,9 +67,16 @@ class ControllerPaymentPagseguroDebito extends Controller {
             $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
         
         /* Aplica Acréscimo */
-        if (isset($this->session->data['pagseguro_acrescimo']))
+        if (isset($this->session->data['pagseguro_desconto']))
             $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
         
+        /* Captura desconto do cupom */
+        $discount = $this->model_payment_pagseguro->discount($order_info['total']);
+        
+        if ($discount > 0)
+            $data['extraAmount'] += ($this->model_payment_pagseguro->discount($order_info['total']) * (-1));
+        
+        /* Formata os dados */
         if (isset($data['extraAmount']))
             $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
 		
