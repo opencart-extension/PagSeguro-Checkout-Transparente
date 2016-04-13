@@ -21,10 +21,10 @@ Os dados de pagamento dos seus clientes são direcionados diretamente do navegad
 
 ### Novidades
 **[1.3.1]**
-1. Bug fix discount and tax
+1. Bugfix cupom
 
-**[1.3.0]**
-1. Suporte para OpenCart 2.2.x (Support only OC 2.2.x)
+**[1.3]**
+1. Suporte para OpenCart 2.2.x
 
 **[1.2.9]**
 1. Correção de bugs do Cupons
@@ -50,7 +50,7 @@ Os dados de pagamento dos seus clientes são direcionados diretamente do navegad
 
 **[1.0.1]**
 1. Correção com problemas de acentuação
-2. Permissão de colagem do cartão de crédito<
+2. Permissão de colagem do cartão de crédito
 
 ### Instalação
 https://www.youtube.com/watch?v=lvSVZr_V7AA
