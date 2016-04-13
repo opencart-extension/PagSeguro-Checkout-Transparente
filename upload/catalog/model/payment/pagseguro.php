@@ -192,7 +192,11 @@ class ModelPaymentPagseguro extends Controller {
 
                 $coupon_info = $this->model_total_coupon->getCoupon($this->session->data['coupon']);
             }
-            else {
+            else if (version_compare(VERSION, '2.2', '>=')) {
+                $this->load->model('total/coupon');
+
+                $coupon_info = $this->model_total_coupon->getCoupon($this->session->data['coupon']);
+            }else {
                 $this->load->model('checkout/coupon');
 
                 $coupon_info = $this->model_checkout_coupon->getCoupon($this->session->data['coupon']);
@@ -213,19 +217,28 @@ class ModelPaymentPagseguro extends Controller {
 		if (isset($this->session->data['coupon'])) {
 			$this->load->language('total/coupon');
 
+            /* 2.1 ou inferior */
             if (version_compare(VERSION, '2.1', '<')) {
                 $this->load->model('total/coupon');
 
                 $coupon_info = $this->model_total_coupon->getCoupon($this->session->data['coupon']);
             }
+            /* 2.2 ou superior */
+            else if (version_compare(VERSION, '2.2', '>=')) {
+                $this->load->model('total/coupon');
+
+                $coupon_info = $this->model_total_coupon->getCoupon($this->session->data['coupon']);
+            }
+            /* Outras versões */
             else {
                 $this->load->model('checkout/coupon');
 
                 $coupon_info = $this->model_checkout_coupon->getCoupon($this->session->data['coupon']);
             }
+			
+            $discount_total = 0;
 
 			if ($coupon_info) {
-				$discount_total = 0;
 
 				if (!$coupon_info['product']) {
 					$sub_total = $this->cart->getSubTotal();
@@ -271,11 +284,9 @@ class ModelPaymentPagseguro extends Controller {
 				if ($discount_total > $total) {
 					$discount_total = $total;
 				}
-
-				$total -= $discount_total;
 			}
 		}
 		
-		return $total;
+		return $discount_total;
 	}
 }
