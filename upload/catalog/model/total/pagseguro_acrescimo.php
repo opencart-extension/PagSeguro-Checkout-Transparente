@@ -44,7 +44,7 @@ class ModelTotalPagSeguroAcrescimo extends Model {
         if ($acrescimo > 0) {
             //$order_total =+ $acrescimo;
             
-            $this->session->data['pagseguro_acrescimo'] = $desconto;
+            $this->session->data['pagseguro_acrescimo'] = $acrescimo;
             
             $total['totals'][] = array(
                 'code'       => 'pagseguro_acrescimo',
