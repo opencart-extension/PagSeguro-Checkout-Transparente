@@ -7,22 +7,22 @@ class ControllerPaymentPagseguroBoleto extends Controller {
 		
 		$this->load->model('checkout/order');
         
-        $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+        	$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
         
 		$this->load->model('payment/pagseguro');
 
 		$data['session_id'] = $this->model_payment_pagseguro->captureToken();
         
-        /* CPF */
-        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
-            if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
-                $data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('pagseguro_cpf')]);
-            } else {
-                $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
-            }
-        } else {
-            $data['cpf'] = '';
-        }
+	        /* CPF */
+	        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
+	            if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
+	                $data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('pagseguro_cpf')]);
+	            } else {
+	                $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
+	            }
+	        } else {
+	            $data['cpf'] = '';
+	        }
 		
 		$data['continue'] = $this->url->link('checkout/success', '', 'SSL');
 		
@@ -55,33 +55,33 @@ class ControllerPaymentPagseguroBoleto extends Controller {
 		$count = 1;
 		
 		foreach($this->cart->getProducts() as $product) {
-            if ($product['price'] > 0) {
-                $data['itemId' . $count] = $product['product_id'];
-                $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-                $data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2);
-                $data['itemQuantity' . $count] = $product['quantity'];
-                
-                $count++;
-            }
+	            if ($product['price'] > 0) {
+	                $data['itemId' . $count] = $product['product_id'];
+	                $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
+	                $data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2);
+	                $data['itemQuantity' . $count] = $product['quantity'];
+	                
+	                $count++;
+	            }
 		}
         
-        /* Aplica Desconto */
-        if (isset($this->session->data['pagseguro_desconto']))
-            $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
-        
-        /* Aplica Acréscimo */
-        if (isset($this->session->data['pagseguro_desconto']))
-            $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
-        
-        /* Captura desconto do cupom */
-        $discount = $this->model_payment_pagseguro->discount($order_info['total']);
-        
-        if ($discount > 0)
-            $data['extraAmount'] += ($this->model_payment_pagseguro->discount($order_info['total']) * (-1));
-        
-        /* Formata os dados */
-        if (isset($data['extraAmount']))
-            $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
+	        /* Aplica Desconto */
+	        if (isset($this->session->data['pagseguro_desconto']))
+	            $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
+	        
+	        /* Aplica Acréscimo */
+	        if (isset($this->session->data['pagseguro_acrescimo']))
+	            $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
+	        
+	        /* Captura desconto do cupom */
+	        $discount = $this->model_payment_pagseguro->discount($order_info['total']);
+	        
+	        if ($discount > 0)
+	            $data['extraAmount'] += ($this->model_payment_pagseguro->discount($order_info['total']) * (-1));
+	        
+	        /* Formata os dados */
+	        if (isset($data['extraAmount']))
+	            $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
 		
 		/* Nome do Cliente */
 		$data['senderName'] = utf8_decode(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));
