@@ -18,33 +18,33 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		/* Total */
 		$data['total'] = number_format($order_info['total'], 2, '.', '');
         
-	        /* Nome do Cliente */
-	        $data['cliente'] = $order_info['firstname'] . ' ' . $order_info['lastname'];
+        /* Nome do Cliente */
+        $data['cliente'] = $order_info['firstname'] . ' ' . $order_info['lastname'];
 		
 		/* Quantidade de Parcelas */
 		$data['qntParcelas'] = (int)$this->config->get('pagseguro_qnt_parcelas');
         
-	        /* Telefone do titular */
-	        if (!preg_match('/(\(|\)|-| )/', $order_info['telephone'])) {
-	            $data['telefone'] = preg_replace('/^([\d]{2})([\d]{4})(\d.*)$/', '($1) $2-$3', $order_info['telephone']);
-	        } else {
-	            $data['telefone'] = $order_info['telephone'];
-	        }
-	        
-	        /* Data de Nascimento */
-	        if (isset($order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')])) {
-	            $date = $order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')];
-	            $data['data_nascimento'] = preg_replace('/^([\d]{4})-([\d]{2})-([\d]{2})$/', '$3/$2/$1', $date);
-	        } else {
-	            $data['data_nascimento'] = false;
-	        }
-	        
-	        /* CPF */
-	        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
-	            $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
-	        } else {
-	            $data['cpf'] = false;
-	        }
+        /* Telefone do titular */
+        if (!preg_match('/(\(|\)|-| )/', $order_info['telephone'])) {
+            $data['telefone'] = preg_replace('/^([\d]{2})([\d]{4})(\d.*)$/', '($1) $2-$3', $order_info['telephone']);
+        } else {
+            $data['telefone'] = $order_info['telephone'];
+        }
+        
+        /* Data de Nascimento */
+        if (isset($order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')])) {
+            $date = $order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')];
+            $data['data_nascimento'] = preg_replace('/^([\d]{4})-([\d]{2})-([\d]{2})$/', '$3/$2/$1', $date);
+        } else {
+            $data['data_nascimento'] = false;
+        }
+        
+        /* CPF */
+        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
+            $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
+        } else {
+            $data['cpf'] = false;
+        }
 		
 		/* Quantidade parcelas sem juros */
 		$data['max_parcelas_sem_juros'] = (int)$this->config->get('pagseguro_parcelas_sem_juros');
@@ -82,14 +82,14 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		$count = 1;
 		
 		foreach($this->cart->getProducts() as $product) {
-	            if ($product['price'] > 0) {
-	                $data['itemId' . $count] = $product['product_id'];
-	                $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-	                $data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2);
-	                $data['itemQuantity' . $count] = $product['quantity'];
-	                
-	                $count++;
-	            }
+            if ($product['price'] > 0) {
+                $data['itemId' . $count] = $product['product_id'];
+                $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
+                $data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2);
+                $data['itemQuantity' . $count] = $product['quantity'];
+                
+                $count++;
+            }
 		}
         
         /* Aplica Desconto */
@@ -130,22 +130,22 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		
 		/* Endereço do Cliente */
 		if (isset($this->session->data['shipping_address'])) {
-	            $data['shippingAddressStreet'] = utf8_decode($order_info['shipping_address_1']);
-	            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['shipping_custom_field']);
-	            $data['shippingAddressDistrict'] = utf8_decode($order_info['shipping_address_2']);
-	            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['shipping_postcode']);
-	            $data['shippingAddressCity'] = utf8_decode($order_info['shipping_city']);
-	            $data['shippingAddressState'] = $order_info['shipping_zone_code'];
-	            $data['shippingAddressCountry'] = $order_info['shipping_iso_code_3'];
-	        } else {
-	            $data['shippingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
-	            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
-	            $data['shippingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
-	            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
-	            $data['shippingAddressCity'] = utf8_decode($order_info['payment_city']);
-	            $data['shippingAddressState'] = $order_info['payment_zone_code'];
-	            $data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
-	        }
+            $data['shippingAddressStreet'] = utf8_decode($order_info['shipping_address_1']);
+            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['shipping_custom_field']);
+            $data['shippingAddressDistrict'] = utf8_decode($order_info['shipping_address_2']);
+            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['shipping_postcode']);
+            $data['shippingAddressCity'] = utf8_decode($order_info['shipping_city']);
+            $data['shippingAddressState'] = $order_info['shipping_zone_code'];
+            $data['shippingAddressCountry'] = $order_info['shipping_iso_code_3'];
+        } else {
+            $data['shippingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
+            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
+            $data['shippingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
+            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
+            $data['shippingAddressCity'] = utf8_decode($order_info['payment_city']);
+            $data['shippingAddressState'] = $order_info['payment_zone_code'];
+            $data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
+        }
 		
 		$shipping_free = $this->model_payment_pagseguro->checkShippingFree();
 		
@@ -224,8 +224,8 @@ class ControllerPaymentPagseguroCartao extends Controller {
 			unset($this->session->data['payment_methods']);
 			unset($this->session->data['comment']);
 			unset($this->session->data['coupon']);
-            		unset($this->session->data['pagseguro_desconto']);
-            		unset($this->session->data['pagseguro_acrescimo']);
+            unset($this->session->data['pagseguro_desconto']);
+            unset($this->session->data['pagseguro_acrescimo']);
 		}
 	}
 }
