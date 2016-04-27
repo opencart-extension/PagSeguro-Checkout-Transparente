@@ -16,7 +16,7 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		$data['session_id'] = $this->model_payment_pagseguro->captureToken();
 		
 		/* Total */
-		$data['total'] = (float)number_format($order_info['total'], 2, '.', '');
+		$data['total'] = number_format($order_info['total'], 2, '.', '');
         
 	        /* Nome do Cliente */
 	        $data['cliente'] = $order_info['firstname'] . ' ' . $order_info['lastname'];
@@ -92,23 +92,23 @@ class ControllerPaymentPagseguroCartao extends Controller {
 	            }
 		}
         
-	        /* Aplica Desconto */
-	        if (isset($this->session->data['pagseguro_desconto']))
-	            $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
-	        
-	        /* Aplica Acréscimo */
-	        if (isset($this->session->data['pagseguro_acrescimo']))
-	            $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
-	        
-	        /* Captura desconto do cupom */
-	        $discount = $this->model_payment_pagseguro->discount($order_info['total']);
-	        
-	        if ($discount > 0)
-	            $data['extraAmount'] += ($this->model_payment_pagseguro->discount($order_info['total']) * (-1));
-	        
-	        /* Formata os dados */
-	        if (isset($data['extraAmount']))
-	            $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
+        /* Aplica Desconto */
+        if (isset($this->session->data['pagseguro_desconto']))
+            $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
+        
+        /* Aplica Acréscimo */
+        if (isset($this->session->data['pagseguro_acrescimo']))
+            $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
+        
+        /* Captura desconto do cupom */
+        $discount = $this->model_payment_pagseguro->discount($order_info['total']);
+        
+        if ($discount > 0)
+            $data['extraAmount'] += ($this->model_payment_pagseguro->discount($order_info['total']) * (-1));
+        
+        /* Formata os dados */
+        if (isset($data['extraAmount']))
+            $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
 
 		/* Nome do Cliente */
 		$data['senderName'] = utf8_decode(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));
@@ -130,22 +130,22 @@ class ControllerPaymentPagseguroCartao extends Controller {
 		
 		/* Endereço do Cliente */
 		if (isset($this->session->data['shipping_address'])) {
-            $data['shippingAddressStreet'] = utf8_decode($order_info['shipping_address_1']);
-            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['shipping_custom_field']);
-            $data['shippingAddressDistrict'] = utf8_decode($order_info['shipping_address_2']);
-            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['shipping_postcode']);
-            $data['shippingAddressCity'] = utf8_decode($order_info['shipping_city']);
-            $data['shippingAddressState'] = $order_info['shipping_zone_code'];
-            $data['shippingAddressCountry'] = $order_info['shipping_iso_code_3'];
-        } else {
-            $data['shippingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
-            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
-            $data['shippingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
-            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
-            $data['shippingAddressCity'] = utf8_decode($order_info['payment_city']);
-            $data['shippingAddressState'] = $order_info['payment_zone_code'];
-            $data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
-        }
+	            $data['shippingAddressStreet'] = utf8_decode($order_info['shipping_address_1']);
+	            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['shipping_custom_field']);
+	            $data['shippingAddressDistrict'] = utf8_decode($order_info['shipping_address_2']);
+	            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['shipping_postcode']);
+	            $data['shippingAddressCity'] = utf8_decode($order_info['shipping_city']);
+	            $data['shippingAddressState'] = $order_info['shipping_zone_code'];
+	            $data['shippingAddressCountry'] = $order_info['shipping_iso_code_3'];
+	        } else {
+	            $data['shippingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
+	            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
+	            $data['shippingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
+	            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
+	            $data['shippingAddressCity'] = utf8_decode($order_info['payment_city']);
+	            $data['shippingAddressState'] = $order_info['payment_zone_code'];
+	            $data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
+	        }
 		
 		$shipping_free = $this->model_payment_pagseguro->checkShippingFree();
 		
@@ -158,7 +158,7 @@ class ControllerPaymentPagseguroCartao extends Controller {
 
 		$data['creditCardToken'] = $this->request->post['creditCardToken'];
 		$data['installmentQuantity'] = $this->request->post['installmentQuantity'];
-		$data['installmentValue'] = $this->currency->format($this->request->post['installmentValue'], $order_info['currency_code'], $order_info['currency_value'], false);
+		$data['installmentValue'] = number_format($this->currency->format($this->request->post['installmentValue'], $order_info['currency_code'], $order_info['currency_value'], false), 2, '.', '');
 		$data['noInterestInstallmentQuantity'] = $this->config->get('pagseguro_parcelas_sem_juros');
 		$data['creditCardHolderName'] = $this->request->post['creditCardHolderName'];
 		$data['creditCardHolderCPF'] = preg_replace('/[^0-9]/', '', $this->request->post['creditCardHolderCPF']);
@@ -224,8 +224,8 @@ class ControllerPaymentPagseguroCartao extends Controller {
 			unset($this->session->data['payment_methods']);
 			unset($this->session->data['comment']);
 			unset($this->session->data['coupon']);
-            unset($this->session->data['pagseguro_desconto']);
-            unset($this->session->data['pagseguro_acrescimo']);
+            		unset($this->session->data['pagseguro_desconto']);
+            		unset($this->session->data['pagseguro_acrescimo']);
 		}
 	}
 }
