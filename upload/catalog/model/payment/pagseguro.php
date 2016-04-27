@@ -214,6 +214,8 @@ class ModelPaymentPagseguro extends Controller {
 	
 	/* Shipping Free */
 	public function discount($total) {
+        $discount_total = 0;
+        
 		if (isset($this->session->data['coupon'])) {
 			$this->load->language('total/coupon');
 
@@ -235,8 +237,6 @@ class ModelPaymentPagseguro extends Controller {
 
                 $coupon_info = $this->model_checkout_coupon->getCoupon($this->session->data['coupon']);
             }
-			
-            $discount_total = 0;
 
 			if ($coupon_info) {
 
