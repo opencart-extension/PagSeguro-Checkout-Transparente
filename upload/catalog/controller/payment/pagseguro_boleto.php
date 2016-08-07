@@ -65,6 +65,20 @@ class ControllerPaymentPagseguroBoleto extends Controller {
             }
 		}
         
+        /* Vale-presentes */
+        if (isset($this->session->data['vouchers'])) {
+            foreach($this->session->data['vouchers'] as $voucher_id => $voucher) {
+                if ($voucher['amount'] > 0) {
+                    $data['itemId' . $count] = $voucher_id;
+                    $data['itemDescription' . $count] = $voucher['description'];
+                    $data['itemAmount' . $count] = number_format($this->currency->format($voucher['amount'], $order_info['currency_code'], $order_info['currency_value'], false), 2);
+                    $data['itemQuantity' . $count] = 1;
+                    
+                    $count++;
+                }
+            }
+        }
+        
         /* Aplica Desconto */
         if (isset($this->session->data['pagseguro_desconto']))
             $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
@@ -76,8 +90,23 @@ class ControllerPaymentPagseguroBoleto extends Controller {
         /* Captura desconto do cupom */
         $discount = $this->model_payment_pagseguro->discount($order_info['total']);
         
-        if ($discount > 0)
+        if ($discount > 0 && isset($data['extraAmount']))
             $data['extraAmount'] += ($this->model_payment_pagseguro->discount($order_info['total']) * (-1));
+        else
+            $data['extraAmount'] = ($this->model_payment_pagseguro->discount($order_info['total']) * (-1));
+        
+        /* Vale Presente */
+        if (isset($this->session->data['voucher'])) {
+            $this->load->model('total/voucher');
+            
+            $voucher = $this->model_total_voucher->getVoucher($this->session->data['voucher']);
+            
+            if (isset($data['extraAmount']))
+                $data['extraAmount'] += $voucher['amount'] * (-1);
+            else
+                $data['extraAmount'] = $voucher['amount'] * (-1);
+                
+        }
         
         /* Formata os dados */
         if (isset($data['extraAmount']))

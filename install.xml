@@ -7,7 +7,7 @@
   <link>http://www.valdeirsantana.com.br</link>
   <file path="catalog/controller/checkout/checkout.php">
     <operation>
-      <search><![CDATA[$this->load->language('checkout/checkout');]]></search>
+      <search trim="true"><![CDATA[$this->load->language('checkout/checkout');]]></search>
       <add position="after"><![CDATA[
         //Verifica se está em modo de teste
         if (!$this->config->get('pagseguro_modo_teste')) {
