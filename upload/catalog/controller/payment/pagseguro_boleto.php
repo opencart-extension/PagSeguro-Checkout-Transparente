@@ -58,7 +58,7 @@ class ControllerPaymentPagseguroBoleto extends Controller {
             if ($product['price'] > 0) {
                 $data['itemId' . $count] = $product['product_id'];
                 $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-                $data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2);
+                $data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2, '.', '');
                 $data['itemQuantity' . $count] = $product['quantity'];
                 
                 $count++;
