@@ -20,6 +20,9 @@ Você pode ter um aumento de até 30% na conversão de suas vendas, uma vez que,
 Os dados de pagamento dos seus clientes são direcionados diretamente do navegador para o PagSeguro. Sem passar por seus servidores, assim não precisa se preocupar com a segurança destas informações.
 
 ### Novidades
+**[1.3.3]**
+> 1. Bugfix boleto com valor superior a R$1.000,00 (feedback enviado por @vynnus)
+
 **[1.3.2]**
 > 1. Bugfix desconto
 
