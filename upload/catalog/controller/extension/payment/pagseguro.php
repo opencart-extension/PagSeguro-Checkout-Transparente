@@ -1,12 +1,14 @@
 <?php
-class ControllerPaymentPagseguro extends Controller {
+class ControllerExtensionPaymentPagseguro extends Controller {
 	
 	public function callback() {
 		
-		$this->load->model('payment/pagseguro');
+        $this->log->write($this->request->post['notificationCode']);
+        
+		$this->load->model('extension/payment/pagseguro');
 		$this->load->model('checkout/order');
 		
-		$result = $this->model_payment_pagseguro->notification($this->request->post['notificationCode']);
+		$result = $this->model_extension_payment_pagseguro->notification($this->request->post['notificationCode']);
 		
 		$notificar = $this->config->get('pagseguro_notificar_cliente');
 		

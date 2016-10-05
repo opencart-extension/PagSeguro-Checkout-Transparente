@@ -1,5 +1,5 @@
 <?php
-class ModelPaymentPagseguroCartao extends Model {
+class ModelExtensionPaymentPagseguroDebito extends Model {
 	public function getMethod($address, $total) {
 		
         /* Sub-Total (Produtos) */
@@ -12,8 +12,8 @@ class ModelPaymentPagseguroCartao extends Model {
             }
         }
         
-		if ($sub_total >= $this->config->get('pagseguro_valor_minimo_cartao')) {
-			$this->load->language('payment/pagseguro');
+		if ($sub_total >= $this->config->get('pagseguro_valor_minimo_debito')) {
+			$this->load->language('extension/payment/pagseguro');
 
 			$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('cod_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
 
@@ -29,8 +29,8 @@ class ModelPaymentPagseguroCartao extends Model {
 
 			if ($status) {
 				$method_data = array(
-					'code'       => 'pagseguro_cartao',
-					'title'      => $this->language->get('text_cartao'),
+					'code'       => 'pagseguro_debito',
+					'title'      => $this->language->get('text_debito'),
 					'terms'      => '',
 					'sort_order' => $this->config->get('pagseguro_sort_order')
 				);

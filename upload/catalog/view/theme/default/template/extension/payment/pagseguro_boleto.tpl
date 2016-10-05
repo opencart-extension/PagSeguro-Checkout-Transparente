@@ -41,13 +41,13 @@ $(function(){
 		$('#warning').empty().hide();
 		
 		$.ajax({
-			url: 'index.php?route=payment/pagseguro_boleto/transition',
+			url: 'index.php?route=extension/payment/pagseguro_boleto/transition',
 			type: 'POST',
 			data: 'senderHash=' + PagSeguroDirectPayment.getSenderHash() + '&cpf=' + $('input#cpf').val(),
 			dataType: 'JSON',
-      beforeSend: function() {
-        $('#button-confirm').button('loading');
-      },
+            beforeSend: function() {
+                $('#button-confirm').button('loading');
+            },
 			success: function(json){
 				if (json.error){
 					$('#warning').html(json.error.message).show();
@@ -60,11 +60,11 @@ $(function(){
 						innerHeight:'90%',
 						onClosed: function () {
 							
-              $('.form-horizontal').remove();
+                        $('.form-horizontal').remove();
 							$('#info').show();
 							
 							$.ajax({
-								url: 'index.php?route=payment/pagseguro_boleto/confirm',
+								url: 'index.php?route=extension/payment/pagseguro_boleto/confirm',
 								data: 'status=' + json.status,
 								type: 'POST',
 								success: function (){
@@ -77,9 +77,9 @@ $(function(){
 					});
 				}
 			},
-      complete: function(){
-        $('#button-confirm').button('reset');
-      }
+            complete: function(){
+                $('#button-confirm').button('reset');
+            }
 		});
 	});
 });

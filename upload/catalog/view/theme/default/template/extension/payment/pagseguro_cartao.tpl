@@ -116,9 +116,9 @@
 </div>
 
 <script type="text/javascript">
-  if (typeof(PagSeguroDirectPayment) == 'undefined') {
-    alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br / Procure pelo módulo / Clique na aba FAQ para obter mais informações.');
-  }
+    if (typeof(PagSeguroDirectPayment) == 'undefined') {
+        alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br / Procure pelo módulo / Clique na aba FAQ para obter mais informações.');
+    }
 
 	PagSeguroDirectPayment.setSessionId('<?php echo $session_id ?>');
 	
@@ -132,11 +132,9 @@
 			
 			getBrand();
 		},
-    error: function(error) {
-      $.each(error['errors'], function(index, message){
-				alert(message);
-			});
-    }
+        error: function(error) {
+            console.error(error);
+        }
 	});
 	
 	var getBrand = function(){
@@ -167,58 +165,57 @@
 		});
 	}
   
-  var selecionaBandeira = function() {
-    if ($('#numero-cartao').val().length >= 6) {
-      $('.alert-info-installments').addClass('in');
-      PagSeguroDirectPayment.getBrand({
-        cardBin: $('#numero-cartao').val().replace(/\s+/g, ''),
-        success: function(card){
-          $('#bandeiras').find('.overlay').css('opacity', '0.7');
-          $('#bandeiras #' + card.brand.name.toUpperCase()).find('.overlay').css('opacity', 0);
-          $('#bandeira').val(card.brand.name);
-          $('.alert-info-installments').addClass('out').remove();
-          getInstallments(card.brand.name);
-          
-          var bandeira = $('#bandeiras #' + card.brand.name.toUpperCase()).find('img').attr('src');
-          $('.flip-container .front #credit-card-example-logo').css({
-            background: '#FFF url(' + bandeira + ') center 8px no-repeat',
-            position: 'absolute',
-            height: 43,
-            width: 63,
-            top: 114,
-            left: 208,
-            borderRadius: 8,
-            opacity: 0
-          });
-          
-          $('.flip-container .front #credit-card-example-logo').stop().animate({
-            opacity: 1
-          }, 1500);
-        },
-        error: function(error) {
-          $.each(error['errors'], function(index, message){
-            alert(message);
-          });
+    var selecionaBandeira = function() {
+        if ($('#numero-cartao').val().length >= 6) {
+            $('.alert-info-installments').addClass('in');
+            PagSeguroDirectPayment.getBrand({
+                cardBin: $('#numero-cartao').val().replace(/\s+/g, ''),
+                success: function(card){
+                    $('#bandeiras').find('.overlay').css('opacity', '0.7');
+                    $('#bandeiras #' + card.brand.name.toUpperCase()).find('.overlay').css('opacity', 0);
+                    $('#bandeira').val(card.brand.name);
+                    $('.alert-info-installments').addClass('out').remove();
+                    getInstallments(card.brand.name);
+      
+                    var bandeira = $('#bandeiras #' + card.brand.name.toUpperCase()).find('img').attr('src');
+                    
+                    $('.flip-container .front #credit-card-example-logo').css({
+                        background: '#FFF url(' + bandeira + ') center 8px no-repeat',
+                        position: 'absolute',
+                        height: 43,
+                        width: 63,
+                        top: 114,
+                        left: 208,
+                        borderRadius: 8,
+                        opacity: 0
+                    });
+      
+                    $('.flip-container .front #credit-card-example-logo').stop().animate({
+                        opacity: 1
+                    }, 1500);
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
         }
-      });
     }
-  }
 	
-  function formatMoney(val) {
-    var valor = val.toString();
+    function formatMoney(val) {
+        var valor = val.toString();
 
-    if (valor.match(/\./)) {
-      if (valor.match(/(\.[\d]{1})$/)) {
-        return "R$ " + valor.replace('.', ',') + "0";
-      }
-      else if (valor.match(/(\.[\d]{2})$/)) {
-        return "R$ " + valor.replace('.', ',');
-      }
+        if (valor.match(/\./)) {
+            if (valor.match(/(\.[\d]{1})$/)) {
+                return "R$ " + valor.replace('.', ',') + "0";
+            }
+            else if (valor.match(/(\.[\d]{2})$/)) {
+                return "R$ " + valor.replace('.', ',');
+            }
+        }
+        else {
+            return "R$ " + valor.replace('.', ',') + ",00";
+        }
     }
-    else {
-      return "R$ " + valor.replace('.', ',') + ",00";
-    }
-  }
 	
 	$('#button-confirm').click(function() {
 		
@@ -234,13 +231,13 @@
 			expirationYear: expiration[1],
 			success: function(data) {
 				$.ajax({
-					url: 'index.php?route=payment/pagseguro_cartao/transition',
+					url: 'index.php?route=extension/payment/pagseguro_cartao/transition',
 					data: 'creditCardToken=' + data.card.token + '&senderHash=' + PagSeguroDirectPayment.getSenderHash() + '&installmentQuantity=' + $('select#parcelas option:selected').attr('data-value') + '&installmentValue=' + $('select#parcelas').val() + '&creditCardHolderName=' + $('input#nome').val() + '&creditCardHolderCPF=' + $('input#cpf').val() + '&creditCardHolderBirthDate=' + $('input#data-nascimento').val() + '&creditCardHolderPhone=' + $('input#telefone').val(),
 					type: 'POST',
 					dataType: 'JSON',
-          beforeSend: function() {
-            $('#button-confirm').button('loading');
-          },
+                    beforeSend: function() {
+                        $('#button-confirm').button('loading');
+                    },
 					success: function(data){
 						if (data.error) {
 							$('#warning').html(data.error.message).show();
@@ -248,7 +245,7 @@
 							$('#button-confirm').attr('disabled');
 							
 							$.ajax({
-								url: 'index.php?route=payment/pagseguro_cartao/confirm',
+								url: 'index.php?route=extension/payment/pagseguro_cartao/confirm',
 								data: 'status=' + data.status,
 								type: 'POST',
 								success: function() {
@@ -257,9 +254,9 @@
 							});
 						}
 					},
-          complete: function() {
-            $('#button-confirm').button('reset');
-          }
+                    complete: function() {
+                        $('#button-confirm').button('reset');
+                    }
 				});
 			},
 			error: function(data) {
@@ -274,60 +271,60 @@
 		});
 	});
 
-  $('#numero-cartao').bind("paste",function(e) {
-    selecionaBandeira();
-    getInstallments();
-  });
+    $('#numero-cartao').bind("paste",function(e) {
+        selecionaBandeira();
+        getInstallments();
+    });
   
-  $('#check-titular').change(function(){
-    if ($(this).is(':checked')) {
-      $('.titular').slideUp('show');
-    } else {
-      $('.titular').slideDown('show');
-    }
-  });
+    $('#check-titular').change(function(){
+        if ($(this).is(':checked')) {
+            $('.titular').slideUp('show');
+        } else {
+            $('.titular').slideDown('show');
+        }
+    });
   
-  $('#cvv').focus(function(){
-    $('.flip-container').toggleClass('flip-container-hover');
-  });
+    $('#cvv').focus(function(){
+        $('.flip-container').toggleClass('flip-container-hover');
+    });
   
-  $('input:not(#cvv)').focus(function(){
-    $('.flip-container').removeClass('flip-container-hover');
-  });
+    $('input:not(#cvv)').focus(function(){
+        $('.flip-container').removeClass('flip-container-hover');
+    });
   
-  $('#cvv').blur(function(){
-    $('.flip-container').removeClass('flip-container-hover');
-  });
+    $('#cvv').blur(function(){
+        $('.flip-container').removeClass('flip-container-hover');
+    });
   
-  $('#numero-cartao').focus(function(){
-    $('#credit-card-example-number').stop().animate({
-      opacity:1
-    }, 1000);
-  });
+    $('#numero-cartao').focus(function(){
+        $('#credit-card-example-number').stop().animate({
+            opacity:1
+        }, 1000);
+    });
   
-  $('#nome').focus(function(){
-    $('#credit-card-example-customer').stop().animate({
-      opacity:1
-    }, 1000);
-  });
+    $('#nome').focus(function(){
+        $('#credit-card-example-customer').stop().animate({
+            opacity:1
+        }, 1000);
+    });
   
-  $('#validade').focus(function(){
-    $('#credit-card-example-validate').stop().animate({
-      opacity:1
-    }, 1000);
-  });
+    $('#validade').focus(function(){
+        $('#credit-card-example-validate').stop().animate({
+            opacity:1
+        }, 1000);
+    });
   
-  $('#cvv').focus(function(){
-    $('#credit-card-example-ccv').stop().animate({
-      opacity:1
-    }, 1500);
-  });
+    $('#cvv').focus(function(){
+        $('#credit-card-example-ccv').stop().animate({
+            opacity:1
+        }, 1500);
+    });
   
-  $('input').blur(function(){
-    $('.flip-container .front div:not(#credit-card-example-logo), .flip-container .back div').stop().animate({
-      opacity:0
-    }, 1000);
-  });
+    $('input').blur(function(){
+        $('.flip-container .front div:not(#credit-card-example-logo), .flip-container .back div').stop().animate({
+            opacity:0
+        }, 1000);
+    });
   
-  $('#check-titular').trigger('change');
+    $('#check-titular').trigger('change');
 </script>

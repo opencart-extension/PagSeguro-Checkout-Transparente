@@ -73,7 +73,7 @@
 		}
 		
 		$.ajax({
-			url: 'index.php?route=payment/pagseguro_debito/transition',
+			url: 'index.php?route=extension/payment/pagseguro_debito/transition',
 			data: 'banco=' + banco.toLowerCase() + '&senderHash=' + PagSeguroDirectPayment.getSenderHash() + '&cpf=' + cpf,
 			type: 'POST',
 			dataType: 'JSON',
@@ -89,7 +89,7 @@
 					$('#button div').append('<a href="' + json.paymentLink + '" target="_blank" class="btn btn-success">Finalizar Pagametno</a>');
 					
 					$.ajax({
-						url: 'index.php?route=payment/pagseguro_debito/confirm',
+						url: 'index.php?route=extension/payment/pagseguro_debito/confirm',
 						data: 'status=' + json.status,
 						type: 'POST',
 						success: function (){
