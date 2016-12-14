@@ -6,23 +6,23 @@ class ControllerExtensionPaymentPagseguroBoleto extends Controller {
 		$data = array();
 		
 		$this->load->model('checkout/order');
-        
-        $order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
-        
+
+		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+
 		$this->load->model('extension/payment/pagseguro');
 
 		$data['session_id'] = $this->model_extension_payment_pagseguro->captureToken();
-        
-        /* CPF */
-        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
-            if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
-                $data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('pagseguro_cpf')]);
-            } else {
-                $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
-            }
-        } else {
-            $data['cpf'] = '';
-        }
+
+		/* CPF */
+		if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
+			if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
+				$data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('pagseguro_cpf')]);
+			} else {
+				$data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
+			}
+		} else {
+			$data['cpf'] = '';
+		}
 		
 		$data['continue'] = $this->url->link('checkout/success', '', 'SSL');
 		
@@ -46,7 +46,7 @@ class ControllerExtensionPaymentPagseguroBoleto extends Controller {
 		$data['email'] = $this->config->get('pagseguro_email');
 		$data['token'] = $this->config->get('pagseguro_token');
 		$data['paymentMode'] = 'default';
-		$data['paymentMethod'] 	 = 'boleto';
+		$data['paymentMethod']	 = 'boleto';
 		$data['currency'] = 'BRL';
 		$data['notificationURL'] = $this->url->link('extension/payment/pagseguro/callback', '', true);
 		$data['reference'] = 'Pedido #' . $order_id;
@@ -55,58 +55,58 @@ class ControllerExtensionPaymentPagseguroBoleto extends Controller {
 		$count = 1;
 		
 		foreach($this->cart->getProducts() as $product) {
-            if ($product['price'] > 0) {
-                $data['itemId' . $count] = $product['product_id'];
-                $data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
-                $data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2, '.', '');
-                $data['itemQuantity' . $count] = $product['quantity'];
-                
-                $count++;
-            }
+			if ($product['price'] > 0) {
+				$data['itemId' . $count] = $product['product_id'];
+				$data['itemDescription' . $count] = $product['name'] . ' | ' . $product['model'];
+				$data['itemAmount' . $count] = number_format($this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false), 2, '.', '');
+				$data['itemQuantity' . $count] = $product['quantity'];
+				
+				$count++;
+			}
 		}
-        
-        /* Vale-presentes */
-        if (isset($this->session->data['vouchers'])) {
-            foreach($this->session->data['vouchers'] as $voucher_id => $voucher) {
-                if ($voucher['amount'] > 0) {
-                    $data['itemId' . $count] = $voucher_id;
-                    $data['itemDescription' . $count] = $voucher['description'];
-                    $data['itemAmount' . $count] = number_format($this->currency->format($voucher['amount'], $order_info['currency_code'], $order_info['currency_value'], false), 2, '.', '');
-                    $data['itemQuantity' . $count] = 1;
-                    
-                    $count++;
-                }
-            }
-        }
-        
-        /* Valores extra (Desconto e Acréscimo) */
-        $data['extraAmount'] = 0;
-        
-        /* Aplica Desconto */
-        if (isset($this->session->data['pagseguro_desconto']))
-            $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
-        
-        /* Aplica Acréscimo */
-        if (isset($this->session->data['pagseguro_acrescimo']))
-            $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
-        
-        /* Captura desconto do cupom */
-        $discount = $this->model_extension_payment_pagseguro->discount($order_info['total']);
-        
-        if ($discount > 0)
-            $data['extraAmount'] += ($this->model_extension_payment_pagseguro->discount($order_info['total']) * (-1));
-        
-        /* Vale Presente */
-        if (isset($this->session->data['voucher'])) {
-            $this->load->model('extension/total/voucher');
-            
-            $voucher = $this->model_extension_total_voucher->getVoucher($this->session->data['voucher']);
-            
-            $data['extraAmount'] += $voucher['amount'] * (-1);
-        }
-        
-        /* Formata os dados */
-        $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
+		
+		/* Vale-presentes */
+		if (isset($this->session->data['vouchers'])) {
+			foreach($this->session->data['vouchers'] as $voucher_id => $voucher) {
+				if ($voucher['amount'] > 0) {
+					$data['itemId' . $count] = $voucher_id;
+					$data['itemDescription' . $count] = $voucher['description'];
+					$data['itemAmount' . $count] = number_format($this->currency->format($voucher['amount'], $order_info['currency_code'], $order_info['currency_value'], false), 2, '.', '');
+					$data['itemQuantity' . $count] = 1;
+					
+					$count++;
+				}
+			}
+		}
+		
+		/* Valores extra (Desconto e Acréscimo) */
+		$data['extraAmount'] = 0;
+		
+		/* Aplica Desconto */
+		if (isset($this->session->data['pagseguro_desconto']))
+			$data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
+		
+		/* Aplica Acréscimo */
+		if (isset($this->session->data['pagseguro_acrescimo']))
+			$data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
+		
+		/* Captura desconto do cupom */
+		$discount = $this->model_extension_payment_pagseguro->discount($order_info['total']);
+		
+		if ($discount > 0)
+			$data['extraAmount'] += ($this->model_extension_payment_pagseguro->discount($order_info['total']) * (-1));
+		
+		/* Vale Presente */
+		if (isset($this->session->data['voucher'])) {
+			$this->load->model('extension/total/voucher');
+			
+			$voucher = $this->model_extension_total_voucher->getVoucher($this->session->data['voucher']);
+			
+			$data['extraAmount'] += $voucher['amount'] * (-1);
+		}
+		
+		/* Formata os dados */
+		$data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
 		
 		/* Nome do Cliente */
 		$data['senderName'] = utf8_decode(trim($order_info['firstname']) . ' ' . trim($order_info['lastname']));
@@ -127,23 +127,23 @@ class ControllerExtensionPaymentPagseguroBoleto extends Controller {
 		$data['senderHash'] = $this->request->post['senderHash'];
 		
 		/* Endereço do Cliente */
-        if (isset($this->session->data['shipping_address'])) {
-            $data['shippingAddressStreet'] = utf8_decode($order_info['shipping_address_1']);
-            $data['shippingAddressNumber'] = $this->model_extension_payment_pagseguro->getAddressNumber($order_info['shipping_custom_field']);
-            $data['shippingAddressDistrict'] = utf8_decode($order_info['shipping_address_2']);
-            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['shipping_postcode']);
-            $data['shippingAddressCity'] = utf8_decode($order_info['shipping_city']);
-            $data['shippingAddressState'] = $order_info['shipping_zone_code'];
-            $data['shippingAddressCountry'] = $order_info['shipping_iso_code_3'];
-        } else {
-            $data['shippingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
-            $data['shippingAddressNumber'] = $this->model_extension_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
-            $data['shippingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
-            $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
-            $data['shippingAddressCity'] = utf8_decode($order_info['payment_city']);
-            $data['shippingAddressState'] = $order_info['payment_zone_code'];
-            $data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
-        }
+		if (isset($this->session->data['shipping_address'])) {
+			$data['shippingAddressStreet'] = utf8_decode($order_info['shipping_address_1']);
+			$data['shippingAddressNumber'] = $this->model_extension_payment_pagseguro->getAddressNumber($order_info['shipping_custom_field']);
+			$data['shippingAddressDistrict'] = utf8_decode($order_info['shipping_address_2']);
+			$data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['shipping_postcode']);
+			$data['shippingAddressCity'] = utf8_decode($order_info['shipping_city']);
+			$data['shippingAddressState'] = $order_info['shipping_zone_code'];
+			$data['shippingAddressCountry'] = $order_info['shipping_iso_code_3'];
+		} else {
+			$data['shippingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
+			$data['shippingAddressNumber'] = $this->model_extension_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
+			$data['shippingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
+			$data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
+			$data['shippingAddressCity'] = utf8_decode($order_info['payment_city']);
+			$data['shippingAddressState'] = $order_info['payment_zone_code'];
+			$data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
+		}
 		
 		$shipping_free = $this->model_extension_payment_pagseguro->checkShippingFree();
 		
