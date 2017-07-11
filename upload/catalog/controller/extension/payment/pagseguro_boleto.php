@@ -145,7 +145,7 @@ class ControllerExtensionPaymentPagseguroBoleto extends Controller {
             $data['shippingAddressCountry'] = $order_info['shipping_iso_code_3'];
         } else {
             $data['shippingAddressStreet'] = utf8_decode($order_info['payment_address_1']);
-            $data['shippingAddressNumber'] = $this->model_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
+            $data['shippingAddressNumber'] = $this->model_extension_payment_pagseguro->getAddressNumber($order_info['payment_custom_field']);
             $data['shippingAddressDistrict'] = utf8_decode($order_info['payment_address_2']);
             $data['shippingAddressPostalCode'] = preg_replace('/[^\d]/', '', $order_info['payment_postcode']);
             $data['shippingAddressCity'] = utf8_decode($order_info['payment_city']);
