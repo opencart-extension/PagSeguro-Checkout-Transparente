@@ -1,0 +1,620 @@
+{{ header }} {{ column_left }}
+
+<div id="content">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container-fluid">
+
+      <div class="pull-right">
+        <button type="submit" form="form-moip" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="#" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>	
+      </div>
+
+      <h1>{{ heading_title }}</h1>
+      
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Container -->
+  <div class="container-fluid">
+
+    <!-- Error -->
+    {% if warning %}
+    <div class="alert alert-danger">
+      <i class="fa fa-exclamation-circle"></i> {{ warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+
+    <!-- Panel -->
+    <div class="panel panel-default">
+
+      <!-- Title -->
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+      </div>
+
+      <!-- Body -->
+      <div class="panel-body">
+
+        <!-- Nav -->
+        <ul class="nav nav-tabs">
+          <li><a data-toggle="tab" href="#config">{{ tab_config }}</a></li>
+          <li><a data-toggle="tab" href="#discount">{{ tab_desconto }}</a></li>
+          <li><a data-toggle="tab" href="#payment-status">{{ tab_status_pagamento }}</a></li>
+          <li><a data-toggle="tab" href="#area">{{ tab_geo_zone }}</a></li>
+          <li><a data-toggle="tab" href="#plots">{{ tab_parcelas }}</a></li>
+          <li><a data-toggle="tab" href="#payment-method">{{ tab_formas_de_pagamento }}</a></li>
+          <li><a data-toggle="tab" href="#debug">{{ tab_debug }}</a></li>
+        </ul>
+
+        <!-- Form -->
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-moip" class="form-horizontal">
+          <div class="tab-content">
+	
+            <!-- Tab Config -->
+            <div class="tab-pane" id="config">
+
+              <!-- Status -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_status }}">{{ entry_status }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_status" class="form-control">
+                  {% if payment_pagseguro_status %}
+                  <option value="1" selected>{{ text_enabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  {% endif %}
+                  
+                  {% if not payment_pagseguro_status %}
+                  <option value="0" selected>{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="0">{{ text_disabled }}</option>
+                  {% endif %}
+                  </select>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="form-group required">
+               <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_email }}">{{ entry_email }}</span></label>
+                <div class="col-sm-10">
+                  <input name="payment_pagseguro_email" type="text" class="form-control" value="{{ payment_pagseguro_email }}" />
+                  {% if error_email %}
+                  <div class="text-danger">{{ error_email }}</div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Token -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_token }}">{{ entry_token }}</span></label>
+                <div class="col-sm-10">
+                  <input name="payment_pagseguro_token" type="text" class="form-control" value="{{ payment_pagseguro_token }}" />
+                  {% if error_token %}
+                  <div class="text-danger">{{ error_token }}</div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Modo Teste -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_modo_teste }}">{{ entry_modo_teste }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_modo_teste" class="form-control">
+                    {% if payment_pagseguro_modo_teste %}
+                    <option value="1" selected>{{ text_yes }}</option>
+                    {% else %}
+                    <option value="1">{{ text_yes }}</option>
+                    {% endif %}
+                    
+                    
+                    {% if not payment_pagseguro_modo_teste %}
+                    <option value="0" selected>{{ text_no }}</option>
+                    {% else %}
+                    <option value="0">{{ text_no }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+
+              <!-- Debug -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_debug }}">{{ entry_debug }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_debug" class="form-control">
+                    {% if payment_pagseguro_debug %}
+                    <option value="1" selected>{{ text_yes }}</option>
+                    {% else %}
+                    <option value="1">{{ text_yes }}</option>
+                    {% endif %}
+                    
+                    
+                    {% if not payment_pagseguro_debug %}
+                    <option value="0" selected>{{ text_no }}</option>
+                    {% else %}
+                    <option value="0">{{ text_no }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+
+              <!-- Notificar Cliente -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_notificar_cliente }}">{{ entry_notificar_cliente }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_notificar_cliente" class="form-control">
+                    {% if payment_pagseguro_notificar_cliente %}
+                    <option value="1" selected>{{ text_yes }}</option>
+                    {% else %}
+                    <option value="1">{{ text_yes }}</option>
+                    {% endif %}
+                    
+                    
+                    {% if not payment_pagseguro_notificar_cliente %}
+                    <option value="0" selected>{{ text_no }}</option>
+                    {% else %}
+                    <option value="0">{{ text_no }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+
+              <!-- Custom Field (Número) -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_numero }}">{{ entry_numero }}</span></label>
+                <div class="col-sm-10">
+                  <span class="input-group">
+                    <select name="payment_pagseguro_numero_residencia" class="form-control">
+                    {% for custom_field in custom_fields %}
+                    {% if custom_field.custom_field_id == payment_pagseguro_numero_residencia %}
+                    <option value="{{ custom_field.custom_field_id }}" selected>{{ custom_field.name }}</option>
+                    {% else %}
+                    <option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                    </select>
+                    
+                    <span class="input-group-btn">
+                      <a href="{{ link_custom_field }}" class="btn btn-primary">{{ text_custom_field }}</a>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Custom Field (Data de Nascimento) -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_data_nascimento }}">{{ entry_data_nascimento }}</span></label>
+                <div class="col-sm-10">
+                  <span class="input-group">
+                    <select name="payment_pagseguro_data_nascimento" class="form-control">
+                    {% for custom_field in custom_fields %}
+                    {% if custom_field.custom_field_id == payment_pagseguro_data_nascimento %}
+                    <option value="{{ custom_field.custom_field_id }}" selected>{{ custom_field.name }}</option>
+                    {% else %}
+                    <option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                    </select>
+                    
+                    <span class="input-group-btn">
+                      <a href="{{ link_custom_field }}" class="btn btn-primary">{{ text_custom_field }}</a>
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Custom Field (CPF) -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_cpf }}">{{ entry_cpf }}</span></label>
+                <div class="col-sm-10">
+                  <span class="input-group">
+                    <select name="payment_pagseguro_cpf" class="form-control">
+                    {% for custom_field in custom_fields %}
+                    {% if custom_field.custom_field_id == payment_pagseguro_cpf %}
+                    <option value="{{ custom_field.custom_field_id }}" selected>{{ custom_field.name }}</option>
+                    {% else %}
+                    <option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                    </select>
+                    
+                    <span class="input-group-btn">
+                      <a href="{{ link_custom_field }}" class="btn btn-primary">{{ text_custom_field }}</a>
+                    </span>
+                  </span>
+                </div>
+              </div>
+			  
+              <!-- URL de Retorno -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_url_retorno }}</label>
+                <div class="col-sm-10">
+                  <input type="text" disabled value="https://www.MYSTORE.com.br/index.php?route=payment/pagseguro/callback" class="form-control" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Discount -->
+            <div class="tab-pane" id="discount">
+
+              <!-- Descontos -->
+              <fieldset>
+                <legend>{{ text_desconto }}</legend>
+
+                <!-- Boleto -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_exemplo_desconto }}">{{ entry_desconto_boleto }}</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_desconto_boleto" value="{{ payment_pagseguro_desconto_boleto }}" class="form-control" />
+                  </div>
+                </div>
+
+                <!-- Cartão de Crédito -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_exemplo_desconto }}">{{ entry_desconto_cartao }}</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_desconto_cartao" value="{{ payment_pagseguro_desconto_cartao }}" class="form-control" />
+                  </div>
+                </div>
+
+                <!-- Débito -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_exemplo_desconto }}">{{ entry_desconto_debito }}</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_desconto_debito" value="{{ payment_pagseguro_desconto_debito }}" class="form-control" />
+                  </div>
+                </div>
+              </fieldset>
+
+              <!-- Acréscimo -->
+              <fieldset>
+                <legend>{{ text_acrescimo }}</legend>
+
+                <!-- Boleto -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_exemplo_desconto }}">{{ entry_acrescimo_boleto }}</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_acrescimo_boleto" value="{{ payment_pagseguro_acrescimo_boleto }}" class="form-control" />
+                  </div>
+                </div>
+
+                <!-- Cartão -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_exemplo_desconto }}">{{ entry_acrescimo_cartao }}</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_acrescimo_cartao" value="{{ payment_pagseguro_acrescimo_cartao }}" class="form-control" />
+                  </div>
+                </div>
+
+                <!-- Débito -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_exemplo_desconto }}">{{ entry_acrescimo_debito }}</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_acrescimo_debito" value="{{ payment_pagseguro_acrescimo_debito }}" class="form-control" />
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+
+            <!-- Tab Status de Pagamento -->
+            <div class="tab-pane" id="payment-status">
+            
+              <!-- Aguardando Pagamento -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_aguardando_pagamento }}">{{ entry_aguardando_pagamento }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_aguardando_pagamento" class="form-control">
+                  {% for status in statuses %}
+                  {% if payment_pagseguro_aguardando_pagamento == status.order_status_id %}
+                  <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                  {% else %}
+                  <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                  {% endif %}
+                  {% endfor %}
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Em Análise -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_analise }}">{{ entry_analise }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_analise" class="form-control">
+                    {% for status in statuses %}
+                    {% if payment_pagseguro_analise == status.order_status_id %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Pago -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_pago }}">{{ entry_pago }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_paga" class="form-control">
+                    {% for status in statuses %}
+                    {% if payment_pagseguro_paga == status.order_status_id %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Disponível -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_disponivel }}">{{ entry_disponivel }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_disponivel" class="form-control">
+                    {% for status in statuses %}
+                    {% if payment_pagseguro_disponivel == status.order_status_id %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Disputa -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_disputa }}">{{ entry_disputa }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_disputa" class="form-control">
+                    {% for status in statuses %}
+                    {% if payment_pagseguro_disputa == status.order_status_id %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Devolvida -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_devolvida }}">{{ entry_devolvido }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_devolvida" class="form-control">
+                    {% for status in statuses %}
+                    {% if payment_pagseguro_devolvida == status.order_status_id %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Cancelada -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ entry_cancelada }}">{{ entry_cancelada }}</span></label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_cancelada" class="form-control">
+                   {% for status in statuses %}
+                   {% if payment_pagseguro_cancelada == status.order_status_id %}
+                   <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                   {% else %}
+                   <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                   {% endif %}
+                   {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Área Geográfica e Ordem -->
+            <div class="tab-pane" id="area">
+            
+              <!-- Zona Geográfica -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_geo_zone }}</label>
+                <div class="col-sm-10">
+                  <select name="payment_pagseguro_geo_zone" class="form-control">
+                    <option value="0">{{ text_all_zones }}</option>
+                    {% for zone in zones %}
+                    {% if payment_pagseguro_geo_zone == zone.geo_zone_id %}
+                    <option value="{{ status.geo_zone_id }}" selected>{{ zone.name }}</option>
+                    {% else %}
+                    <option value="{{ status.geo_zone_id }}">{{ zone.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            
+              <!-- Sort Order -->
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_sort_order }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="payment_pagseguro_sort_order" value="{{ payment_pagseguro_sort_order }}" class="form-control" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Parcelas -->
+            <div class="tab-pane" id="plots">
+            
+              <!-- Quantidade Total de Parcelas -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_exemplo_parcela }}">{{ entry_qnt_parcelas }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="payment_pagseguro_qnt_parcelas" value="{{ payment_pagseguro_qnt_parcelas }}" class="form-control" />
+                  {% if error_qnt_parcela %}
+                  <div class="text-danger">{{ error_qnt_parcela }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              
+              <!-- Quantidade de Parcelas sem Juros -->
+              <div class="form-group required">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" data-html="true" title="{{ help_parcela_sem_juros }}">{{ entry_parcelas_sem_juros }}</span></label>
+                <div class="col-sm-10">
+                  <input type="text" name="payment_pagseguro_parcelas_sem_juros" value="{{ payment_pagseguro_parcelas_sem_juros }}" class="form-control" />
+                  {% if error_parcelas_sem_juros %}
+                  <div class="text-danger">{{ error_parcelas_sem_juros }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab Métodos de Pagamento -->
+            <div class="tab-pane" id="payment-method">
+            
+              <!-- Boleto -->
+              <fieldset>
+                <legend>{{ text_boleto }}</legend>
+                
+                
+                <!-- Status Boleto -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                  <div class="col-sm-10">
+                    <select name="payment_pagseguro_boleto_status" class="form-control">
+                      {% if payment_pagseguro_boleto_status %}
+                      <option value="1" selected>{{ text_enabled }}</option>
+                      {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      {% endif %}
+                      
+                      
+                      {% if not payment_pagseguro_boleto_status %}
+                      <option value="0" selected>{{ text_disabled }}</option>
+                      {% else %}
+                      <option value="0">{{ text_disabled }}</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+                
+                <!-- Valor Mínimo para Boleto -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_valor_minimo }}</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_valor_minimo_boleto" value="{{ payment_pagseguro_valor_minimo_boleto }}" class="form-control" />
+                  </div>
+                </div>
+              </fieldset>
+            
+              <!-- Cartão de Crédito -->
+              <fieldset>
+                <legend>{{ text_cartao }}</legend>
+                
+                <!-- Status Cartão de Crédito -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                  <div class="col-sm-10">
+                    <select name="payment_pagseguro_cartao_status" class="form-control">
+                      {% if payment_pagseguro_cartao_status %}
+                      <option value="1" selected>{{ text_enabled }}</option>
+                      {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      {% endif %}
+                      
+                      
+                      {% if not payment_pagseguro_cartao_status %}
+                      <option value="0" selected>{{ text_disabled }}</option>
+                      {% else %}
+                      <option value="0">{{ text_disabled }}</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+            
+                <!-- Valor mínimo para cartão de crédito -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_valor_minimo }}</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_valor_minimo_cartao" value="{{ payment_pagseguro_valor_minimo_cartao }}" class="form-control" />
+                  </div>
+                </div>
+              </fieldset>
+            
+              <!-- Débito -->
+              <fieldset>
+                <legend>{{ text_debito }}</legend>
+              
+                <!-- Status débito -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_status }}</label>
+                  <div class="col-sm-10">
+                    <select name="payment_pagseguro_debito_status" class="form-control">
+                      {% if payment_pagseguro_debito_status %}
+                      <option value="1" selected>{{ text_enabled }}</option>
+                      {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      {% endif %}
+                      
+                      
+                      {% if not payment_pagseguro_debito_status %}
+                      <option value="0" selected>{{ text_disabled }}</option>
+                      {% else %}
+                      <option value="0">{{ text_disabled }}</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                </div>
+              
+                <!-- Valor mínimo para débito -->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_valor_minimo }}</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="payment_pagseguro_valor_minimo_debito" value="{{ payment_pagseguro_valor_minimo_debito }}" class="form-control" />
+                  </div>
+                </div>
+              </fieldset> <!-- /Fieldset Débito -->
+            </div> <!-- /#payment-method -->
+          
+            <!-- Tab Debug -->
+            <div class="tab-pane" id="debug">
+              <div class="alert alert-info">
+                <h3>Erros Comuns</h3>
+                <p>http://forum.pagseguro.uol.com.br/t/8514331/msg-de-erro-como-pagseguroserviceexception-http-401---unauthorized</p>
+                <p>http://forum.pagseguro.uol.com.br/t/9454406/checkout-transparente-forbidden</p>
+                <p>http://forum.pagseguro.uol.com.br/t/11286061/erro-ao-finalizar-pedido---forbidden</p>
+                <p>http://forum.pagseguro.uol.com.br/t/10184598/forbidden-ao-tentar-autenticar-na-api</p>
+                <p>http://forum.pagseguro.uol.com.br/t/9391115/erro-no-retorno-da-consulta-por-transacao</p>
+                <button class="close" data-dismiss="alert" type="button">&times;</button>
+              </div>
+              <div class="well" style="min-height:150px">
+                {% for value in debug %}
+                    {{ value|escape('html') }}
+                {% endfor %}
+              </div>
+            </div>
+          </div><!-- /.tab-content -->
+        </form> <!-- /Form -->
+      </div><!-- /.panel-body -->
+    </div><!-- /.panel.panel-default -->
+  </div><!-- /.container-fluid -->
+</div><!-- /#content -->
+
+<script type="text/javascript">
+$('fieldset legend').css('cursor', 'pointer');
+$('fieldset').css('margin-bottom', 30);
+
+$('.nav-tabs li:first').addClass('active');
+$('.tab-content div:first').addClass('active');
+
+$('fieldset legend').click(function(){
+	$(this).parent().find('div').slideToggle('slow');
+});
+</script>
+
+{{ footer }}

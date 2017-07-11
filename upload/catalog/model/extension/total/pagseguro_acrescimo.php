@@ -12,32 +12,32 @@ class ModelExtensionTotalPagSeguroAcrescimo extends Model {
         $acrescimo = 0;
         
         if ($this->session->data['payment_method']['code'] == 'pagseguro_boleto') {            
-            if (preg_match('#%#', $this->config->get('pagseguro_acrescimo_boleto'))) {
-                $acrescimo = preg_replace('/[^\d\.]/', '', $this->config->get('pagseguro_acrescimo_boleto'));
+            if (preg_match('#%#', $this->config->get('payment_pagseguro_acrescimo_boleto'))) {
+                $acrescimo = preg_replace('/[^\d\.]/', '', $this->config->get('payment_pagseguro_acrescimo_boleto'));
                 
                 $acrescimo = (($acrescimo / 100) * $this->cart->getSubTotal());
             } else {
-                $acrescimo = $this->config->get('pagseguro_acrescimo_boleto');
+                $acrescimo = $this->config->get('payment_pagseguro_acrescimo_boleto');
             }
         }
         
         if ($this->session->data['payment_method']['code'] == 'pagseguro_cartao') {
-            if (preg_match('#%#', $this->config->get('pagseguro_acrescimo_cartao'))) {
-                $acrescimo = preg_replace('/[^\d\.]/', '', $this->config->get('pagseguro_acrescimo_cartao'));
+            if (preg_match('#%#', $this->config->get('payment_pagseguro_acrescimo_cartao'))) {
+                $acrescimo = preg_replace('/[^\d\.]/', '', $this->config->get('payment_pagseguro_acrescimo_cartao'));
                 
                 $acrescimo = (($acrescimo / 100) * $this->cart->getSubTotal());
             } else {
-                $acrescimo = $this->config->get('pagseguro_acrescimo_cartao');
+                $acrescimo = $this->config->get('payment_pagseguro_acrescimo_cartao');
             }
         }
         
         if ($this->session->data['payment_method']['code'] == 'pagseguro_debito') {
-            if (preg_match('#%#', $this->config->get('pagseguro_acrescimo_debito'))) {
-                $acrescimo = preg_replace('/[^\d\.]/', '', $this->config->get('pagseguro_acrescimo_debito'));
+            if (preg_match('#%#', $this->config->get('payment_pagseguro_acrescimo_debito'))) {
+                $acrescimo = preg_replace('/[^\d\.]/', '', $this->config->get('payment_pagseguro_acrescimo_debito'));
                 
                 $acrescimo = (($acrescimo / 100) * $this->cart->getSubTotal());
             } else {
-                $acrescimo = $this->config->get('pagseguro_acrescimo_debito');
+                $acrescimo = $this->config->get('payment_pagseguro_acrescimo_debito');
             }
         }
         

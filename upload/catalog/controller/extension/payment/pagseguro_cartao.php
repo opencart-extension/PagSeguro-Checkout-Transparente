@@ -4,6 +4,9 @@ class ControllerExtensionPaymentPagseguroCartao extends Controller {
 	public function index() {
 	
 		$data = array();
+        
+        /* Linguagem */
+        $this->load->language('extension/payment/pagseguro');
 		
 		/* Models */
 		$this->load->model('extension/payment/pagseguro');
@@ -13,7 +16,15 @@ class ControllerExtensionPaymentPagseguroCartao extends Controller {
 		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
 		
 		/* Token */
-		$data['session_id'] = $this->model_extension_payment_pagseguro->captureToken();
+		$session_id = $this->model_extension_payment_pagseguro->captureToken();
+        
+        if (strlen($session_id) != 32) {
+            $data["warning"] = $session_id;
+        } else {
+            $data["warning"] = false;
+        }
+        
+        $data["session_id"] = $session_id;
 		
 		/* Total */
 		$data['total'] = number_format($order_info['total'], 2, '.', '');
@@ -22,7 +33,7 @@ class ControllerExtensionPaymentPagseguroCartao extends Controller {
         $data['cliente'] = $order_info['firstname'] . ' ' . $order_info['lastname'];
 		
 		/* Quantidade de Parcelas */
-		$data['qntParcelas'] = (int)$this->config->get('pagseguro_qnt_parcelas');
+		$data['qntParcelas'] = (int)$this->config->get('payment_pagseguro_qnt_parcelas');
         
         /* Telefone do titular */
         if (!preg_match('/(\(|\)|-| )/', $order_info['telephone'])) {
@@ -32,27 +43,30 @@ class ControllerExtensionPaymentPagseguroCartao extends Controller {
         }
         
         /* Data de Nascimento */
-        if (isset($order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')])) {
-            $date = $order_info['custom_field'][$this->config->get('pagseguro_data_nascimento')];
+        if (isset($order_info['custom_field'][$this->config->get('payment_pagseguro_data_nascimento')])) {
+            $date = $order_info['custom_field'][$this->config->get('payment_pagseguro_data_nascimento')];
             $data['data_nascimento'] = preg_replace('/^([\d]{4})-([\d]{2})-([\d]{2})$/', '$3/$2/$1', $date);
         } else {
             $data['data_nascimento'] = false;
         }
         
         /* CPF */
-        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
-            $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
+        if (isset($order_info['custom_field'][$this->config->get('payment_pagseguro_cpf')])) {
+            $data['cpf'] = $order_info['custom_field'][$this->config->get('payment_pagseguro_cpf')];
         } else {
             $data['cpf'] = false;
         }
+        
+        /* Register Complete */
+        $data["isRegisterComplete"] = !$data['data_nascimento'] && !$data['cpf'];
 		
 		/* Quantidade parcelas sem juros */
-		$data['max_parcelas_sem_juros'] = (int)$this->config->get('pagseguro_parcelas_sem_juros');
+		$data['max_parcelas_sem_juros'] = (int)$this->config->get('payment_pagseguro_parcelas_sem_juros');
 		
 		/* Link */
 		$data['continue'] = $this->url->link('checkout/success', '', true);
 		
-		return $this->load->view('extension/payment/pagseguro_cartao.tpl', $data);
+		return $this->load->view('extension/payment/pagseguro_cartao', $data);
 		
 	}
 	
@@ -70,8 +84,8 @@ class ControllerExtensionPaymentPagseguroCartao extends Controller {
 		
 		
 		/* Config */
-		$data['email'] = $this->config->get('pagseguro_email');
-		$data['token'] = $this->config->get('pagseguro_token');
+		$data['email'] = $this->config->get('payment_pagseguro_email');
+		$data['token'] = $this->config->get('payment_pagseguro_token');
 		$data['paymentMode'] = 'default';
 		$data['paymentMethod'] = 'creditCard';
 		$data['currency'] = 'BRL';
@@ -184,7 +198,11 @@ class ControllerExtensionPaymentPagseguroCartao extends Controller {
 		$data['creditCardToken'] = $this->request->post['creditCardToken'];
 		$data['installmentQuantity'] = $this->request->post['installmentQuantity'];
 		$data['installmentValue'] = number_format($this->currency->format($this->request->post['installmentValue'], $order_info['currency_code'], $order_info['currency_value'], false), 2, '.', '');
-		$data['noInterestInstallmentQuantity'] = $this->config->get('pagseguro_parcelas_sem_juros');
+		
+        if ($this->config->get('payment_pagseguro_parcelas_sem_juros') > 1) {
+            $data['noInterestInstallmentQuantity'] = $this->config->get('payment_pagseguro_parcelas_sem_juros');
+        }
+        
 		$data['creditCardHolderName'] = $this->request->post['creditCardHolderName'];
 		$data['creditCardHolderCPF'] = preg_replace('/[^0-9]/', '', $this->request->post['creditCardHolderCPF']);
 		$data['creditCardHolderBirthDate'] = $this->request->post['creditCardHolderBirthDate'];
@@ -211,28 +229,28 @@ class ControllerExtensionPaymentPagseguroCartao extends Controller {
 		
 		switch ($this->request->post['status']) {
 			case 1:
-				$status = $this->config->get('pagseguro_aguardando_pagamento');
+				$status = $this->config->get('payment_pagseguro_aguardando_pagamento');
 				break;
 			case 2:
-				$status = $this->config->get('pagseguro_analise');
+				$status = $this->config->get('payment_pagseguro_analise');
 				break;
 			case 3:
-				$status = $this->config->get('pagseguro_paga');
+				$status = $this->config->get('payment_pagseguro_paga');
 				break;
 			case 4:
-				$status = $this->config->get('pagseguro_disponivel');
+				$status = $this->config->get('payment_pagseguro_disponivel');
 				break;
 			case 5:
-				$status = $this->config->get('pagseguro_disputa');
+				$status = $this->config->get('payment_pagseguro_disputa');
 				break;
 			case 6:
-				$status = $this->config->get('pagseguro_devolvida');
+				$status = $this->config->get('payment_pagseguro_devolvida');
 				break;
 			case 7:
-				$status = $this->config->get('pagseguro_cancelada');
+				$status = $this->config->get('payment_pagseguro_cancelada');
 				break;
 			default: 
-				$status = $this->config->get('pagseguro_aguardando_pagamento');
+				$status = $this->config->get('payment_pagseguro_aguardando_pagamento');
 				break;
 		}
 		

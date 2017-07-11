@@ -1,0 +1,472 @@
+<style type="text/css">
+  @import url('catalog/view/theme/default/stylesheet/pagseguro.cartao.css');
+</style>
+<div class="content">
+  <div class="row-fluid">
+    <div class="alert alert-danger vlhide" id="warning" role="alert"></div>
+    
+    {% if warning %}
+        <div class="alert alert-danger" id="warning" role="alert">{{ warning }}</div>
+    {% else %}
+
+        <div class="form-horizontal">
+          <div class="form-group">
+            <div id="bandeiras" class="col-sm-7 col-sm-offset-2"></div>
+          </div>
+
+          <div id="form" class="col-sm-offset-1 col-sm-6">
+            <div class="form-group col-sm-12">
+              <label class="col-sm-4 control-label" for="nome">Nome:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="nome" name="nome" placeholder="Ex: Valdeir Santana" />
+                <input type="hidden" id="bandeira" name="bandeira" />
+              </div>
+            </div>
+            
+            <div class="form-group col-sm-12">
+              <label class="col-sm-4 control-label" for="numero-cartao">Número do Cartão:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="numero-cartao" name="numero-cartao" />
+              </div>
+            </div>
+            
+            <div class="form-group col-sm-12">
+              <label class="col-sm-4 control-label" for="validade">Validade:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="validade" name="validade" placeholder="Ex: 12/2015" />
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+              <label class="col-sm-4 control-label" for="cvv">Código de Segurança:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="cvv" name="cvv" placeholder="Ex: 123 ou 1234" />
+              </div>
+            </div>
+            
+            <div class="form-group col-sm-12">
+              <div class="col-sm-5 col-sm-offset-4" id="check">
+                <div class="checkbox">
+                  <input type="checkbox" name="check-titular" id="check-titular" {{ isRegisterComplete ? 'checked' : '' }} />
+                  <label for="check-titular">
+                    Eu sou o títular do cartão
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12 titular">
+              <label class="col-sm-4 control-label" for="data-nascimento">Data de Nascimento:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="data-nascimento" name="data-nascimento" placeholder="Ex: 07/03/1808" value="{{ data_nascimento }}" />
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12 titular">
+              <label class="col-sm-4 control-label" for="cpf">CPF:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" value="{{ cpf }}" />
+              </div>
+            </div>
+
+            <div class="form-group col-sm-12 titular">
+              <label class="col-sm-4 control-label" for="telefone">Telefone:</label>
+              <div class="col-sm-8">
+                <input class="form-control" type="text" id="telefone" name="telefone" placeholder="Ex: (11) 9 8765-4321" value="{{ telefone }}" />
+              </div>
+            </div>
+            
+            <div class="alert alert-info alert-info-installments fade col-sm-12">Carregando...</div>
+            
+            <div class="form-group col-sm-12 vhide">
+              <label class="col-sm-4 control-label" for="parcelas">Parcelas:</label>
+              <div class="col-sm-8">
+                <select class="form-control" id="parcelas" name="parcelas"></select>
+              </div>
+            </div>
+            
+            <div class="form-group col-sm-12 vhide">
+              <div class="col-sm-5 col-sm-offset-4">
+                <button type="button" id="button-confirm" class="btn btn-primary" data-loading-text="Aguarde...">
+                  <i class="fa fa-credit-card-alt"></i> 
+                  Pagar
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="flip-container col-sm-5">
+            <div class="flipper">
+              <div class="front">
+                <div id="credit-card-example-number" style="border: 3px solid #F00;position: absolute;height: 27px;width: 207px;top: 90px;left: 20px;opacity: 0;z-index:1"></div>
+                <div id="credit-card-example-validate" style="border: 3px solid #F00;position: absolute;height: 32px;width: 67px;top: 111px;left: 122px;opacity: 0"></div>
+                <div id="credit-card-example-customer" style="border: 3px solid #F00;position: absolute;height: 27px;width: 130px;top: 141px;left: 20px;opacity: 0"></div>
+                <div id="credit-card-example-logo" style="position: absolute;height: 43px;width: 63px;top: 114px;left: 208px;border-radius: 8px;opacity: 0"></div>
+                <img src="catalog/view/theme/default/image/CreditCardFront.gif" style="height:180px" />
+              </div>
+              <div class="back">
+                <div id="credit-card-example-ccv" style="border: 3px solid #F00;position: absolute;height: 37px;width: 50px;top: 60px;left: 225px;opacity: 0"></div>
+                <img src="catalog/view/theme/default/image/CreditCardBack.gif" style="height:180px" />
+              </div>
+            </div>
+          </div>
+        </div>
+    {% endif %}
+  </div>
+</div>
+
+<script type="text/javascript">
+    if (typeof(PagSeguroDirectPayment) == 'undefined') {
+        alert('Erro ao carregar javascript.\nAcesse http://www.valdeirsantana.com.br / Procure pelo módulo / Clique na aba FAQ para obter mais informações.');
+    }
+
+	PagSeguroDirectPayment.setSessionId('{{ session_id }}');
+	
+	PagSeguroDirectPayment.getPaymentMethods({
+		success: function(bandeiras){
+			var cards = bandeiras.paymentMethods.CREDIT_CARD.options;
+			
+			$.map(cards, function(e){
+				$('#bandeiras').append('<a class="pull-left" id="' + e.name + '"><div class="overlay"></div><img src="https://stc.pagseguro.uol.com.br' + e.images.MEDIUM.path + '" /></a>');
+			});
+			
+			getBrand();
+		},
+        error: function(error) {
+            $.each(err.errors, function(error, value) {
+                $('#warning').html( error ).show();
+            })
+        }
+	});
+	
+	var getBrand = function(){
+		$('#numero-cartao').change(function(){
+			selecionaBandeira();
+		});
+	};
+	
+	var getInstallments = function(brand){
+		PagSeguroDirectPayment.getInstallments({
+			amount: {{ total }}, //Valor do pedido
+            {% if max_parcelas_sem_juros|length > 1 %}
+			maxInstallmentNoInterest: {{ max_parcelas_sem_juros }}, //Qnt de parcelas sem juros
+            {% endif %}
+			brand: brand, //Bandeira do cartão
+			success: function(installments){
+				var parcelas = installments.installments[brand];
+				var qntParcelas = '{{ qntParcelas }}';
+				
+				$('#parcelas').html('');
+				
+				$.map(parcelas, function(e){
+					if (qntParcelas >= e.quantity) {
+						$('#parcelas').append('<option data-value="' + e.quantity + '" value="' + e.installmentAmount + '">' + e.quantity + 'x de ' + formatMoney(e.installmentAmount) + '</option>');
+					}
+				});
+				
+				$('.vhide').fadeIn('slow');
+			},
+            error: function(err) {
+                $.each(err.errors, function(error, value) {
+                    $('#warning').html( error ).show();
+                })
+            },
+            complete: function() {
+                $('.alert-info-installments').addClass('out').remove();
+            }
+		});
+	}
+  
+    var selecionaBandeira = function() {
+        if ($('#numero-cartao').val().length >= 6) {
+            $('.alert-info-installments').addClass('in');
+            PagSeguroDirectPayment.getBrand({
+                cardBin: $('#numero-cartao').val().replace(/\s+/g, ''),
+                success: function(card){
+                    $('#bandeiras').find('.overlay').css('opacity', '0.7');
+                    $('#bandeiras #' + card.brand.name.toUpperCase()).find('.overlay').css('opacity', 0);
+                    $('#bandeira').val(card.brand.name);
+                    getInstallments(card.brand.name);
+      
+                    var bandeira = $('#bandeiras #' + card.brand.name.toUpperCase()).find('img').attr('src');
+                    
+                    $('.flip-container .front #credit-card-example-logo').css({
+                        background: '#FFF url(' + bandeira + ') center 8px no-repeat',
+                        position: 'absolute',
+                        height: 43,
+                        width: 63,
+                        top: 114,
+                        left: 208,
+                        borderRadius: 8,
+                        opacity: 0
+                    });
+      
+                    $('.flip-container .front #credit-card-example-logo').stop().animate({
+                        opacity: 1
+                    }, 1500);
+                }
+            });
+        }
+    }
+	
+    function formatMoney(val) {
+        var price = parseFloat(val);
+
+        return price.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL"
+        });
+    }
+	
+	$('#button-confirm').click(function() {
+		
+		$('#warning').html('').hide();
+		
+        $('#button-confirm').button('loading');
+        
+		var expiration = $('input#validade').val().split('/');
+		
+		PagSeguroDirectPayment.createCardToken({
+			cardNumber: $('input#numero-cartao').val(),
+			brand: $('input#bandeira').val(),
+			cvv: $('input#cvv').val(),
+			expirationMonth: expiration[0],
+			expirationYear: expiration[1],
+			success: function(data) {
+				$.ajax({
+					url: 'index.php?route=extension/payment/pagseguro_cartao/transition',
+					data: 'creditCardToken=' + data.card.token + '&senderHash=' + PagSeguroDirectPayment.getSenderHash() + '&installmentQuantity=' + $('select#parcelas option:selected').attr('data-value') + '&installmentValue=' + $('select#parcelas').val() + '&creditCardHolderName=' + $('input#nome').val() + '&creditCardHolderCPF=' + $('input#cpf').val() + '&creditCardHolderBirthDate=' + $('input#data-nascimento').val() + '&creditCardHolderPhone=' + $('input#telefone').val(),
+					type: 'POST',
+					dataType: 'JSON',
+					success: function(data){
+						if (data.error) {
+							$('#warning').html( getError(data.error.code, data.error.message) ).show();
+						} else {
+							$('#button-confirm').attr('disabled');
+							
+							$.ajax({
+								url: 'index.php?route=extension/payment/pagseguro_cartao/confirm',
+								data: 'status=' + data.status,
+								type: 'POST',
+								success: function() {
+									location.href = '{{ continue }}'
+								}
+							});
+						}
+					},
+                    complete: function(data) {
+                        $('#button-confirm').button('reset');
+                    }
+				});
+			},
+			error: function(data) {
+                console.log(data);
+				var html = '<ul>';
+				$.each(data.errors, function(i,e){
+					html += '<li>' + getError(i,e) + '</li>';
+				});
+				html += '</ul>';
+				
+				$('#warning').html(html).show();
+                
+                $('#button-confirm').button('reset');
+			}
+		});
+	});
+
+    $('#numero-cartao').bind("paste",function(e) {
+        selecionaBandeira();
+        getInstallments("visa");
+    });
+  
+    $('#check-titular').change(function(){
+        if ($(this).is(':checked')) {
+            $('.titular').slideUp('show');
+        } else {
+            $('.titular').slideDown('show');
+        }
+    });
+  
+    $('#cvv').focus(function(){
+        $('.flip-container').toggleClass('flip-container-hover');
+    });
+  
+    $('input:not(#cvv)').focus(function(){
+        $('.flip-container').removeClass('flip-container-hover');
+    });
+  
+    $('#cvv').blur(function(){
+        $('.flip-container').removeClass('flip-container-hover');
+    });
+  
+    $('#numero-cartao').focus(function(){
+        $('#credit-card-example-number').stop().animate({
+            opacity:1
+        }, 1000);
+    });
+  
+    $('#nome').focus(function(){
+        $('#credit-card-example-customer').stop().animate({
+            opacity:1
+        }, 1000);
+    });
+  
+    $('#validade').focus(function(){
+        $('#credit-card-example-validate').stop().animate({
+            opacity:1
+        }, 1000);
+    });
+  
+    $('#cvv').focus(function(){
+        $('#credit-card-example-ccv').stop().animate({
+            opacity:1
+        }, 1500);
+    });
+  
+    $('input').blur(function(){
+        $('.flip-container .front div:not(#credit-card-example-logo), .flip-container .back div').stop().animate({
+            opacity:0
+        }, 1000);
+    });
+  
+    $('#check-titular').trigger('change');
+</script>
+<script>
+    var error_ptBR = {
+        5003:  '{{ error_code_5003 }}',
+        10000: '{{ error_code_10000 }}',
+        10001: '{{ error_code_10001 }}',
+        10002: '{{ error_code_10002 }}',
+        10003: '{{ error_code_10003 }}',
+        10004: '{{ error_code_10004 }}',
+        10006: '{{ error_code_10006 }}',
+        53005: '{{ error_code_53005 }}',
+        53006: '{{ error_code_53006 }}',
+        53007: '{{ error_code_53007 }}',
+        53008: '{{ error_code_53008 }}',
+        53009: '{{ error_code_53009 }}',
+        53010: '{{ error_code_53010 }}',
+        53011: '{{ error_code_53011 }}',
+        53012: '{{ error_code_53012 }}',
+        53013: '{{ error_code_53013 }}',
+        53014: '{{ error_code_53014 }}',
+        53015: '{{ error_code_53015 }}',
+        53017: '{{ error_code_53017 }}',
+        53018: '{{ error_code_53018 }}',
+        53019: '{{ error_code_53019 }}',
+        53020: '{{ error_code_53020 }}',
+        53021: '{{ error_code_53021 }}',
+        53022: '{{ error_code_53022 }}',
+        53023: '{{ error_code_53023 }}',
+        53024: '{{ error_code_53024 }}',
+        53025: '{{ error_code_53025 }}',
+        53026: '{{ error_code_53026 }}',
+        53027: '{{ error_code_53027 }}',
+        53028: '{{ error_code_53028 }}',
+        53029: '{{ error_code_53029 }}',
+        53030: '{{ error_code_53030 }}',
+        53031: '{{ error_code_53031 }}',
+        53032: '{{ error_code_53032 }}',
+        53033: '{{ error_code_53033 }}',
+        53034: '{{ error_code_53034 }}',
+        53035: '{{ error_code_53035 }}',
+        53036: '{{ error_code_53036 }}',
+        53037: '{{ error_code_53037 }}',
+        53038: '{{ error_code_53038 }}',
+        53039: '{{ error_code_53039 }}',
+        53040: '{{ error_code_53040 }}',
+        53041: '{{ error_code_53041 }}',
+        53042: '{{ error_code_53042 }}',
+        53043: '{{ error_code_53043 }}',
+        53044: '{{ error_code_53044 }}',
+        53045: '{{ error_code_53045 }}',
+        53046: '{{ error_code_53046 }}',
+        53047: '{{ error_code_53047 }}',
+        53048: '{{ error_code_53048 }}',
+        53049: '{{ error_code_53049 }}',
+        53050: '{{ error_code_53050 }}',
+        53051: '{{ error_code_53051 }}',
+        53052: '{{ error_code_53052 }}',
+        53053: '{{ error_code_53053 }}',
+        53054: '{{ error_code_53054 }}',
+        53055: '{{ error_code_53055 }}',
+        53056: '{{ error_code_53056 }}',
+        53057: '{{ error_code_53057 }}',
+        53058: '{{ error_code_53058 }}',
+        53059: '{{ error_code_53059 }}',
+        53060: '{{ error_code_53060 }}',
+        53061: '{{ error_code_53061 }}',
+        53062: '{{ error_code_53062 }}',
+        53063: '{{ error_code_53063 }}',
+        53064: '{{ error_code_53064 }}',
+        53065: '{{ error_code_53065 }}',
+        53066: '{{ error_code_53066 }}',
+        53067: '{{ error_code_53067 }}',
+        53068: '{{ error_code_53068 }}',
+        53069: '{{ error_code_53069 }}',
+        53070: '{{ error_code_53070 }}',
+        53071: '{{ error_code_53071 }}',
+        53072: '{{ error_code_53072 }}',
+        53073: '{{ error_code_53073 }}',
+        53074: '{{ error_code_53074 }}',
+        53075: '{{ error_code_53075 }}',
+        53076: '{{ error_code_53076 }}',
+        53077: '{{ error_code_53077 }}',
+        53078: '{{ error_code_53078 }}',
+        53079: '{{ error_code_53079 }}',
+        53081: '{{ error_code_53081 }}',
+        53084: '{{ error_code_53084 }}',
+        53085: '{{ error_code_53085 }}',
+        53086: '{{ error_code_53086 }}',
+        53087: '{{ error_code_53087 }}',
+        53091: '{{ error_code_53091 }}',
+        53092: '{{ error_code_53092 }}',
+        53095: '{{ error_code_53095 }}',
+        53096: '{{ error_code_53096 }}',
+        53097: '{{ error_code_53097 }}',
+        53098: '{{ error_code_53098 }}',
+        53099: '{{ error_code_53099 }}',
+        53101: '{{ error_code_53101 }}',
+        53102: '{{ error_code_53102 }}',
+        53104: '{{ error_code_53104 }}',
+        53105: '{{ error_code_53105 }}',
+        53106: '{{ error_code_53106 }}',
+        53109: '{{ error_code_53109 }}',
+        53110: '{{ error_code_53110 }}',
+        53111: '{{ error_code_53111 }}',
+        53115: '{{ error_code_53115 }}',
+        53117: '{{ error_code_53117 }}',
+        53118: '{{ error_code_53118 }}',
+        53122: '{{ error_code_53122 }}',
+        53140: '{{ error_code_53140 }}',
+        53141: '{{ error_code_53141 }}',
+        53142: '{{ error_code_53142 }}',
+    }
+    
+    function getError(key, def) {
+        if (typeof(error_ptBR[key]) != "undefined") {
+            return error_ptBR[key];
+        } else {
+            return def;
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

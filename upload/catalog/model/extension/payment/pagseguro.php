@@ -8,7 +8,7 @@ class ModelExtensionPaymentPagseguro extends Controller {
 	/* Captura token de autorização */
 	public function captureToken() {
 		
-		if ($this->config->get('pagseguro_modo_teste')){
+		if ($this->config->get('payment_pagseguro_modo_teste')){
 			$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/sessions/';
 		} else {
 			$url = 'https://ws.pagseguro.uol.com.br/v2/sessions/';
@@ -18,9 +18,10 @@ class ModelExtensionPaymentPagseguro extends Controller {
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array(
-			'email' => $this->config->get('pagseguro_email'),
-			'token' => $this->config->get('pagseguro_token')
+			'email' => $this->config->get('payment_pagseguro_email'),
+			'token' => $this->config->get('payment_pagseguro_token')
 		)));
         
         $curl_info = curl_getinfo($ch);
@@ -34,10 +35,10 @@ class ModelExtensionPaymentPagseguro extends Controller {
         
 		libxml_use_internal_errors(true);
 		
-		if ($this->config->get('pagseguro_debug')) {
+		if ($this->config->get('payment_pagseguro_debug')) {
 			$message_log = array(
-				'email' => $this->config->get('pagseguro_email'),
-				'token' => $this->config->get('pagseguro_token')
+				'email' => $this->config->get('payment_pagseguro_email'),
+				'token' => $this->config->get('payment_pagseguro_token')
 			);
 			
             if (file_exists(DIR_LOGS . 'pagseguro.log')) {
@@ -65,7 +66,7 @@ class ModelExtensionPaymentPagseguro extends Controller {
 	/* Envia os dados da transação par ao pagseguro  */
 	public function transition($data) {
 		
-		if ($this->config->get('pagseguro_modo_teste')){
+		if ($this->config->get('payment_pagseguro_modo_teste')){
 			$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions/';
 		} else {
 			$url = 'https://ws.pagseguro.uol.com.br/v2/transactions/';
@@ -81,7 +82,7 @@ class ModelExtensionPaymentPagseguro extends Controller {
 		
 		curl_close($ch);
 		
-		if ($this->config->get('pagseguro_debug')) {
+		if ($this->config->get('payment_pagseguro_debug')) {
             
             if (file_exists(DIR_LOGS . 'pagseguro.log'))
                 unlink(DIR_LOGS . 'pagseguro.log');
@@ -128,8 +129,8 @@ class ModelExtensionPaymentPagseguro extends Controller {
 
 	/* Captura o número da residência */
 	public function getAddressNumber($custom_field) {
-		if (array_key_exists($this->config->get('pagseguro_numero_residencia'), $custom_field)) {
-			return $custom_field[$this->config->get('pagseguro_numero_residencia')];
+		if (array_key_exists($this->config->get('payment_pagseguro_numero_residencia'), $custom_field)) {
+			return $custom_field[$this->config->get('payment_pagseguro_numero_residencia')];
 		} else {
 			return 0;
 		}
@@ -142,7 +143,7 @@ class ModelExtensionPaymentPagseguro extends Controller {
 		}
 		
 		/* Verifica se está em modo de teste */
-		if ($this->config->get('pagseguro_modo_teste')){
+		if ($this->config->get('payment_pagseguro_modo_teste')){
 			$url = 'https://ws.sandbox.pagseguro.uol.com.br/v3/transactions/notifications/';
 		} else {
 			$url = 'https://ws.pagseguro.uol.com.br/v3/transactions/notifications/';
@@ -152,10 +153,10 @@ class ModelExtensionPaymentPagseguro extends Controller {
 		$url .= $notificationCode;
 		
 		/* Captura o E-mail do lojista */
-		$url .= '?email=' . $this->config->get('pagseguro_email');
+		$url .= '?email=' . $this->config->get('payment_pagseguro_email');
 		
 		/* Captura o token de acesso */
-		$url .= '&token=' . $this->config->get('pagseguro_token');
+		$url .= '&token=' . $this->config->get('payment_pagseguro_token');
 		
 		/* Envia uma requisição para obtenção dos dados */
 		$ch = curl_init();

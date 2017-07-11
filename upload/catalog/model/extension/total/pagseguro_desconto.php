@@ -12,32 +12,32 @@ class ModelExtensionTotalPagSeguroDesconto extends Model {
         $desconto = 0;
         
         if ($this->session->data['payment_method']['code'] == 'pagseguro_boleto') {            
-            if (preg_match('#%#', $this->config->get('pagseguro_desconto_boleto'))) {
-                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('pagseguro_desconto_boleto'));
+            if (preg_match('#%#', $this->config->get('payment_pagseguro_desconto_boleto'))) {
+                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('payment_pagseguro_desconto_boleto'));
                 
                 $desconto = (($desconto / 100) * $this->cart->getSubTotal());
             } else {
-                $desconto = $this->config->get('pagseguro_desconto_boleto');
+                $desconto = $this->config->get('payment_pagseguro_desconto_boleto');
             }
         }
         
         if ($this->session->data['payment_method']['code'] == 'pagseguro_cartao') {
-            if (preg_match('#%#', $this->config->get('pagseguro_desconto_cartao'))) {
-                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('pagseguro_desconto_cartao'));
+            if (preg_match('#%#', $this->config->get('payment_pagseguro_desconto_cartao'))) {
+                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('payment_pagseguro_desconto_cartao'));
                 
                 $desconto = (($desconto / 100) * $this->cart->getSubTotal());
             } else {
-                $desconto = $this->config->get('pagseguro_desconto_cartao');
+                $desconto = $this->config->get('payment_pagseguro_desconto_cartao');
             }
         }
         
         if ($this->session->data['payment_method']['code'] == 'pagseguro_debito') {
-            if (preg_match('#%#', $this->config->get('pagseguro_desconto_debito'))) {
-                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('pagseguro_desconto_debito'));
+            if (preg_match('#%#', $this->config->get('payment_pagseguro_desconto_debito'))) {
+                $desconto = preg_replace('/[\D\.]/', '', $this->config->get('payment_pagseguro_desconto_debito'));
                 
                 $desconto = (($desconto / 100) * $this->cart->getSubTotal());
             } else {
-                $desconto = $this->config->get('pagseguro_desconto_debito');
+                $desconto = $this->config->get('payment_pagseguro_desconto_debito');
             }
         }
         

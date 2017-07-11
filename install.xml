@@ -2,7 +2,7 @@
 <modification>
   <name>PagSeguro Checkout Transparente</name>
   <code>19676</code>
-  <version>1.3.1</version>
+  <version>1.4.0</version>
   <author>Valdeir Psr</author>
   <link>http://www.valdeirsantana.com.br</link>
   <file path="catalog/controller/checkout/checkout.php">
@@ -10,7 +10,7 @@
       <search trim="true"><![CDATA[$this->load->language('checkout/checkout');]]></search>
       <add position="after"><![CDATA[
         //Verifica se está em modo de teste
-        if (!$this->config->get('pagseguro_modo_teste')) {
+        if (!$this->config->get('payment_pagseguro_modo_teste')) {
           $this->document->addScript('https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js');
         } else {
           $this->document->addScript('https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js');

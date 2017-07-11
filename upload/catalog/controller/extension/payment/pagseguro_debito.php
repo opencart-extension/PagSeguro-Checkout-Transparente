@@ -11,18 +11,30 @@ class ControllerExtensionPaymentPagseguroDebito extends Controller {
 		
 		$this->load->model('extension/payment/pagseguro');
 
-		$data['session_id'] = $this->model_extension_payment_pagseguro->captureToken();
+		$session_id = $this->model_extension_payment_pagseguro->captureToken();
+        
+        if (strlen($session_id) != 32) {
+            $data["warning"] = $session_id;
+        } else {
+            $data["warning"] = false;
+        }
+        
+        $data["session_id"] = $session_id;
         
         /* CPF */
-        if (isset($order_info['custom_field'][$this->config->get('pagseguro_cpf')])) {
-            $data['cpf'] = $order_info['custom_field'][$this->config->get('pagseguro_cpf')];
+        if (isset($order_info['custom_field'][$this->config->get('payment_pagseguro_cpf')])) {
+            if (!preg_match('/(\.|-)/', $order_info['telephone'])) {
+                $data['cpf'] = preg_replace('/([\d]{3})([\d]{3})([\d]{3})([\d]{2})/', '$1.$2.$3-$4', $order_info['custom_field'][$this->config->get('payment_pagseguro_cpf')]);
+            } else {
+                $data['cpf'] = $order_info['custom_field'][$this->config->get('payment_pagseguro_cpf')];
+            }
         } else {
             $data['cpf'] = '';
         }
 		
 		$data['continue'] = $this->url->link('checkout/success', '', true);
 		
-		return $this->load->view('extension/payment/pagseguro_debito.tpl', $data);
+		return $this->load->view('extension/payment/pagseguro_debito', $data);
 		
 	}
 	
@@ -39,8 +51,8 @@ class ControllerExtensionPaymentPagseguroDebito extends Controller {
 		$order_info = $this->model_checkout_order->getOrder($order_id);
 		
 		/* Config */
-		$data['email'] = $this->config->get('pagseguro_email');
-		$data['token'] = $this->config->get('pagseguro_token');
+		$data['email'] = $this->config->get('payment_pagseguro_email');
+		$data['token'] = $this->config->get('payment_pagseguro_token');
 		$data['paymentMode'] = 'default';
 		$data['paymentMethod'] = 'eft';
 		$data['bankName'] = $this->request->post['banco'];
@@ -180,28 +192,28 @@ class ControllerExtensionPaymentPagseguroDebito extends Controller {
 		
 		switch ($this->request->post['status']) {
 			case 1:
-				$status = $this->config->get('pagseguro_aguardando_pagamento');
+				$status = $this->config->get('payment_pagseguro_aguardando_pagamento');
 				break;
 			case 2:
-				$status = $this->config->get('pagseguro_analise');
+				$status = $this->config->get('payment_pagseguro_analise');
 				break;
 			case 3:
-				$status = $this->config->get('pagseguro_paga');
+				$status = $this->config->get('payment_pagseguro_paga');
 				break;
 			case 4:
-				$status = $this->config->get('pagseguro_disponivel');
+				$status = $this->config->get('payment_pagseguro_disponivel');
 				break;
 			case 5:
-				$status = $this->config->get('pagseguro_disputa');
+				$status = $this->config->get('payment_pagseguro_disputa');
 				break;
 			case 6:
-				$status = $this->config->get('pagseguro_devolvida');
+				$status = $this->config->get('payment_pagseguro_devolvida');
 				break;
 			case 7:
-				$status = $this->config->get('pagseguro_cancelada');
+				$status = $this->config->get('payment_pagseguro_cancelada');
 				break;
 			default: 
-				$status = $this->config->get('pagseguro_aguardando_pagamento');
+				$status = $this->config->get('payment_pagseguro_aguardando_pagamento');
 				break;
 		}
 		
