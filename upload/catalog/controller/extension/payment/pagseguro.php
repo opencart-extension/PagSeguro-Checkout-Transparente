@@ -11,8 +11,14 @@ class ControllerExtensionPaymentPagseguro extends Controller {
 		$result = $this->model_extension_payment_pagseguro->notification($this->request->post['notificationCode']);
 		
 		$notificar = $this->config->get('pagseguro_notificar_cliente');
+        
+        if (is_array($result['status'])) {
+            $status = reset($result['status']);
+        } else {
+            $status = $result['status'];
+        }
 		
-		switch ($result['status']) {
+		switch ($status) {
 			case 1:
 				$status = $this->config->get('pagseguro_aguardando_pagamento');
 				break;
