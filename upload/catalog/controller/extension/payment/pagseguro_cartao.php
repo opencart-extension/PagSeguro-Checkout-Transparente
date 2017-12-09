@@ -121,30 +121,7 @@ class ControllerExtensionPaymentPagseguroCartao extends Controller {
         }
         
         /* Valores extra (Desconto e Acréscimo) */
-        $data['extraAmount'] = 0;
-        
-        /* Aplica Desconto */
-        if (isset($this->session->data['pagseguro_desconto']))
-            $data['extraAmount'] = $this->session->data['pagseguro_desconto'] * (-1);
-        
-        /* Aplica Acréscimo */
-        if (isset($this->session->data['pagseguro_acrescimo']))
-            $data['extraAmount'] += $this->session->data['pagseguro_acrescimo'];
-        
-        /* Captura desconto do cupom */
-        $discount = $this->model_extension_payment_pagseguro->discount($order_info['total']);
-        
-        if ($discount > 0)
-            $data['extraAmount'] += ($this->model_extension_payment_pagseguro->discount($order_info['total']) * (-1));
-        
-        /* Vale Presente */
-        if (isset($this->session->data['voucher'])) {
-            $this->load->model('extension/total/voucher');
-            
-            $voucher = $this->model_extension_total_voucher->getVoucher($this->session->data['voucher']);
-            
-            $data['extraAmount'] += $voucher['amount'] * (-1);
-        }
+        $data["extraAmount"] = $order_info["total"] - $this->cart->getSubTotal();
         
         /* Formata os dados */
         $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
