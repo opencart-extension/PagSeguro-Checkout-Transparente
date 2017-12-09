@@ -89,7 +89,7 @@
 					$('#warning').html(json.error.message).show();
 				} else {
 					$('#button-confirm').hide().attr('disabled');
-					$('#button div').append('<a href="' + json.paymentLink + '" target="_blank" class="btn btn-success">Finalizar Pagametno</a>');
+					$('#button div').append('<a href="' + json.paymentLink + '" target="_blank" class="btn btn-success">Finalizar Pagamento</a>');
 					
 					$.ajax({
 						url: 'index.php?route=extension/payment/pagseguro_debito/confirm',
