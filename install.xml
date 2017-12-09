@@ -2,7 +2,7 @@
 <modification>
   <name>PagSeguro Checkout Transparente</name>
   <code>19676</code>
-  <version>1.4.0</version>
+  <version>1.4.1</version>
   <author>Valdeir Psr</author>
   <link>http://www.valdeirsantana.com.br</link>
   <file path="catalog/controller/checkout/checkout.php">
