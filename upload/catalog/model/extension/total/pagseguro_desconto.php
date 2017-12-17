@@ -3,6 +3,10 @@ class ModelExtensionTotalPagSeguroDesconto extends Model {
     
     public function getTotal($total) {
         
+        if (isset($this->session->data['pagseguro_desconto'])) {
+            unset($this->session->data['pagseguro_desconto']);
+        }
+        
         if (!isset($this->session->data['payment_method']['code'])) {
             return false;
         }

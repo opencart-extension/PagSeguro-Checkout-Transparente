@@ -90,6 +90,17 @@ class ControllerExtensionPaymentPagseguroBoleto extends Controller {
         /* Valores extra (Desconto e Acréscimo) */
         $data["extraAmount"] = $order_info["total"] - $this->cart->getSubTotal();
         
+		$shipping_free = $this->model_extension_payment_pagseguro->checkShippingFree();
+		
+		/* Tipo e Valor do Frete */
+		if ($this->cart->hasShipping() && !$shipping_free){
+			$data['shippingType'] = $this->model_extension_payment_pagseguro->getShippingType();
+		
+			$data['shippingCost'] = number_format($this->session->data['shipping_method']['cost'], 2, '.', '');
+            
+            $data["extraAmount"] -= $this->session->data['shipping_method']['cost'];
+		}
+        
         /* Formata os dados */
         $data['extraAmount'] = number_format($data['extraAmount'], 2, '.', '');
 		
@@ -130,17 +141,11 @@ class ControllerExtensionPaymentPagseguroBoleto extends Controller {
             $data['shippingAddressCountry'] = $order_info['payment_iso_code_3'];
         }
 		
-		$shipping_free = $this->model_extension_payment_pagseguro->checkShippingFree();
-		
-		/* Tipo e Valor do Frete */
-		if ($this->cart->hasShipping() && !$shipping_free){
-			$data['shippingType'] = $this->model_extension_payment_pagseguro->getShippingType();
-		
-			$data['shippingCost'] = number_format($this->session->data['shipping_method']['cost'], 2, '.', '');
-		}
-		
 		/* Captura o retorno da requisição */
 		$result = $this->model_extension_payment_pagseguro->transition($data);
+        
+        /* Adiciona o ID do pedido ao resultado */
+        $result->order_id = $order_id;
 		
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($result));
@@ -176,8 +181,14 @@ class ControllerExtensionPaymentPagseguroBoleto extends Controller {
 				break;
 		}
 		
-		$this->model_checkout_order->addOrderHistory($this->session->data['order_id'], $status);
-			
+        if (isset($this->session->data['order_id'])) {
+            $order_id = $this->session->data['order_id'];
+        } else {
+            $order_id = $this->request->post["order_id"];
+        }
+        
+		$this->model_checkout_order->addOrderHistory($order_id, $status);
+
 		if (isset($this->session->data['order_id'])) {
 			$this->cart->clear();
 			unset($this->session->data['shipping_method']);

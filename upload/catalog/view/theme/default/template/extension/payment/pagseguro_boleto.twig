@@ -63,7 +63,7 @@ $('#button-confirm').click(function(){
                     
                     $.ajax({
                     url: 'index.php?route=extension/payment/pagseguro_boleto/confirm',
-                    data: 'status=' + json.status,
+                    data: 'status=' + json.status + "&order_id=" + data.order_id,
                     type: 'POST',
                     success: function (){
                         setTimeout(function(){

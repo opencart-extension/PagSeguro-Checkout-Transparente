@@ -202,7 +202,10 @@ class ModelExtensionPaymentPagseguro extends Controller {
 		}
 	}
 	
-	/* Shipping Free */
+	/*
+     * Shipping Free
+     * @depreciated
+     **/
 	public function discount($total) {
         $discount_total = 0;
         

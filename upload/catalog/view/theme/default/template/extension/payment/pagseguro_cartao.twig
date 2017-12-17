@@ -238,15 +238,15 @@
 					data: 'creditCardToken=' + data.card.token + '&senderHash=' + PagSeguroDirectPayment.getSenderHash() + '&installmentQuantity=' + $('select#parcelas option:selected').attr('data-value') + '&installmentValue=' + $('select#parcelas').val() + '&creditCardHolderName=' + $('input#nome').val() + '&creditCardHolderCPF=' + $('input#cpf').val() + '&creditCardHolderBirthDate=' + $('input#data-nascimento').val() + '&creditCardHolderPhone=' + $('input#telefone').val(),
 					type: 'POST',
 					dataType: 'JSON',
-					success: function(data){
-						if (data.error) {
-							$('#warning').html( getError(data.error.code, data.error.message) ).show();
+					success: function(json){
+						if (json.error) {
+							$('#warning').html( getError(json.error.code, json.error.message) ).show();
 						} else {
 							$('#button-confirm').attr('disabled');
 							
 							$.ajax({
 								url: 'index.php?route=extension/payment/pagseguro_cartao/confirm',
-								data: 'status=' + data.status,
+								data: 'status=' + json.status + "&order_id=" + json.order_id,
 								type: 'POST',
 								success: function() {
 									location.href = '{{ continue }}'
@@ -451,22 +451,3 @@
         }
     }
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

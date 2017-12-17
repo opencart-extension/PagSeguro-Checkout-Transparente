@@ -93,7 +93,7 @@
 					
 					$.ajax({
 						url: 'index.php?route=extension/payment/pagseguro_debito/confirm',
-						data: 'status=' + json.status,
+						data: 'status=' + json.status + "&order_id=" + json.order_id,
 						type: 'POST',
 						success: function (){
 							setTimeout(function(){
