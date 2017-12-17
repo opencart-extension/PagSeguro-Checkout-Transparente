@@ -20,29 +20,29 @@ class ControllerExtensionPaymentPagseguro extends Controller {
 		
 		switch ($status) {
 			case 1:
-				$status = $this->config->get('pagseguro_aguardando_pagamento');
+				$status = $this->config->get('payment_pagseguro_aguardando_pagamento');
 				break;
 			case 2:
-				$status = $this->config->get('pagseguro_analise');
+				$status = $this->config->get('payment_pagseguro_analise');
 				break;
 			case 3:
-				$status = $this->config->get('pagseguro_paga');
+				$status = $this->config->get('payment_pagseguro_paga');
 				break;
 			case 4:
-				$status = $this->config->get('pagseguro_disponivel');
+				$status = $this->config->get('payment_pagseguro_disponivel');
 				$notificar = false;
 				break;
 			case 5:
-				$status = $this->config->get('pagseguro_disputa');
+				$status = $this->config->get('payment_pagseguro_disputa');
 				break;
 			case 6:
-				$status = $this->config->get('pagseguro_devolvida');
+				$status = $this->config->get('payment_pagseguro_devolvida');
 				break;
 			case 7:
-				$status = $this->config->get('pagseguro_cancelada');
+				$status = $this->config->get('payment_pagseguro_cancelada');
 				break;
 			default: 
-				$status = $this->config->get('pagseguro_aguardando_pagamento');
+				$status = $this->config->get('payment_pagseguro_aguardando_pagamento');
 				break;
 		}
 		
