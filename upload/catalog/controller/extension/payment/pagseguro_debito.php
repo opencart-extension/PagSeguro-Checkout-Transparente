@@ -163,7 +163,11 @@ class ControllerExtensionPaymentPagseguroDebito extends Controller {
 		$result = $this->model_extension_payment_pagseguro->transition($data);
         
         /* Adiciona o ID do pedido ao resultado */
-        $result->order_id = $order_id;
+        if (gettype($result) == "object") {
+            $result->order_id = $order_id;
+        } else {
+            $result["order_id"] = $order_id;
+        }
 		
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($result));

@@ -20,6 +20,10 @@ Você pode ter um aumento de até 30% na conversão de suas vendas, uma vez que,
 Os dados de pagamento dos seus clientes são direcionados diretamente do navegador para o PagSeguro. Sem passar por seus servidores, assim não precisa se preocupar com a segurança destas informações.
 
 ### Novidades
+**[1.4.2]**
+> 1. Correção do bug "installment value invalid value"
+> 2. Corrige bug com a notificação automática
+
 **[1.4.1]**
 > 1. Correção do bug "installment value invalid value"
 > 2. Corrige bug com a notificação automática
