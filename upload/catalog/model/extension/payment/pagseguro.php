@@ -100,8 +100,8 @@ class ModelExtensionPaymentPagseguro extends Controller {
 		
 		$xml = simplexml_load_string($response);
 		
-		$this->session->data['pagseguro_data'] = http_build_query($data);
-		$this->session->data['pagseguro_response'] = $response;
+		//$this->session->data['pagseguro_data'] = http_build_query($data);
+		//$this->session->data['pagseguro_response'] = $response;
 		
 		if (isset($xml->error)){
 			$json = array(
