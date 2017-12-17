@@ -21,8 +21,9 @@ Os dados de pagamento dos seus clientes são direcionados diretamente do navegad
 
 ### Novidades
 **[1.4.2]**
-> 1. Correção do bug "installment value invalid value"
-> 2. Corrige bug com a notificação automática
+> 1. Corrige problema com session
+> 2. Corrige o erro "Undefined index: order_id"
+> 3. Correção do retorno automática. Créditos ao @vmfadvancedwind
 
 **[1.4.1]**
 > 1. Correção do bug "installment value invalid value"
