@@ -356,4 +356,20 @@
     </div>
   </div>
 </div>
+
+<script>
+  $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+    if (e.target.href.endsWith('#tab-debug')) {
+      $('#debug-clear, #debug-download').fadeIn()
+    } else {
+      $('#debug-clear, #debug-download').fadeOut()
+    }
+  })
+</script>
+
+<style>
+#debug-clear, #debug-download {
+  display: none
+}
+</style>
 {{ footer }}
