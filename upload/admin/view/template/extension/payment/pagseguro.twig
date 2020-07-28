@@ -1,0 +1,354 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <div class="pull-right">
+        <button class="btn btn-danger" id="debug-clear" data-toggle="tooltip" title="text_debug_clear"><i class="fa fa-trash"></i></button>
+        <button class="btn btn-success" id="debug-download" data-toggle="tooltip" title="text_debug_download"><i class="fa fa-download"></i></button>
+        <button type="submit" form="form-payment" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <i class="fa fa-pencil"></i>
+          {{ heading_title }}
+        </h3>
+      </div>
+
+      <div class="panel-body">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="active"><a href="#tab-home" data-toggle="tab">tab_home</a></li>
+          <li><a href="#tab-discount" data-toggle="tab">tab_discount</a></li>
+          <li><a href="#tab-order-status" data-toggle="tab">tab_order_status</a></li>
+          <li><a href="#tab-geo" data-toggle="tab">tab_geo</a></li>
+          <li><a href="#tab-installment" data-toggle="tab">tab_installment</a></li>
+          <li><a href="#tab-methods" data-toggle="tab">tab_methods</a></li>
+          <li><a href="#tab-layout" data-toggle="tab">tab_layout</a></li>
+          <li><a href="#tab-debug" data-toggle="tab">tab_debug</a></li>
+        </ul>
+
+        <form action="#" class="form form-horizontal tab-content" id="form" method="POST">
+          <div class="tab-pane active" id="tab-home">
+            <div class="form-group required">
+              <label for="input-status" class="control-label col-sm-2">entry_status</label>
+              <div class="col-sm-10">
+                <select name="status" id="input-status" class="form-control">
+                  <option value="1">text_enabled</option>
+                  <option value="0">text_disabled</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-email" class="control-label col-sm-2">entry_email</label>
+              <div class="col-sm-10">
+                <input type="email" name="email" id="input-email" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-token" class="control-label col-sm-2">entry_token</label>
+              <div class="col-sm-10">
+                <input type="text" name="token" id="input-token" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-sandbox" class="control-label col-sm-2">entry_sandbox</label>
+              <div class="col-sm-10">
+                <select name="sandbox" id="input-sandbox" class="form-control">
+                  <option value="1">text_enabled</option>
+                  <option value="0">text_disabled</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-customer-notify" class="control-label col-sm-2">entry_customer_notify</label>
+              <div class="col-sm-10">
+                <select name="customer_notify" id="input-customer-notify" class="form-control">
+                  <option value="1">text_enabled</option>
+                  <option value="0">text_disabled</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-customer-notify" class="control-label col-sm-2">entry_callback_token</label>
+              <div class="col-sm-10">
+                <input type="text" name="callback_token" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tab-discount">
+            <fieldset>
+              <legend>text_discount</legend>
+
+              <div class="form-group">
+                <label for="input-discount-boleto" class="control-label col-sm-2">entry_discount_boleto</label>
+                <div class="col-sm-10">
+                  <input type="number" name="discount_boleto" id="input-discount-boleto" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-discount-credit" class="control-label col-sm-2">entry_discount_credit</label>
+                <div class="col-sm-10">
+                  <input type="number" name="discount_credit" id="input-discount-credit" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-discount-debit" class="control-label col-sm-2">entry_discount_debit</label>
+                <div class="col-sm-10">
+                  <input type="number" name="discount_debit" id="input-discount-debit" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>text_fee</legend>
+
+              <div class="form-group">
+                <label for="input-fee-boleto" class="control-label col-sm-2">entry_fee_boleto</label>
+                <div class="col-sm-10">
+                  <input type="number" name="fee_boleto" id="input-fee-boleto" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-fee-credit" class="control-label col-sm-2">entry_fee_credit</label>
+                <div class="col-sm-10">
+                  <input type="number" name="fee_credit" id="input-fee-credit" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-fee-debit" class="control-label col-sm-2">entry_fee_debit</label>
+                <div class="col-sm-10">
+                  <input type="number" name="fee_debit" id="input-fee-debit" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="tab-pane" id="tab-order-status">
+            <div class="form-group">
+              <label for="input-order-status-pending" class="control-label col-sm-2">entry_order_status_pending</label>
+              <div class="col-sm-10">
+                <select name="order_status_pending" id="input-order-status-pending" class="form-control">
+                  <option value="">Pending</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-order-status-pending" class="control-label col-sm-2">entry_order_status_analysing</label>
+              <div class="col-sm-10">
+                <select name="order_status_pending" id="input-order-status-pending" class="form-control">
+                  <option value="">Pending</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-order-status-paid" class="control-label col-sm-2">entry_order_status_paid</label>
+              <div class="col-sm-10">
+                <select name="order_status_paid" id="input-order-status-paid" class="form-control"></select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-order-status-available" class="control-label col-sm-2">entry_order_status_available</label>
+              <div class="col-sm-10">
+                <select name="order_status_paid" id="input-order-status-available" class="form-control"></select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-order-status-disputed" class="control-label col-sm-2">entry_order_status_disputed</label>
+              <div class="col-sm-10">
+                <select name="order_status_disputed" id="input-order-status-disputed" class="form-control"></select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-order-status-returned" class="control-label col-sm-2">entry_order_status_returned</label>
+              <div class="col-sm-10">
+                <select name="order_status_returned" id="input-order-status-returned" class="form-control"></select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-order-status-cancelled" class="control-label col-sm-2">entry_order_status_cancelled</label>
+              <div class="col-sm-10">
+                <select name="order_status_cancelled" id="input-order-status-cancelled" class="form-control"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tab-geo">
+            <div class="form-group">
+              <label for="input-geo-zone-id" class="control-label col-sm-2">entry_geo_zone_id</label>
+              <div class="col-sm-10">
+                <select name="geo_zone_id" id="input-geo-zone-id" class="form-control">
+                  <option value="all">All</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-geo-sort-order" class="control-label col-sm-2">entry_geo_sort_order</label>
+              <div class="col-sm-10">
+                <input type="number" name="geo_sort_order" id="input-geo-sort-order" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-geo-stores" class="control-label col-sm-2">entry_geo_stores</label>
+              <div class="col-sm-10">
+                <select name="geo_stores" id="input-geo-stores" multiple class="form-control">
+                  <option value="1">Store A</option>
+                  <option value="2">Store B</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tab-installment">
+            <div class="form-group">
+              <label for="input-installment-total" class="control-label col-sm-2">entry_installment_total</label>
+              <div class="col-sm-10">
+                <input type="number" name="installment_total" id="input-installment-total" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-installment-free" class="control-label col-sm-2">entry_installment_free</label>
+              <div class="col-sm-10">
+                <input type="number" name="installment_free" id="input-installment-free" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-installment-minimum-value" class="control-label col-sm-2">entry_installment_minimum_value</label>
+              <div class="col-sm-10">
+                <input type="number" name="installment_minimum_value" id="input-installment-minimum-value" class="form-control" />
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tab-methods">
+            <fieldset>
+              <legend>text_boleto</legend>
+
+              <div class="form-group">
+                <label for="input-methods-boleto-status" class="control-label col-sm-2">entry_status</label>
+                <div class="col-sm-10">
+                  <select name="methods_boleto_status" id="input-methods-boleto-status" class="form-control">
+                    <option value="1">text_enabled</option>
+                    <option value="0">text_disabled</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-methods-boleto-minimum-amount" class="control-label col-sm-2">entry_minimum_amount</label>
+                <div class="col-sm-10">
+                  <input type="number" name="methods_boelto_minimum_amount" id="input-methods-boelto-minimum-amount" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>text_credit</legend>
+
+              <div class="form-group">
+                <label for="input-methods-credit-status" class="control-label col-sm-2">entry_status</label>
+                <div class="col-sm-10">
+                  <select name="methods_credit_status" id="input-methods-credit-status" class="form-control">
+                    <option value="1">text_enabled</option>
+                    <option value="0">text_disabled</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-methods-credit-minimum-amount" class="control-label col-sm-2">entry_minimum_amount</label>
+                <div class="col-sm-10">
+                  <input type="number" name="methods_credit_minimum_amount" id="input-methods-credit-minimum-amount" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>text_debit</legend>
+
+              <div class="form-group">
+                <label for="input-methods-debit-status" class="control-label col-sm-2">entry_status</label>
+                <div class="col-sm-10">
+                  <select name="methods_debit_status" id="input-methods-debit-status" class="form-control">
+                    <option value="1">text_enabled</option>
+                    <option value="0">text_disabled</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-methods-debit-minimum-amount" class="control-label col-sm-2">entry_minimum_amount</label>
+                <div class="col-sm-10">
+                  <input type="number" name="methods_debit_minimum_amount" id="input-methods-debit-minimum-amount" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="tab-pane" id="tab-layout">
+            <div class="form group">
+              <label for="input-layout" class="control-label col-sm-2">entry_layout</label>
+              <div class="col-sm-10">
+                <select name="layout" id="input-layout" class="form-control"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tab-debug">
+            <div class="row">
+              <div class="col-sm-4">
+                <a class="btn btn-default btn-lg btn-block">Portfolio</a>
+              </div>
+              
+              <div class="col-sm-4">
+                <a class="btn btn-default btn-lg btn-block">GitHub</a>
+              </div>
+              
+              <div class="col-sm-4">
+                <a class="btn btn-default btn-lg btn-block">Documentação</a>
+              </div>
+            </div>
+            <div class="clearfix">&nbsp;</div>
+
+            <pre class="pre-scrollable" style="min-height: 400px">
+              <code></code>
+            </pre>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}
