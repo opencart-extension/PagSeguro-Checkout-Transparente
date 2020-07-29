@@ -82,6 +82,19 @@ class ControllerExtensionPaymentPagseguro extends Controller
       }
     }
 
+    if (filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
+      $this->error['email'] = $this->language->get('error_email');
+    }
+
+    if (filter_var($this->request->post['installment_total'], FILTER_VALIDATE_INT, [
+      'options' => [
+        'min_range' => 1,
+        'max_range' => 18,
+      ]
+    ])) {
+      $this->error['installment_total'] = $this->language->get('error_installment_total');
+    }
+
     return !$this->error;
   }
 
