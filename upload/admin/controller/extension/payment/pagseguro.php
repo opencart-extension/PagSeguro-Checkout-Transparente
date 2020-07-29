@@ -2,11 +2,20 @@
 
 class ControllerExtensionPaymentPagseguro extends Controller
 {
+  const FIELD_PREFIX = 'payment_pagseguro_';
+
+  private $error = [];
+
   public function index()
   {
     $data = $this->load->language('extension/payment/pagseguro');
 
     $this->document->setTitle($this->language->get('heading_title'));
+
+    if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate()) {
+      var_dump($this->request->post);
+      die();
+    }
 
     $data['breadcrumbs'] = [];
 
@@ -25,6 +34,10 @@ class ControllerExtensionPaymentPagseguro extends Controller
       'href' => ''
     ];
 
+    foreach($this->error as $key => $value) {
+      $data['error_' . $key] = $value;
+    }
+
     $data['action'] = $this->buildUrl('extension/payment/pagseguro');
     $data['cancel'] = $this->buildUrl('marketplace/extension', [
       'type' => 'payment'
@@ -35,6 +48,41 @@ class ControllerExtensionPaymentPagseguro extends Controller
     $data['footer'] = $this->load->controller('common/footer');
 
     $this->response->setOutput($this->load->view('extension/payment/pagseguro', $data)); 
+  }
+
+  private function validate()
+  {
+    $required_fields = [
+      'status',
+      'email',
+      'token',
+      'sandbox',
+      'customer_notify',
+      'callback_token',
+      'order_status_pending',
+      'order_status_analysing',
+      'order_status_paid',
+      'order_status_available',
+      'order_status_disputed',
+      'order_status_returned',
+      'order_status_cancelled',
+      'installment_total',
+      'installment_free',
+      'installment_minimum_value',
+      'layout'
+    ];
+
+    if (!$this->user->hasPermission('modify', 'extension/payment/pagseguro')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+    }
+    
+    foreach($required_fields as $field) {
+      if (empty($this->request->post[$field])) {
+        $this->error[$field] = $this->language->get('error_required');
+      }
+    }
+
+    return !$this->error;
   }
 
   /**

@@ -50,6 +50,9 @@
                   <option value="1">text_enabled</option>
                   <option value="0">text_disabled</option>
                 </select>
+                {% if error_status %}
+                <span class="text-danger">{{ error_status }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -57,6 +60,9 @@
               <label for="input-email" class="control-label col-sm-2">entry_email</label>
               <div class="col-sm-10">
                 <input type="email" name="email" id="input-email" class="form-control" required />
+                {% if error_email %}
+                <span class="text-danger">{{ error_email }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -64,6 +70,9 @@
               <label for="input-token" class="control-label col-sm-2">entry_token</label>
               <div class="col-sm-10">
                 <input type="text" name="token" id="input-token" class="form-control" required />
+                {% if error_token %}
+                <span class="text-danger">{{ error_token }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -74,6 +83,9 @@
                   <option value="1">text_enabled</option>
                   <option value="0">text_disabled</option>
                 </select>
+                {% if error_sandbox %}
+                <span class="text-danger">{{ error_sandbox }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -84,6 +96,9 @@
                   <option value="1">text_enabled</option>
                   <option value="0">text_disabled</option>
                 </select>
+                {% if error_notify %}
+                <span class="text-danger">{{ error_notify }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -91,6 +106,9 @@
               <label for="input-customer-notify" class="control-label col-sm-2">entry_callback_token</label>
               <div class="col-sm-10">
                 <input type="text" name="callback_token" class="form-control">
+                {% if error_callback_token %}
+                <span class="text-danger">{{ error_callback_token }}</span>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -177,15 +195,21 @@
                 <select name="order_status_pending" id="input-order-status-pending" class="form-control">
                   <option value="">Pending</option>
                 </select>
+                {% if error_order_status_pending %}
+                <span class="text-danger">{{ error_order_status_pending }}</span>
+                {% endif %}
               </div>
             </div>
 
             <div class="form-group required">
               <label for="input-order-status-pending" class="control-label col-sm-2">entry_order_status_analysing</label>
               <div class="col-sm-10">
-                <select name="order_status_pending" id="input-order-status-pending" class="form-control">
+                <select name="order_status_analysing" id="input-order-status-pending" class="form-control">
                   <option value="">Pending</option>
                 </select>
+                {% if error_order_status_analysing %}
+                <span class="text-danger">{{ error_order_status_analysing }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -193,15 +217,23 @@
               <label for="input-order-status-paid" class="control-label col-sm-2">entry_order_status_paid</label>
               <div class="col-sm-10">
                 <select name="order_status_paid" id="input-order-status-paid" class="form-control">
-                  <option value="">Pending</option></select>
+                  <option value="">Pending</option>
+                </select>
+                {% if error_order_status_paid %}
+                <span class="text-danger">{{ error_order_status_paid }}</span>
+                {% endif %}
               </div>
             </div>
 
             <div class="form-group required">
               <label for="input-order-status-available" class="control-label col-sm-2">entry_order_status_available</label>
               <div class="col-sm-10">
-                <select name="order_status_paid" id="input-order-status-available" class="form-control">
-                  <option value="">Pending</option></select>
+                <select name="order_status_available" id="input-order-status-available" class="form-control">
+                  <option value="">Pending</option>
+                </select>
+                {% if error_order_status_available %}
+                <span class="text-danger">{{ error_order_status_available }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -209,7 +241,11 @@
               <label for="input-order-status-disputed" class="control-label col-sm-2">entry_order_status_disputed</label>
               <div class="col-sm-10">
                 <select name="order_status_disputed" id="input-order-status-disputed" class="form-control">
-                  <option value="">Pending</option></select>
+                  <option value="">Pending</option>
+                </select>
+                {% if error_order_status_disputed %}
+                <span class="text-danger">{{ error_order_status_disputed }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -217,7 +253,11 @@
               <label for="input-order-status-returned" class="control-label col-sm-2">entry_order_status_returned</label>
               <div class="col-sm-10">
                 <select name="order_status_returned" id="input-order-status-returned" class="form-control">
-                  <option value="">Pending</option></select>
+                  <option value="">Pending</option>
+                </select>
+                {% if error_order_status_returned %}
+                <span class="text-danger">{{ error_order_status_returned }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -225,7 +265,11 @@
               <label for="input-order-status-cancelled" class="control-label col-sm-2">entry_order_status_cancelled</label>
               <div class="col-sm-10">
                 <select name="order_status_cancelled" id="input-order-status-cancelled" class="form-control">
-                  <option value="">Pending</option></select>
+                  <option value="">Pending</option>
+                </select>
+                {% if error_order_status_cancelled %}
+                <span class="text-danger">{{ error_order_status_cancelled }}</span>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -263,6 +307,9 @@
               <label for="input-installment-total" class="control-label col-sm-2">entry_installment_total</label>
               <div class="col-sm-10">
                 <input type="number" name="installment_total" id="input-installment-total" class="form-control" required />
+                {% if error_installment_total %}
+                <span class="text-danger">{{ error_installment_total }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -270,6 +317,9 @@
               <label for="input-installment-free" class="control-label col-sm-2">entry_installment_free</label>
               <div class="col-sm-10">
                 <input type="number" name="installment_free" id="input-installment-free" class="form-control" required />
+                {% if error_installment_free %}
+                <span class="text-danger">{{ error_installment_free }}</span>
+                {% endif %}
               </div>
             </div>
 
@@ -277,6 +327,9 @@
               <label for="input-installment-minimum-value" class="control-label col-sm-2">entry_installment_minimum_value</label>
               <div class="col-sm-10">
                 <input type="number" name="installment_minimum_value" id="input-installment-minimum-value" class="form-control" required />
+                {% if error_installment_minimum_value %}
+                <span class="text-danger">{{ error_installment_minimum_value }}</span>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -347,10 +400,13 @@
           </div>
 
           <div class="tab-pane" id="tab-layout">
-            <div class="form group">
+            <div class="form group required">
               <label for="input-layout" class="control-label col-sm-2">entry_layout</label>
               <div class="col-sm-10">
                 <select name="layout" id="input-layout" class="form-control"></select>
+                {% if error_layout %}
+                <span class="text-danger">{{ error_layout }}</span>
+                {% endif %}
               </div>
             </div>
           </div>
