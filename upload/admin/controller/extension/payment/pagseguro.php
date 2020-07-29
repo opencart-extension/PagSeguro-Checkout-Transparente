@@ -50,6 +50,11 @@ class ControllerExtensionPaymentPagseguro extends Controller
     $this->response->setOutput($this->load->view('extension/payment/pagseguro', $data)); 
   }
 
+  /**
+   * Realiza a validação dos campos
+   * 
+   * @return bool
+   */
   private function validate()
   {
     $required_fields = [
