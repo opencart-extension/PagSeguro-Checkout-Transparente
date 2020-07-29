@@ -6,6 +6,9 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
   private $error = [];
 
+  /**
+   * Exibe o formulário de configuração do módulo
+   */
   public function index()
   {
     $data = $this->load->language('extension/payment/pagseguro');
@@ -34,13 +37,36 @@ class ControllerExtensionPaymentPagseguro extends Controller
       'href' => ''
     ];
 
+    /** Erros */
     foreach($this->error as $key => $value) {
       $data['error_field_' . $key] = $value;
     }
 
+    /** Captura configurações salvas */
     foreach($this->getAllFields() as $key => $value) {
-      $data[$key] = $this->request->post[$key] ?? '';
+      $data[$key] = $this->request->post[$key] ?? $this->config->get(self::FIELD_PREFIX . $key);
     }
+
+    $this->load->model('customer/custom_field');
+
+    $data['custom_fields'] = $this->model_customer_custom_field->getCustomFields();
+
+    $this->load->model('localisation/order_status');
+
+    $data['statuses'] = $this->model_localisation_order_status->getOrderStatuses();
+
+    $this->load->model('localisation/geo_zone');
+
+    $data['geo_zones'] = $this->model_localisation_geo_zone->getGeoZones();
+
+    $this->load->model('setting/store');
+
+    $data['stores'] = $this->model_setting_store->getStores();
+
+    $data['stores'][] = [
+			'store_id' => 0,
+			'name'     => $this->config->get('config_name') . $this->language->get('text_default')
+    ];
 
     $data['action'] = $this->buildUrl('extension/payment/pagseguro');
     $data['cancel'] = $this->buildUrl('marketplace/extension', [
