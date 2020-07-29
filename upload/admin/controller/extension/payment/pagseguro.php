@@ -35,7 +35,11 @@ class ControllerExtensionPaymentPagseguro extends Controller
     ];
 
     foreach($this->error as $key => $value) {
-      $data['error_' . $key] = $value;
+      $data['error_field_' . $key] = $value;
+    }
+
+    foreach($this->getAllFields() as $key => $value) {
+      $data[$key] = $this->request->post[$key] ?? '';
     }
 
     $data['action'] = $this->buildUrl('extension/payment/pagseguro');
@@ -57,25 +61,11 @@ class ControllerExtensionPaymentPagseguro extends Controller
    */
   private function validate()
   {
-    $required_fields = [
-      'status',
-      'email',
-      'token',
-      'sandbox',
-      'customer_notify',
-      'callback_token',
-      'order_status_pending',
-      'order_status_analysing',
-      'order_status_paid',
-      'order_status_available',
-      'order_status_disputed',
-      'order_status_returned',
-      'order_status_cancelled',
-      'installment_total',
-      'installment_free',
-      'installment_minimum_value',
-      'layout'
-    ];
+    $required_fields = array_filter($this->getAllFields(), function($item) {
+      return $item['required'] === true;
+    });
+
+    $required_fields = array_keys($required_fields);
 
     if (!$this->user->hasPermission('modify', 'extension/payment/pagseguro')) {
 			$this->error['warning'] = $this->language->get('error_permission');
@@ -87,11 +77,11 @@ class ControllerExtensionPaymentPagseguro extends Controller
       }
     }
 
-    if (filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
       $this->error['email'] = $this->language->get('error_email');
     }
 
-    if (filter_var($this->request->post['installment_total'], FILTER_VALIDATE_INT, [
+    if (!filter_var($this->request->post['installment_total'], FILTER_VALIDATE_INT, [
       'options' => [
         'min_range' => 1,
         'max_range' => 18,
@@ -120,5 +110,53 @@ class ControllerExtensionPaymentPagseguro extends Controller
     }, array_keys($params), array_values($params));
 
     return $this->url->link($route, implode('&', $params), true);
+  }
+
+  /**
+   * Retorna o nome de dos os campos do formulário
+   * 
+   * @return array
+   */
+  private function getAllFields()
+  {
+    return [
+      'status'                        => ['required' => false], // Obrigatório, porém sem necessidade de validação
+      'email'                         => ['required' => true],
+      'token'                         => ['required' => true],
+      'sandbox'                       => ['required' => false], // Obrigatório, porém sem necessidade de validação
+      'customer_notify'               => ['required' => false], // Obrigatório, porém sem necessidade de validação
+      'callback_token'                => ['required' => true],
+      'custom_fields_cpf'             => ['required' => false],
+      'custom_fields_number'          => ['required' => false],
+      'custom_fields_birthday'        => ['required' => false],
+      'discount_boleto'               => ['required' => false],
+      'discount_credit'               => ['required' => false],
+      'discount_debit'                => ['required' => false],
+      'fee_boleto'                    => ['required' => false],
+      'discount_debit'                => ['required' => false],
+      'fee_boleto'                    => ['required' => false],
+      'fee_credit'                    => ['required' => false],
+      'fee_debit'                     => ['required' => false],
+      'order_status_pending'          => ['required' => true],
+      'order_status_analysing'        => ['required' => true],
+      'order_status_paid'             => ['required' => true],
+      'order_status_available'        => ['required' => true],
+      'order_status_disputed'         => ['required' => true],
+      'order_status_returned'         => ['required' => true],
+      'order_status_cancelled'        => ['required' => true],
+      'geo_zone_id'                   => ['required' => false],
+      'geo_sort_order'                => ['required' => false],
+      'geo_stores'                    => ['required' => false],
+      'installment_total'             => ['required' => true],
+      'installment_free'              => ['required' => true],
+      'installment_minimum_value'     => ['required' => true],
+      'methods_boleto_status'         => ['required' => false],
+      'methods_boleto_minimum_amount' => ['required' => false],
+      'methods_credit_status'         => ['required' => false],
+      'methods_credit_minimum_amount' => ['required' => false],
+      'methods_debit_status'          => ['required' => false],
+      'methods_debit_minimum_amount'  => ['required' => false],
+      'layout'                        => ['required' => true],
+    ];
   }
 }
