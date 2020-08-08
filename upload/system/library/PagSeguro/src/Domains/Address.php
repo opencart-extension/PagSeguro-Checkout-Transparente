@@ -13,9 +13,37 @@ class Address
     private $district;
     private $city;
     private $state;
-    private $country;
+    private $country = 'BRA';
     private $postalcode;
     private $complement;
+
+    /**
+     * @param string $street
+     * @param string $number
+     * @param string $district
+     * @param string $city
+     * @param string $state
+     * @param string $postalcode
+     * @param string|null $complement
+     */
+    public function __construct(
+        string $street = null,
+        string $number = null,
+        string $district = null,
+        string $city = null,
+        string $state = null,
+        string $postalcode = null,
+        string $complement = null
+    )
+    {
+        if ($street) $this->setStreet($street);
+        if ($number) $this->setNumber($number);
+        if ($district) $this->setDistrict($district);
+        if ($city) $this->setCity($city);
+        if ($state) $this->setState($state);
+        if ($postalcode) $this->setPostalcode($postalcode);
+        if ($complement) $this->setComplement($complement);
+    }
     
     /**
      * Define o nome da rua
@@ -131,19 +159,6 @@ class Address
     public function getState(): string
     {
         return $this->state;
-    }
-
-    /**
-     * Define o País
-     * 
-     * @param string $value
-     * 
-     * @return self
-     */
-    public function setCountry(string $value): self
-    {
-        $this->country = $value;
-        return $this;
     }
 
     /**

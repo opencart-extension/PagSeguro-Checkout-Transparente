@@ -17,6 +17,47 @@ class AddressTest extends TestCase
     /**
      * @test
      */
+    public function newInstanceWithValidArguments()
+    {
+        $street = 'Avenida Brasil';
+        $number = '44878';
+        $district = 'Campo Grande';
+        $city = 'Rio de Janeiro';
+        $state = 'RJ';
+        $postalcode = '23078001';
+
+        $instance = new Address(
+            $street,
+            $number,
+            $district,
+            $city,
+            $state,
+            $postalcode
+        );
+
+        $this->assertEquals(
+            [
+                $street,
+                $number,
+                $district,
+                $city,
+                $state,
+                $postalcode
+            ],
+            [
+                $instance->getStreet(),
+                $instance->getNumber(),
+                $instance->getDistrict(),
+                $instance->getCity(),
+                $instance->getState(),
+                $instance->getPostalcode(),
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function checkOptionalComplement()
     {
         $instance = new Address;
