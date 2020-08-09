@@ -21,5 +21,8 @@
           "ValdeirPsr\\PagSeguro\\": "src/",
           "ValdeirPsr\\PagSeguro\\Test\\": "tests/vendor/"
         }
+    },
+    "scripts": {
+      "phpcs": "vendor/bin/phpcs --colors -s --bootstrap=vendor/autoload.php --standard=PSR1,PSR12 -p --report=full"
     }
 }
