@@ -16,7 +16,7 @@ abstract class AbstractPaymentMethod
     /**
      * @param string $method
      */
-    public function __construct(string $method)
+    protected function __construct(string $method)
     {
         $this->method = $method;
     }
