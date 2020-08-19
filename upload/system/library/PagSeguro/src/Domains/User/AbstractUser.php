@@ -1,14 +1,11 @@
 <?php
 
-namespace ValdeirPsr\PagSeguro\Domains;
+namespace ValdeirPsr\PagSeguro\Domains\User;
 
 use ValdeirPsr\PagSeguro\Validation\Validator as v;
 
-class Sender
+abstract class AbstractUser
 {
-    /** @var string (fingerprint) gerado pelo JavaScript do PagSeguro */
-    private $hash;
-
     /** @var string */
     private $name;
 
@@ -18,26 +15,8 @@ class Sender
     /** @var string[] */
     private $phone = [];
 
-    /**
-     * Define o hash (fingerprint) gerado pelo JavaScript do PagSeguro
-     * 
-     * @param string $value
-     * 
-     * @return self
-     */
-    public function setHash(string $value): self
-    {
-        $this->hash = $value;
-        return $this;
-    }
-
-    /**
-     * @return string Retorna o hash (fingerprint)
-     */
-    public function getHash(): string
-    {
-        return $this->hash;
-    }
+    /** @var Document */
+    private $document;
 
     /**
      * Define o nome do comprador
@@ -109,5 +88,27 @@ class Sender
     public function getPhone(): array
     {
         return $this->phone;
+    }
+
+    /**
+     * Define o documento (CPF ou CNPJ)
+     * 
+     * @param Document $value
+     * 
+     * @return self
+     */
+    public function setDocument(Document $value): self
+    {
+        $this->document = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return Document
+     */
+    public function getDocument(): Document
+    {
+        return $this->document;
     }
 }

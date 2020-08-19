@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use ValdeirPsr\PagSeguro\Domains\Sender;
+use ValdeirPsr\PagSeguro\Domains\User\Sender;
 
 class SenderTest extends TestCase
 {
