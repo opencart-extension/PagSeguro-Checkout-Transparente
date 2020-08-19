@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use ValdeirPsr\PagSeguro\Domains\PaymentMethod\Boleto;
+use ValdeirPsr\PagSeguro\Domains\PaymentMethod\AbstractPaymentMethod;
 
 class BoletoTest extends TestCase
 {
@@ -12,6 +13,7 @@ class BoletoTest extends TestCase
     {
         $instance = new Boleto();
         $this->assertInstanceOf(Boleto::class, $instance);
+        $this->assertInstanceOf(AbstractPaymentMethod::class, $instance);
     }
 
     /**
