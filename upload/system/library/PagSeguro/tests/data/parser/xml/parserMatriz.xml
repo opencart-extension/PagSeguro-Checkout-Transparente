@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cdz>
+    <personagens>
+        <item>
+            <nome_original>天馬星座の星矢</nome_original>
+            <name>Seiya</name>
+            <outros_nomes>
+                <item>Seiya de Pégaso</item>
+                <item>Seiya de Pégasus</item>
+            </outros_nomes>
+            <constelacao>Pegasus</constelacao>
+            <armadura>Pégaso</armadura>
+            <divindade>Atena</divindade>
+            <classificacao>Cavaleiro de Bronze</classificacao>
+        </item>
+
+        <item>
+            <nome_original>龍星座の紫龍</nome_original>
+            <name>Shiryu</name>
+            <outros_nomes>
+                <item>Shiryu de Dragão</item>
+            </outros_nomes>
+            <constelacao>Draco</constelacao>
+            <armadura>Dragão</armadura>
+            <divindade>Atena</divindade>
+            <classificacao>Cavaleiros de Bronze</classificacao>
+        </item>
+
+        <item>
+            <nome_original>アンドロメダ星座の瞬</nome_original>
+            <name>Shun</name>
+            <outros_nomes>
+                <item>Shun de Andrômeda</item>
+            </outros_nomes>
+            <constelacao>Andrômeda</constelacao>
+            <armadura>Andrômeda</armadura>
+            <divindade>Atena</divindade>
+            <classificacao>Cavaleiro de Bronze</classificacao>
+        </item>
+
+        <item>
+            <nome_original>鳳凰星座の一輝</nome_original>
+            <name>Ikki</name>
+            <outros_nomes>
+                <item>Ikki Kido</item>
+            </outros_nomes>
+            <constelacao>Fênix</constelacao>
+            <armadura>Fênix</armadura>
+            <divindade>Atena</divindade>
+            <classificacao>Cavaleiro de Bronze</classificacao>
+        </item>
+
+        <item>
+            <nome_original>Hyoga</nome_original>
+            <name>白鳥星座の氷河</name>
+            <constelacao>Cygnus</constelacao>
+            <armadura>Cisne</armadura>
+            <divindade>
+                <item>Atena</item>
+                <item>Odin</item>
+            </divindade>
+            <classificacao>Cavaleiro de Bronze</classificacao>
+        </item>
+    </personagens>
+</cdz>
