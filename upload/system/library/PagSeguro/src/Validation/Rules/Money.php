@@ -11,7 +11,7 @@ class Money implements IValidation
 
     public function __construct(int $decimals = 2)
     {
-        $this->decimals = $decimals;        
+        $this->decimals = $decimals + 1;
     }
 
     /**
@@ -19,6 +19,6 @@ class Money implements IValidation
      */
     public function validate($input)
     {
-        return strlen(strrchr($input, '.')) == ($this->decimals + 1);
+        return strlen(strrchr($input, '.')) <= $this->decimals;
     }
 }
