@@ -62,4 +62,20 @@ class Environment
     {
         return $this->isSandbox;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
+    }
 }
