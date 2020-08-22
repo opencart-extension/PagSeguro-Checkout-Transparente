@@ -106,7 +106,7 @@ class PaymentTest extends TestCase
                 </phone>
                 <documents>
                     <document>
-                        <type>cpf</type>
+                        <type>CPF</type>
                         <value>72962940005</value>
                     </document>
                 </documents>

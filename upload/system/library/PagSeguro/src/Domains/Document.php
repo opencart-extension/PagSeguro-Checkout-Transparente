@@ -19,7 +19,7 @@ class Document implements Xml, IArray
      */
     private function __construct(string $type, string $value)
     {
-        $this->type = $type;
+        $this->type = strtoupper($type);
         $this->value = $value;
     }
 

@@ -73,7 +73,7 @@ class SenderTest extends TestCase
         ], $instance->getPhone());
         $this->assertEquals(
             [
-                'cpf',
+                'CPF',
                 '72962940005'
             ], [
                 $instance->getDocument()->getType(),
@@ -98,7 +98,7 @@ class SenderTest extends TestCase
             </phone>
             <documents>
                 <document>
-                    <type>cpf</type>
+                    <type>CPF</type>
                     <value>72962940005</value>
                 </document>
             </documents>

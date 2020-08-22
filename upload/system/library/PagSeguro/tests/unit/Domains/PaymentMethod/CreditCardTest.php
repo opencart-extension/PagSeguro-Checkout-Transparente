@@ -84,7 +84,7 @@ class CreditCardTest extends TestCase
                 <birthDate>20/10/1980</birthDate>
                 <documents>
                     <document>
-                        <type>cpf</type>
+                        <type>CPF</type>
                         <value>22111944785</value>
                     </document>
                 </documents>
