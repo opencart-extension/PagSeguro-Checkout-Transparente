@@ -2,9 +2,13 @@
 
 namespace ValdeirPsr\PagSeguro\Domains;
 
+use DOMDocument;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\Xml;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\IArray;
+use ValdeirPsr\PagSeguro\Parser\Xml as XmlParser;
 use \ValdeirPsr\PagSeguro\Validation\Validator as v;
 
-class Document
+class Document implements Xml, IArray
 {
     private $type;
     private $value;
@@ -71,5 +75,51 @@ class Document
     public function getValue(): string
     {
         return $this->value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function fromXml(string $value)
+    {
+        $dom = new DOMDocument();
+        $dom->loadXml($value);
+
+        $type = $dom->getElementsByTagName('type');
+        $value = $dom->getElementsByTagName('value');
+
+        if ($type->count() > 0) {
+            $type = strtolower(trim($type->item(0)->textContent));
+            $value = preg_replace('/\D/', '', (trim($value->item(0)->textContent)));
+
+            if ($type === 'cpf') {
+                return new self('cpf', $value);
+            } elseif ($type === 'cnpj') {
+                return new self('cnpj', $value);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toXml(): string
+    {
+        $parser = new XmlParser();
+        $result = $parser->parser([
+            "document" => get_object_vars($this)
+        ]);
+
+        return $result->saveXml();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray(): array
+    {
+        return array_filter(get_object_vars($this));
     }
 }

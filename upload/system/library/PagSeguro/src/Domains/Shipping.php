@@ -2,10 +2,14 @@
 
 namespace ValdeirPsr\PagSeguro\Domains;
 
+use DOMDocument;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\IArray;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\Xml;
 use ValdeirPsr\PagSeguro\Constants\Shipping\Type;
+use ValdeirPsr\PagSeguro\Parser\Xml as XmlParser;
 use ValdeirPsr\PagSeguro\Validation\Validator as v;
 
-class Shipping
+class Shipping implements Xml, IArray
 {
     /** @var int Tipo de Frete (1 - PAC; 2 - SEDEX; 3 - Outros) */
     private $type;
@@ -116,5 +120,82 @@ class Shipping
     public function getAddress(): Address
     {
         return $this->address;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function fromXml(string $value)
+    {
+        $dom = new DOMDocument();
+        $dom->loadXml($value);
+
+        $instance = new self;
+
+        $type = $dom->getElementsByTagName('type');
+
+        if ($type->count() > 0) {
+            $instance->type = $type->item(0)->textContent;
+        }
+
+        $cost = $dom->getElementsByTagName('cost');
+
+        if ($cost->count() > 0) {
+            $instance->cost = $cost->item(0)->textContent;
+        }
+
+        $addressRequired = $dom->getElementsByTagName('addressRequired');
+
+        if ($addressRequired->count() > 0) {
+            $instance->addressRequired = trim($addressRequired->item(0)->textContent) === 'true';
+        }
+
+        $address = $dom->getElementsByTagName('address');
+
+        if ($address->count() > 0) {
+            $instance->address = Address::fromXml($address->item(0)->ownerDocument->saveXML($address->item(0)));
+        }
+
+        return $instance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toXml(): string
+    {
+        $arr = $this->toArray();
+        
+        if ($this->addressRequired) {
+            $arr["addressRequired"] = 'true';
+        }
+
+        $parser = new XmlParser();
+        $dom = $parser->parser([
+            "shipping" => array_filter($arr)
+        ]);
+
+        return $dom->saveXML();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray($forceString = false): array
+    {
+        $addressRequired = $this->addressRequired;
+
+        if ($forceString === true) {
+            $addressRequired = ($addressRequired === true) ? 'true' : 'false';
+        }
+
+        return array_filter([
+            "type" => $this->type,
+            "cost" => number_format($this->cost, 2, '.', ''),
+            "addressRequired" => $addressRequired,
+            "address" => ($this->address) ? $this->address->toArray() : null
+        ], function($item) {
+            return $item !== null;
+        });
     }
 }

@@ -37,9 +37,9 @@ class MoneyTest extends TestCase
     public function providerInvalid()
     {
         return [
-            [2, 1307199.3],
-            [3, 130719.93],
-            [5, 1307.1993],
+            [2, 1307199.399],
+            [3, 130719.93999],
+            [5, 1307.199399],
         ];
     }
 }

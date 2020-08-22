@@ -2,9 +2,13 @@
 
 namespace ValdeirPsr\PagSeguro\Domains;
 
+use DOMDocument;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\Xml;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\IArray;
+use ValdeirPsr\PagSeguro\Parser\Xml as XmlParser;
 use ValdeirPsr\PagSeguro\Validation\Validator as v;
 
-class CartItem
+class CartItem implements Xml, IArray
 {
     /** @var string Identificador do produto. Deve ser único */
     private $id;
@@ -80,13 +84,15 @@ class CartItem
             throw new \InvalidArgumentException('Amount invalid. The value must have two decimal places. Was: ' . $value);
         }
 
-        $this->amount = $value;
+        $this->amount = number_format($value, 2, '.', '');
+
+        return $this;
     }
 
     /**
      * @return float Retorna o preço unitário do item
      */
-    public function getAmount(): float
+    public function getAmount(): string
     {
         return $this->amount;
     }
@@ -112,5 +118,63 @@ class CartItem
     public function getQuantity(): int
     {
         return $this->quantity;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function fromXml(string $value)
+    {
+        $dom = new DOMDocument();
+        $dom->loadXML($value);
+
+        $instance = new self();
+
+        $id = $dom->getElementsByTagName('id');
+
+        if ($id->count() > 0) {
+            $instance->id = $id->item(0)->textContent;
+        }
+
+        $description = $dom->getElementsByTagName('description');
+
+        if ($description->count() > 0) {
+            $instance->description = $description->item(0)->textContent;
+        }
+
+        $quantity = $dom->getElementsByTagName('quantity');
+
+        if ($quantity->count() > 0) {
+            $instance->quantity = $quantity->item(0)->textContent;
+        }
+
+        $amount = $dom->getElementsByTagName('amount');
+
+        if ($amount->count() > 0) {
+            $instance->amount = $amount->item(0)->textContent;
+        }
+
+        return $instance;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toXml(): string
+    {
+        $parser = new XmlParser();
+        $result = $parser->parser([
+            'item' => $this->toArray()
+        ]);
+
+        return $result->saveXML();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray(): array
+    {
+        return array_filter(get_object_vars($this));
     }
 }

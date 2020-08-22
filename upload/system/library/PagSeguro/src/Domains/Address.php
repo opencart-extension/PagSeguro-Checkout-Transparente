@@ -3,19 +3,24 @@ declare(strict_types=1);
 
 namespace ValdeirPsr\PagSeguro\Domains;
 
+use DOMDocument;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\Xml;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\IArray;
+use ValdeirPsr\PagSeguro\Parser\Xml as XmlParser;
+
 /**
  * Classe responsável pelo endereço de envio e entrega
  */
-class Address
+class Address implements Xml, IArray
 {
     private $street;
     private $number;
+    private $complement;
     private $district;
     private $city;
     private $state;
     private $country = 'BRA';
-    private $postalcode;
-    private $complement;
+    private $postalCode;
 
     /**
      * @param string $street
@@ -23,7 +28,7 @@ class Address
      * @param string $district
      * @param string $city
      * @param string $state
-     * @param string $postalcode
+     * @param string $postalCode
      * @param string|null $complement
      */
     public function __construct(
@@ -32,7 +37,7 @@ class Address
         string $district = null,
         string $city = null,
         string $state = null,
-        string $postalcode = null,
+        string $postalCode = null,
         string $complement = null
     )
     {
@@ -41,7 +46,7 @@ class Address
         if ($district) $this->setDistrict($district);
         if ($city) $this->setCity($city);
         if ($state) $this->setState($state);
-        if ($postalcode) $this->setPostalcode($postalcode);
+        if ($postalCode) $this->setPostalCode($postalCode);
         if ($complement) $this->setComplement($complement);
     }
     
@@ -89,6 +94,27 @@ class Address
     public function getNumber(): string
     {
         return $this->number;
+    }
+
+    /**
+     * Define o complemento do endereço
+     * 
+     * @param string|null $value
+     */
+    public function setComplement(?string $value): self
+    {
+        $this->complement = $value;
+        return $this;
+    }
+
+    /**
+     * Retorna o complemento
+     * 
+     * @return string|null
+     */
+    public function getComplement(): ?string
+    {
+        return $this->complement;
     }
 
 
@@ -177,9 +203,9 @@ class Address
      * 
      * @param stringi $value
      */
-    public function setPostalcode(string $value): self
+    public function setPostalCode(string $value): self
     {
-        $this->postalcode = preg_replace('/\D/', '', $value);
+        $this->postalCode = preg_replace('/\D/', '', $value);
         return $this;
     }
 
@@ -188,29 +214,91 @@ class Address
      * 
      * @return string (Apenas o número)
      */
-    public function getPostalcode(): string
+    public function getPostalCode(): string
     {
-        return $this->postalcode;
+        return $this->postalCode;
     }
 
     /**
-     * Define o complemento do endereço
-     * 
-     * @param string|null $value
+     * {@inheritDoc}
      */
-    public function setComplement(?string $value): self
+    public static function fromXml(string $value)
     {
-        $this->complement = $value;
-        return $this;
+        $dom = new DOMDocument();
+        $dom->loadXML($value);
+
+        $instance = new self();
+
+        $street = $dom->getElementsByTagName('street');
+
+        if ($street->count() > 0) {
+            $instance->street = $street->item(0)->textContent;
+        }
+
+        $number = $dom->getElementsByTagName('number');
+
+        if ($number->count() > 0) {
+            $instance->number = $number->item(0)->textContent;
+        }
+        
+        $district = $dom->getElementsByTagName('district');
+
+        if ($district->count() > 0) {
+            $instance->district = $district->item(0)->textContent;
+        }
+
+        $city = $dom->getElementsByTagName('city');
+
+        if ($city->count() > 0) {
+            $instance->city = $city->item(0)->textContent;
+        }
+
+        $state = $dom->getElementsByTagName('state');
+
+        if ($state->count() > 0) {
+            $instance->state = $state->item(0)->textContent;
+        }
+        
+        $country = $dom->getElementsByTagName('country');
+
+        if ($country->count() > 0) {
+            $instance->country = $country->item(0)->textContent;
+        }
+        
+        $postalCode = $dom->getElementsByTagName('postalCode');
+
+        if ($postalCode->count() > 0) {
+            $instance->postalCode = $postalCode->item(0)->textContent;
+        }
+        
+        $complement = $dom->getElementsByTagName('complement');
+
+        if ($complement->count() > 0) {
+            $instance->complement = $complement->item(0)->textContent;
+        }
+        
+
+        return $instance;
     }
 
     /**
-     * Retorna o complemento
-     * 
-     * @return string|null
+     * {@inheritDoc}
      */
-    public function getComplement(): ?string
+    public function toXml(): string
     {
-        return $this->complement;
+        $parser = new XmlParser();
+        $result = $parser->parser([
+            'address' => $this->toArray()
+        ]);
+
+        return $result->saveXML();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray(): array
+    {
+        return array_filter(get_object_vars($this));
     }
 }

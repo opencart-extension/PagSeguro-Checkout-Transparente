@@ -3,20 +3,21 @@
 namespace ValdeirPsr\PagSeguro\Domains\User;
 
 use ValdeirPsr\PagSeguro\Validation\Validator as v;
+use ValdeirPsr\PagSeguro\Domains\Document;
 
 abstract class AbstractUser
 {
     /** @var string */
-    private $name;
+    protected $name;
 
     /** @var string */
-    private $email;
+    protected $email;
 
     /** @var string[] */
-    private $phone = [];
+    protected $phone = [];
 
     /** @var Document */
-    private $document;
+    protected $document;
 
     /**
      * Define o nome do comprador

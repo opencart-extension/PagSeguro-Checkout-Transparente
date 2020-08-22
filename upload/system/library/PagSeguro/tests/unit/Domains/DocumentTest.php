@@ -40,4 +40,39 @@ class DocumentTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $instance = Document::cnpj('00.000.000/0001-90');
     }
+
+    /**
+     * @test
+     */
+    public function populateFromXml()
+    {
+        $xml = '
+        <document>
+            <type>CPF</type>
+            <value>72962940005</value>
+        </document>
+        ';
+
+        $instance = Document::fromXml($xml);
+
+        $this->assertEqualsIgnoringCase('cpf', $instance->getType());
+        $this->assertEquals('72962940005', $instance->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function populateToXml()
+    {
+        $xml = '
+        <document>
+            <type>cpf</type>
+            <value>72962940005</value>
+        </document>
+        ';
+
+        $instance = Document::cpf('72962940005');
+
+        $this->assertXmlStringEqualsXmlString($xml, $instance->toXml());
+    }
 }

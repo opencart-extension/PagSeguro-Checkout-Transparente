@@ -26,7 +26,7 @@ abstract class AbstractPaymentMethod
      */
     public function getType(): int
     {
-        return $this->$type;
+        return $this->type;
     }
 
     /**
