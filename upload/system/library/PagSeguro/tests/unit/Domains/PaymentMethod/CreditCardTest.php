@@ -78,6 +78,7 @@ class CreditCardTest extends TestCase
             <installment>
                 <quantity>3</quantity>
                 <value>14.14</value>
+                <noInterestInstallmentQuantity>3</noInterestInstallmentQuantity>
             </installment>
             <holder>
                 <name>Nome impresso no cartao</name>
@@ -129,6 +130,7 @@ class CreditCardTest extends TestCase
         $instance->setInstallmentValue(14.14);
         $instance->setHolder($holder);
         $instance->setBillingAddress($billingAddress);
+        $instance->setNoInterestInstallmentQuantity(3);
 
         $this->assertXmlStringEqualsXmlString($xml, $instance->toXml());
     }

@@ -20,6 +20,9 @@ class CreditCard extends AbstractPaymentMethod implements Xml
     /** @var float */
     private $installmentValue;
 
+    /** @var int */
+    private $noInterestInstallmentQuantity;
+
     /** @var Holder */
     private $holder;
 
@@ -95,6 +98,28 @@ class CreditCard extends AbstractPaymentMethod implements Xml
     public function getInstallmentValue(): float
     {
         return $this->installmentValue;
+    }
+
+    /**
+     * Informa o número de parcelas
+     * 
+     * @param int $value
+     * 
+     * @return self
+     */
+    public function setNoInterestInstallmentQuantity(int $value): self
+    {
+        $this->noInterestInstallmentQuantity = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNoInterestInstallmentQuantity(): int
+    {
+        return $this->noInterestInstallmentQuantity;
     }
 
     /**
@@ -180,6 +205,7 @@ class CreditCard extends AbstractPaymentMethod implements Xml
                 'installment' => [
                     'quantity' => $this->installmentQuantity,
                     'value' => $this->installmentValue,
+                    'noInterestInstallmentQuantity' => $this->noInterestInstallmentQuantity
                 ],
                 'holder' => $this->holder->toArray(),
                 'billingAddress' => $this->billingAddress->toArray()
