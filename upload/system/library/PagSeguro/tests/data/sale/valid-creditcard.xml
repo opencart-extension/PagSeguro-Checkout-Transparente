@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<payment>
+    <mode>default</mode>
+    <method>creditCard</method>
+    <sender>
+        <name>Florbela Espanca</name>
+        <email>fulano.silva@sandbox.pagseguro.com.br</email>
+        <hash></hash>
+        <phone>
+            <areaCode>11</areaCode>
+            <number>30380000</number>
+        </phone>
+        <documents>
+            <document>
+                <type>CPF</type>
+                <value>72962940005</value>
+            </document>
+        </documents>
+    </sender>
+    <currency>BRL</currency>
+    <notificationURL>https://sualoja.com.br/notificacao</notificationURL>
+    <items>
+        <item>
+            <id>1</id>
+            <description>Antologia poetica de Florbela Espanca</description>
+            <amount>27.80</amount>
+            <quantity>1</quantity>
+        </item>
+        <item>
+            <id>2</id>
+            <description>Poesia de Florbela Espanca</description>
+            <amount>15.60</amount>
+            <quantity>1</quantity>
+        </item>
+    </items>
+    <reference>R123456</reference>
+    <shipping>
+        <type>3</type>
+        <cost>0.00</cost>
+        <addressRequired>true</addressRequired>
+        <address>
+            <street>Av. Brigadeiro Faria Lima</street>
+            <number>1384</number>
+            <complement>1 andar</complement>
+            <district>Jardim Paulistano</district>
+            <city>Sao Paulo</city>
+            <state>SP</state>
+            <country>BRA</country>
+            <postalCode>01452002</postalCode>
+        </address>
+    </shipping>
+    <creditCard>
+        <token>e79fc9be6fd14b3c8b6164f21ba3c464</token>
+        <installment>
+            <quantity>3</quantity>
+            <value>14.47</value>
+            <noInterestInstallmentQuantity>3</noInterestInstallmentQuantity>
+        </installment>
+        <holder>
+            <name>Nome impresso no cartao</name>
+            <documents>
+                <document>
+                    <type>CPF</type>
+                    <value>22111944785</value>
+                </document>
+            </documents>
+            <birthDate>20/10/1980</birthDate>
+            <phone>
+                <areaCode>11</areaCode>
+                <number>999991111</number>
+            </phone>
+        </holder>
+        <billingAddress>
+            <street>Av. Brigadeiro Faria Lima</street>
+            <number>1384</number>
+            <complement>1 andar</complement>
+            <district>Jardim Paulistano</district>
+            <city>Sao Paulo</city>
+            <state>SP</state>
+            <country>BRA</country>
+            <postalCode>01452002</postalCode>
+        </billingAddress>
+    </creditCard>
+</payment>
