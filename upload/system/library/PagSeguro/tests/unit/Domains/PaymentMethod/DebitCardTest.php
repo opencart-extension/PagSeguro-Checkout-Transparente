@@ -98,4 +98,24 @@ class DebitCardTest extends TestCase
         $this->assertEquals('eft', $instance->getMethod());
         $this->assertEquals('https://sandbox.pagseguro.uol.com.br/checkout/payment/booklet/print.jhtml?c=b7989f954e7253974d2bf0bbe6c80cfb6caa0e146b13d70d90ffbb3243b22302c4600a923e6f02b0', $instance->getPaymentLink());
     }
+
+    /**
+     * @test
+     */
+    public function populateToXml()
+    {
+        $xml = '
+        <eft>
+            <bank>
+                <name>BANCO_BRASIL</name>
+            </bank>
+            <method>eft</method>
+        </eft>
+        ';
+
+        $instance = new DebitCard();
+        $instance->setBank('BANCO_BRASIL');
+
+        $this->assertXmlStringEqualsXmlString($xml, $instance->toXml());
+    }
 }

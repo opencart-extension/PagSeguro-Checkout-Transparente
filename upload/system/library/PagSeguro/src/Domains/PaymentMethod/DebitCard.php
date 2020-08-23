@@ -12,6 +12,9 @@ class DebitCard extends AbstractPaymentMethod implements Xml
     /** @var string Link de pagamento (somente leitura) */
     private $paymentLink;
 
+    /** @var string ID da instituição financeira*/
+    private $bank;
+
     public function __construct()
     {
         parent::__construct('eft');
@@ -23,6 +26,28 @@ class DebitCard extends AbstractPaymentMethod implements Xml
     public function getPaymentLink(): string
     {
         return $this->paymentLink;
+    }
+
+    /**
+     * Define o nome da instituição financeira
+     * 
+     * @param string $value
+     * 
+     * @return self
+     */
+    public function setBank(string $value): self
+    {
+        $this->bank = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBank(): string
+    {
+        return $this->bank;
     }
 
     /**
@@ -63,8 +88,18 @@ class DebitCard extends AbstractPaymentMethod implements Xml
      */
     public function toXml(): string
     {
+        $arr = get_object_vars($this);
+        
+        if ($this->bank) {
+            $arr['bank'] = [
+                'name' => $this->bank
+            ];
+        }
+
         $parser = new XmlParser();
-        $result = $parser->parser(array_filter(get_object_vars($this)));
+        $result = $parser->parser([
+            'eft' => array_filter($arr)
+        ]);
 
         return $result->saveXML();
     }
