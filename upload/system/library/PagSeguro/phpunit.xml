@@ -20,13 +20,4 @@
       <directory>tests/unit/</directory>
     </testsuite>
   </testsuites>
-
-  <testsuites>
-    <testsuite name="no-request">
-      <directory>tests/unit/</directory>
-      <exclude>
-        <directory>tests/unit/Request</directory>
-      </exclude>
-    </testsuite>
-  </testsuites>
 </phpunit>
