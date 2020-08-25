@@ -345,6 +345,12 @@ class Payment
             $instance->shipping = Shipping::fromXml($dom->saveXML($shipping->item(0)));
         }
 
+        $creditCard = $xpath->query('/payment/creditCard');
+
+        if ($creditCard->count() > 0) {
+            $instance->creditCard = creditCard::fromXml($dom->saveXML($shipping->item(0)));
+        }
+
         return $instance;
     }
 
@@ -392,12 +398,16 @@ class Payment
         if ($this->shipping) {
             $arr['shipping'] = $this->shipping->toArray(true);
         }
+
+        if ($this->payment instanceof CreditCard) {
+            $arr['creditCard'] = $this->payment->toArray(true);
+        }
         
         $parser = new XmlParser();
         $result = $parser->parser([
             'payment' => $arr
         ]);
 
-        return $result->saveXML();
+        return $result->saveXML(null);
     }
 }

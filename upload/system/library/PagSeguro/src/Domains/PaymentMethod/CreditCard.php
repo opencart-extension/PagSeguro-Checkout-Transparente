@@ -5,11 +5,12 @@ namespace ValdeirPsr\PagSeguro\Domains\PaymentMethod;
 use DOMDocument;
 use DOMXPath;
 use ValdeirPsr\PagSeguro\Interfaces\Serializer\Xml;
+use ValdeirPsr\PagSeguro\Interfaces\Serializer\IArray;
 use ValdeirPsr\PagSeguro\Parser\Xml as XmlParser;
 use ValdeirPsr\PagSeguro\Domains\User\Holder;
 use ValdeirPsr\PagSeguro\Domains\Address;
 
-class CreditCard extends AbstractPaymentMethod implements Xml
+class CreditCard extends AbstractPaymentMethod implements IArray, Xml
 {
     /** @var string */
     private $token;
@@ -200,18 +201,26 @@ class CreditCard extends AbstractPaymentMethod implements Xml
     {
         $parser = new XmlParser();
         $result = $parser->parser([
-            'creditCard' => [
-                'token' => $this->token,
-                'installment' => [
-                    'quantity' => $this->installmentQuantity,
-                    'value' => $this->installmentValue,
-                    'noInterestInstallmentQuantity' => $this->noInterestInstallmentQuantity
-                ],
-                'holder' => $this->holder->toArray(),
-                'billingAddress' => $this->billingAddress->toArray()
-            ]
+            'creditCard' => $this->toArray()
         ]);
 
         return $result->saveXML();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function toArray(): array
+    {
+        return array_filter([
+            'token' => $this->token,
+            'installment' => array_filter([
+                'quantity' => $this->installmentQuantity,
+                'value' => $this->installmentValue,
+                'noInterestInstallmentQuantity' => $this->noInterestInstallmentQuantity
+            ]),
+            'holder' => $this->holder->toArray(),
+            'billingAddress' => $this->billingAddress->toArray()
+        ]);
     }
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<payment>
+    <mode>default</mode>
+    <method>creditcard</method>
+    <sender>
+        <name>Florbela Espanca</name>
+        <email>fulano.silva.sandbox.pagseguro.com.br</email>
+        <phone>
+            <areaCode>11</areaCode>
+            <number>30380000</number>
+        </phone>
+        <documents>
+            <document>
+                <type>CPF</type>
+                <value>72962940005</value>
+            </document>
+        </documents>
+    </sender>
+    <currency>BRL</currency>
+    <notificationURL>https://sualoja.com.br/notificacao</notificationURL>
+    <items>
+        <item>
+            <id>1</id>
+            <description>Antologia poetica de Florbela Espanca</description>
+            <amount>2780</amount>
+            <quantity>1</quantity>
+        </item>
+        <item>
+            <id>2</id>
+            <description>Poesia de Florbela Espanca</description>
+            <amount>15.600</amount>
+            <quantity>1</quantity>
+        </item>
+    </items>
+    <reference>R123456</reference>
+    <shipping>
+        <type>30</type>
+        <cost>0.00</cost>
+        <addressRequired>true</addressRequired>
+    </shipping>
+    <creditCard>
+        <token>e79fc9be6fd14b3c8b6164f21ba3c464</token>
+        <installment>
+            <quantity>3</quantity>
+            <value>14.46</value>
+        </installment>
+        <holder>
+            <name>Nome impresso no cartao</name>
+            <birthDate>20/10/2021</birthDate>
+            <documents>
+                <document>
+                    <type>CPF</type>
+                    <value>25136624078</value>
+                </document>
+            </documents>
+            <phone>
+                <areaCode>11</areaCode>
+                <number>999991111</number>
+            </phone>
+        </holder>
+        <billingAddress>
+            <street>Av. Brigadeiro Faria Lima</street>
+            <complement>1 andar</complement>
+            <district>Jardim Paulistano</district>
+            <city>Sao Paulo</city>
+            <state>SP</state>
+            <country>BRA</country>
+            <postalCode>01452002</postalCode>
+        </billingAddress>
+    </creditCard>
+</payment>

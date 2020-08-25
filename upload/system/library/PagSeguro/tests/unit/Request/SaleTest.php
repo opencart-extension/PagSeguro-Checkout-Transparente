@@ -4,9 +4,15 @@ use PHPUnit\Framework\TestCase;
 use ValdeirPsr\PagSeguro\Constants\PaymentMethod\Methods as PaymentMethods;
 use ValdeirPsr\PagSeguro\Domains\Environment;
 use ValdeirPsr\PagSeguro\Domains\Payment;
+use ValdeirPsr\PagSeguro\Domains\Error;
+use \ValdeirPsr\PagSeguro\Domains\Document;
+use \ValdeirPsr\PagSeguro\Domains\Address;
+use ValdeirPsr\PagSeguro\Domains\PaymentMethod\CreditCard;
+use ValdeirPsr\PagSeguro\Domains\User\Holder;
 use ValdeirPsr\PagSeguro\Request\Factory;
 use ValdeirPsr\PagSeguro\Request\Sale;
 use ValdeirPsr\PagSeguro\Exception\Auth as AuthException;
+use ValdeirPsr\PagSeguro\Exception\PagSeguroRequest as PagSeguroRequestException;
 
 class SaleTest extends TestCase
 {
@@ -87,9 +93,7 @@ class SaleTest extends TestCase
     {
         $env = Environment::sandbox('pagseguro@valdeir.dev', '1234567890');
 
-        $xml = file_get_contents('tests/data/sale/valid-creditcard.xml');
-
-        $payment = Payment::fromXml($xml);
+        $payment = new Payment();
 
         $stub = $this->getMockBuilder(Sale::class)
             ->setConstructorArgs([$env])
@@ -112,5 +116,102 @@ class SaleTest extends TestCase
         $this->assertEquals('0', $newPayment->getGatewaySystem()->getTid());
         $this->assertEquals('1056784170', $newPayment->getGatewaySystem()->getEstablishmentCode());
         $this->assertEquals('CIELO', $newPayment->getGatewaySystem()->getAcquirerName());
+    }
+
+    /**
+     * @test
+     */
+    public function createSaleWithCreditCardAndInvalidArgumentsShouldGiveError()
+    {
+        try {
+            $env = Environment::sandbox('pagseguro@valdeir.dev', '1234567890');
+
+            $payment = Payment::fromXml(file_get_contents('tests/data/sale/invalid-creditcard.xml'));
+
+            $creditCard = new CreditCard();
+            $creditCard->setToken('e79fc9be6fd14b3c8b6164f21ba3c464');
+            $creditCard->setInstallmentQuantity(3);
+            $creditCard->setInstallmentValue(14.46);
+
+            $holder = new Holder();
+            $holder->setName('Nome impresso no cartao');
+            $holder->setBirthDate(DateTime::createFromFormat('d/m/Y', '20/10/2021'));
+            $holder->setDocument(Document::cpf('25136624078'));
+            $holder->setPhone('11', '999991111');
+            $creditCard->setHolder($holder);
+
+            $address = new Address();
+            $address->setStreet('Av. Brigadeiro Faria Lima');
+            $address->setComplement('1 andar');
+            $address->setDistrict('Jardim Paulistano');
+            $address->setCity('Sao Paulo');
+            $address->setState('SP');
+            $address->setPostalCode('01452002');
+            $creditCard->setBillingAddress($address);
+
+            $payment->setPayment($creditCard);
+
+            $stub = $this->getMockBuilder(Sale::class)
+                ->setConstructorArgs([$env])
+                ->setMethods(['buildUrl'])
+                ->getMock();
+
+            $stub->expects($this->any())
+                ->method('buildUrl')
+                ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/creditcard-invalid');
+
+            $newPayment = $stub->create($payment);
+        } catch (PagSeguroRequestException $request) {
+            $errors = $request->getErrors();
+
+            $this->assertNotEmpty($errors);
+            $this->assertContainsOnlyInstancesOf(Error::class, $errors);
+            $this->assertXmlStringEqualsXmlFile('tests/data/sale/invalid-creditcard.xml', $request->getRequestBody());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function createSaleWithCreditCardAndValidArgumentsAndInvalidCredentialsShouldGiveError()
+    {
+        $this->expectException(AuthException::class);
+        $env = Environment::sandbox('pagseguro@valdeir.dev', '1234567890');
+
+        $payment = Payment::fromXml(file_get_contents('tests/data/sale/valid-creditcard.xml'));
+
+        $creditCard = new CreditCard();
+        $creditCard->setToken('e79fc9be6fd14b3c8b6164f21ba3c464');
+        $creditCard->setInstallmentQuantity(3);
+        $creditCard->setInstallmentValue(14.46);
+
+        $holder = new Holder();
+        $holder->setName('Nome impresso no cartao');
+        $holder->setBirthDate(DateTime::createFromFormat('d/m/Y', '20/10/2021'));
+        $holder->setDocument(Document::cpf('25136624078'));
+        $holder->setPhone('11', '999991111');
+        $creditCard->setHolder($holder);
+
+        $address = new Address();
+        $address->setStreet('Av. Brigadeiro Faria Lima');
+        $address->setComplement('1 andar');
+        $address->setDistrict('Jardim Paulistano');
+        $address->setCity('Sao Paulo');
+        $address->setState('SP');
+        $address->setPostalCode('01452002');
+        $creditCard->setBillingAddress($address);
+
+        $payment->setPayment($creditCard);
+
+        $stub = $this->getMockBuilder(Sale::class)
+            ->setConstructorArgs([$env])
+            ->setMethods(['buildUrl'])
+            ->getMock();
+
+        $stub->expects($this->any())
+            ->method('buildUrl')
+            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/creditcard-valid-invalid-session');
+
+        $newPayment = $stub->create($payment);
     }
 }
