@@ -225,7 +225,7 @@ class Transaction implements Xml
         $dom = new DOMDocument();
         $dom->loadXml($value);
 
-        $instance = new self;
+        $instance = new self();
 
         $xpath = new DOMXPath($dom);
 
@@ -257,7 +257,7 @@ class Transaction implements Xml
 
         $type = $xpath->query('/transaction/type');
 
-        if ($type->count() > 0){
+        if ($type->count() > 0) {
             $instance->type = intval($type->item(0)->textContent);
         }
 
@@ -269,8 +269,11 @@ class Transaction implements Xml
 
         $lastEventDate = $xpath->query('/transaction/lastEventDate');
 
-        if ($lastEventDate->count() > 0){
-            $instance->lastEventDate = DateTime::createFromFormat('Y-m-d\TH:i:s\.000P', $lastEventDate->item(0)->textContent);
+        if ($lastEventDate->count() > 0) {
+            $instance->lastEventDate = DateTime::createFromFormat(
+                'Y-m-d\TH:i:s\.000P',
+                $lastEventDate->item(0)->textContent
+            );
         }
 
         $grossAmount = $xpath->query('/transaction/grossAmount');

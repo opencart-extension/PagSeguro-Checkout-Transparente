@@ -4,7 +4,7 @@ namespace ValdeirPsr\PagSeguro\Validation;
 
 class Factory
 {
-    const RULES_NAMESPACE = '\\ValdeirPsr\\PagSeguro\\Validation\\Rules\\';
+    private const RULES_NAMESPACE = '\\ValdeirPsr\\PagSeguro\\Validation\\Rules\\';
 
     private static $defaultInstance;
 
@@ -22,13 +22,13 @@ class Factory
 
     /**
      * Instancia, caso exista, a regra informada
-     * 
+     *
      * @param string $name regra
      * @param string $args
-     * 
+     *
      * @throws \UnexpectedValueException Caso a regra não exista
      * @throws \BadMethodCallException Caso a classe da regra não seja instanciável
-     * 
+     *
      * @return IValidation
      */
     public function rule($name, $args)

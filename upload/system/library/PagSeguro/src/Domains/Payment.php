@@ -47,9 +47,9 @@ class Payment
 
     /**
      * Define os modo
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setMode(string $value): self
@@ -69,9 +69,9 @@ class Payment
 
     /**
      * Define os dados do comprador
-     * 
+     *
      * @param Sender $value
-     * 
+     *
      * @return self
      */
     public function setSender(Sender $value): self
@@ -91,9 +91,9 @@ class Payment
 
     /**
      * Define a moeda de pagamento
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setCurrency(string $value): self
@@ -113,9 +113,9 @@ class Payment
 
     /**
      * Define a URL de notificação
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setNotificationUrl(string $value): self
@@ -135,9 +135,9 @@ class Payment
 
     /**
      * Define os items comprados
-     * 
+     *
      * @param CartItem[] $values
-     * 
+     *
      * @return self
      */
     public function setCartItems(array $values = []): self
@@ -153,9 +153,9 @@ class Payment
 
     /**
      * Adiciona um item aos itens comprados
-     * 
+     *
      * @param CartItem $value
-     * 
+     *
      * @return self
      */
     public function addCartItem(CartItem $value): self
@@ -177,9 +177,9 @@ class Payment
      * Define o valores extras:
      *  - valor positivo para acŕescimo;
      *  - valor negativo para desconto
-     * 
+     *
      * @param float $value
-     * 
+     *
      * @return self
      */
     public function setExtraAmount(float $value): self
@@ -199,9 +199,9 @@ class Payment
 
     /**
      * Define referencia para o pedidos, como ID do pedido
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setReference(string $value): self
@@ -221,9 +221,9 @@ class Payment
 
     /**
      * Define os dados de entrega
-     * 
+     *
      * @param Shipping $value
-     * 
+     *
      * @return self
      */
     public function setShipping(Shipping $value): self
@@ -243,9 +243,9 @@ class Payment
 
     /**
      * Define a configuração de pagamento
-     * 
+     *
      * @param AbstractPaymentMethod $value
-     * 
+     *
      * @return self
      */
     public function setPayment($value): self
@@ -275,7 +275,7 @@ class Payment
         $dom = new DOMDocument();
         $dom->loadXml($value);
 
-        $instance = new self;
+        $instance = new self();
 
         $xpath = new DOMXPath($dom);
 
@@ -301,7 +301,6 @@ class Payment
 
         if ($notificationUrl->count() > 0) {
             $instance->notificationUrl = $notificationUrl->item(0)->textContent;
-
         }
 
         $payment = $xpath->query('/payment/method');

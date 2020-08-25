@@ -21,9 +21,9 @@ abstract class AbstractUser
 
     /**
      * Define o nome do comprador
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setName(string $value): self
@@ -42,9 +42,9 @@ abstract class AbstractUser
 
     /**
      * Define o e-mail do comprador
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setEmail(string $value): self
@@ -68,10 +68,10 @@ abstract class AbstractUser
     /**
      * Define o número de telefone do comprador
      * O código removerá todos os caracteres não númericos.
-     * 
+     *
      * @param string|int $areaCode
      * @param string|int $number
-     * 
+     *
      * @return self
      */
     public function setPhone($areaCode, $number): self
@@ -93,9 +93,9 @@ abstract class AbstractUser
 
     /**
      * Define o documento (CPF ou CNPJ)
-     * 
+     *
      * @param Document $value
-     * 
+     *
      * @return self
      */
     public function setDocument(Document $value): self

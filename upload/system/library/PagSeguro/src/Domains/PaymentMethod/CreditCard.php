@@ -37,9 +37,9 @@ class CreditCard extends AbstractPaymentMethod implements IArray, Xml
 
     /**
      * Define o token, gerado pelo JavaScript, do cartão
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setToken(string $value): self
@@ -59,9 +59,9 @@ class CreditCard extends AbstractPaymentMethod implements IArray, Xml
 
     /**
      * Define o número de parcelas
-     * 
+     *
      * @param int $value
-     * 
+     *
      * @return self
      */
     public function setInstallmentQuantity(int $value): self
@@ -81,9 +81,9 @@ class CreditCard extends AbstractPaymentMethod implements IArray, Xml
 
     /**
      * Define o valor da parcela
-     * 
+     *
      * @param float $value
-     * 
+     *
      * @return self
      */
     public function setInstallmentValue(float $value): self
@@ -103,9 +103,9 @@ class CreditCard extends AbstractPaymentMethod implements IArray, Xml
 
     /**
      * Informa o número de parcelas
-     * 
+     *
      * @param int $value
-     * 
+     *
      * @return self
      */
     public function setNoInterestInstallmentQuantity(int $value): self
@@ -125,9 +125,9 @@ class CreditCard extends AbstractPaymentMethod implements IArray, Xml
 
     /**
      * Define os dados do títular do cartão
-     * 
+     *
      * @param Holder $value
-     * 
+     *
      * @return self
      */
     public function setHolder(Holder $value): self
@@ -147,9 +147,9 @@ class CreditCard extends AbstractPaymentMethod implements IArray, Xml
 
     /**
      * Define os dados de endereço para o pagamento
-     * 
+     *
      * @param Address $value
-     * 
+     *
      * @return self
      */
     public function setBillingAddress(Address $value): self

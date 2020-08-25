@@ -6,16 +6,16 @@ class Factory
 {
     /**
      * Cria a classe Sender
-     * 
+     *
      * @param string $name
      * @param string $email
      * @param string $phone
      * @param Document $document
      * @param string $hash
-     * 
+     *
      * @return Sender
      */
-    public static function Sender(
+    public static function sender(
         string $name = null,
         string $email = null,
         string $phone = null,
@@ -39,15 +39,15 @@ class Factory
 
     /**
      * Cria a classe Holder
-     * 
+     *
      * @param string $name
      * @param string $email
      * @param string $phone
      * @param Document $document
-     * 
+     *
      * @return Holder
      */
-    public static function Holder(
+    public static function holder(
         string $name = null,
         string $email = null,
         string $phone = null,
@@ -64,13 +64,13 @@ class Factory
 
     /**
      * Preenche os dados da classe AbstractUser
-     * 
+     *
      * @param AbstractUser $user
      * @param string $name
      * @param string $email
      * @param string $phone
      * @param Document $document
-     * 
+     *
      * @return AbstractUser
      */
     private static function fillData(

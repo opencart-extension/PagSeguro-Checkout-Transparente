@@ -16,9 +16,9 @@ class Sender extends AbstractUser implements Xml, IArray
 
     /**
      * Define o hash (fingerprint) gerado pelo JavaScript do PagSeguro
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setHash(string $value): self
@@ -40,7 +40,7 @@ class Sender extends AbstractUser implements Xml, IArray
         $dom = new DOMDocument();
         $dom->loadXml($value);
 
-        $instance = new self;
+        $instance = new self();
 
         $xpath = new DOMXpath($dom);
 

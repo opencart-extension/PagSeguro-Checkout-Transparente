@@ -17,9 +17,9 @@ class Session
 
     /**
      * Gera uma sessão
-     * 
+     *
      * @throws AuthException Caso as credenciais sejam inválidas
-     * 
+     *
      * @return string
      */
     public function generate(): string

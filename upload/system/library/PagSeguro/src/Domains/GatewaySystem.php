@@ -86,7 +86,7 @@ class GatewaySystem implements Xml
         $dom = new DOMDocument();
         $dom->loadXml($value);
 
-        $instance = new self;
+        $instance = new self();
 
         $type = $dom->getElementsByTagName('type');
 

@@ -17,9 +17,9 @@ class Holder extends AbstractUser implements Xml, IArray
 
     /**
      * Define a data de nascimento
-     * 
+     *
      * @param DateTime
-     * 
+     *
      * @return self
      */
     public function setBirthdate(DateTime $value): self
@@ -45,7 +45,7 @@ class Holder extends AbstractUser implements Xml, IArray
         $dom = new DOMDocument();
         $dom->loadXml($value);
 
-        $instance = new self;
+        $instance = new self();
 
         $xpath = new DOMXpath($dom);
 

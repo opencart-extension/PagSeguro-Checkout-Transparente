@@ -14,7 +14,15 @@ class Xml
         $this->dom = new DOMDocument($version, $encoding);
     }
 
-    public function parser(array $arr) {
+    /**
+     * Transforma um array no elemento DOM
+     *
+     * @param array
+     *
+     * @return ?DOMDocument
+     */
+    public function parser(array $arr)
+    {
         $dom = null;
 
         if (count($arr) > 1) {

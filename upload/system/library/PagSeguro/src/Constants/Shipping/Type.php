@@ -6,7 +6,7 @@ use ValdeirPsr\PagSeguro\Constants\AbstractEnum;
 
 class Type extends AbstractEnum
 {
-    const PAC = 1;
-    const SEDEX = 2;
-    const UNKNOWN = 3;
+    public const PAC = 1;
+    public const SEDEX = 2;
+    public const UNKNOWN = 3;
 }

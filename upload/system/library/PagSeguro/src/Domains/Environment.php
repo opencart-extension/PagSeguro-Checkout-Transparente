@@ -29,10 +29,10 @@ class Environment
 
     /**
      * Define o ambiente como teste
-     * 
+     *
      * @param string $email
      * @param string $token
-     * 
+     *
      * @return self
      */
     public static function sandbox(string $email, string $token)
@@ -42,10 +42,10 @@ class Environment
 
     /**
      * Define o ambiente como produção
-     * 
+     *
      * @param string $email
      * @param string $token
-     * 
+     *
      * @return self
      */
     public static function production(string $email, string $token)
@@ -55,7 +55,7 @@ class Environment
 
     /**
      * Verifica se o ambiente está no modo de teste
-     * 
+     *
      * @return bool
      */
     public function isSandbox()

@@ -6,7 +6,7 @@ interface IValidation
 {
     /**
      * Valida uma informação
-     * 
+     *
      * @return bool
      */
     public function validate($value);

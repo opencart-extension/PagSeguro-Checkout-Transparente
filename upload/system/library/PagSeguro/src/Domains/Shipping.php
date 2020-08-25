@@ -25,13 +25,13 @@ class Shipping implements Xml, IArray
 
     /**
      * Define o tipo de frete.
-     * 
+     *
      * @see \ValdeirPsr\PagSeguro\Constants\Shipping\Type
-     * 
+     *
      * @param int $type
-     * 
+     *
      * @throws \InvalidArgumentException Caso o tipo seja inválido
-     * 
+     *
      * @return self
      */
     public function setType(int $type): self
@@ -54,11 +54,11 @@ class Shipping implements Xml, IArray
 
     /**
      * Define o valor do frete
-     * 
+     *
      * @param float $value
-     * 
+     *
      * @throws \InvalidArgumentException Caso o valor possua mais de duas casas decimais
-     * 
+     *
      * @return self
      */
     public function setCost(float $value): self
@@ -81,9 +81,9 @@ class Shipping implements Xml, IArray
 
     /**
      * Define se o endereço de envio é obrigatório
-     * 
+     *
      * @param bool $value
-     * 
+     *
      * @return self
      */
     public function setAddressRequired(bool $value): self
@@ -103,9 +103,9 @@ class Shipping implements Xml, IArray
 
     /**
      * Define o endereço de envio
-     * 
+     *
      * @param Address $value
-     * 
+     *
      * @return self
      */
     public function setAddress(Address $value): self
@@ -130,7 +130,7 @@ class Shipping implements Xml, IArray
         $dom = new DOMDocument();
         $dom->loadXml($value);
 
-        $instance = new self;
+        $instance = new self();
 
         $type = $dom->getElementsByTagName('type');
 
@@ -194,7 +194,7 @@ class Shipping implements Xml, IArray
             "cost" => number_format($this->cost, 2, '.', ''),
             "addressRequired" => $addressRequired,
             "address" => ($this->address) ? $this->address->toArray() : null
-        ], function($item) {
+        ], function ($item) {
             return $item !== null;
         });
     }

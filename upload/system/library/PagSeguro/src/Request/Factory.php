@@ -14,9 +14,9 @@ class Factory
 
     /**
      * Cria classe para requisição
-     * 
+     *
      * @param Environment $env
-     * 
+     *
      * @return Curl
      */
     public static function request(Environment $env): Curl

@@ -8,7 +8,7 @@ use Monolog\Formatter\HtmlFormatter;
 
 class Logger
 {
-    static $instance;
+    private static $instance;
 
     private function __construct()
     {

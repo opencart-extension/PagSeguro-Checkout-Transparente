@@ -17,16 +17,16 @@ class Cart
 
     /**
      * Define os items do carrinho
-     * 
+     *
      * @param CartItem[] $values
-     * 
+     *
      * @return self
      */
     public function setItems(array $values = []): self
     {
         $this->values = [];
 
-        foreach($values as $value) {
+        foreach ($values as $value) {
             $this->addItem($value);
         }
 
@@ -35,9 +35,9 @@ class Cart
 
     /**
      * Adiciona um item ao carrinho
-     * 
+     *
      * @param CartItem $value
-     * 
+     *
      * @return self
      */
     public function addItem(CartItem $value): self

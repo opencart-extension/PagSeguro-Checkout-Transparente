@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace ValdeirPsr\PagSeguro\Domains;
@@ -39,22 +40,41 @@ class Address implements Xml, IArray
         string $state = null,
         string $postalCode = null,
         string $complement = null
-    )
-    {
-        if ($street) $this->setStreet($street);
-        if ($number) $this->setNumber($number);
-        if ($district) $this->setDistrict($district);
-        if ($city) $this->setCity($city);
-        if ($state) $this->setState($state);
-        if ($postalCode) $this->setPostalCode($postalCode);
-        if ($complement) $this->setComplement($complement);
+    ) {
+        if ($street) {
+            $this->setStreet($street);
+        }
+
+        if ($number) {
+            $this->setNumber($number);
+        }
+
+        if ($district) {
+            $this->setDistrict($district);
+        }
+
+        if ($city) {
+            $this->setCity($city);
+        }
+
+        if ($state) {
+            $this->setState($state);
+        }
+
+        if ($postalCode) {
+            $this->setPostalCode($postalCode);
+        }
+
+        if ($complement) {
+            $this->setComplement($complement);
+        }
     }
     
     /**
      * Define o nome da rua
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setStreet(string $value): self
@@ -65,7 +85,7 @@ class Address implements Xml, IArray
 
     /**
      * Retorna o nome da rua
-     * 
+     *
      * @return string
      */
     public function getStreet(): string
@@ -75,9 +95,9 @@ class Address implements Xml, IArray
 
     /**
      * Define o número de endereço
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setNumber(string $value): self
@@ -88,7 +108,7 @@ class Address implements Xml, IArray
 
     /**
      * Retorna o número de endereço
-     * 
+     *
      * @return string
      */
     public function getNumber(): string
@@ -98,7 +118,7 @@ class Address implements Xml, IArray
 
     /**
      * Define o complemento do endereço
-     * 
+     *
      * @param string|null $value
      */
     public function setComplement(?string $value): self
@@ -109,7 +129,7 @@ class Address implements Xml, IArray
 
     /**
      * Retorna o complemento
-     * 
+     *
      * @return string|null
      */
     public function getComplement(): ?string
@@ -120,9 +140,9 @@ class Address implements Xml, IArray
 
     /**
      * Define o bairro
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setDistrict(string $value): self
@@ -133,7 +153,7 @@ class Address implements Xml, IArray
 
     /**
      * Retorna o bairro
-     * 
+     *
      * @return string
      */
     public function getDistrict(): string
@@ -143,9 +163,9 @@ class Address implements Xml, IArray
 
     /**
      * Define a cidade
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setCity(string $value): self
@@ -156,7 +176,7 @@ class Address implements Xml, IArray
 
     /**
      * Retorna a cidade informada
-     * 
+     *
      * @return string
      */
     public function getCity(): string
@@ -166,9 +186,9 @@ class Address implements Xml, IArray
 
     /**
      * Define o Estado
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setState(string $value): self
@@ -179,7 +199,7 @@ class Address implements Xml, IArray
 
     /**
      * Retorna o Estado
-     * 
+     *
      * @return string
      */
     public function getState(): string
@@ -189,7 +209,7 @@ class Address implements Xml, IArray
 
     /**
      * Retorna o País
-     * 
+     *
      * @return string
      */
     public function getCountry(): string
@@ -200,7 +220,7 @@ class Address implements Xml, IArray
 
     /**
      * Define o código postal (CEP)
-     * 
+     *
      * @param stringi $value
      */
     public function setPostalCode(string $value): self
@@ -211,7 +231,7 @@ class Address implements Xml, IArray
 
     /**
      * Retorna o CEP
-     * 
+     *
      * @return string (Apenas o número)
      */
     public function getPostalCode(): string

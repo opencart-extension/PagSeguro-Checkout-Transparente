@@ -4,7 +4,7 @@ namespace ValdeirPsr\PagSeguro\Validation\Rules;
 
 /**
  * Valida um número de Cnpj
- * 
+ *
  * @link https://github.com/Respect/Validation/blob/master/library/Rules/Cnpj.php
  */
 class Cnpj implements IValidation

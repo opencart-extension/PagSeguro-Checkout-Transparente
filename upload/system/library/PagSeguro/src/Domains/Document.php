@@ -6,7 +6,7 @@ use DOMDocument;
 use ValdeirPsr\PagSeguro\Interfaces\Serializer\Xml;
 use ValdeirPsr\PagSeguro\Interfaces\Serializer\IArray;
 use ValdeirPsr\PagSeguro\Parser\Xml as XmlParser;
-use \ValdeirPsr\PagSeguro\Validation\Validator as v;
+use ValdeirPsr\PagSeguro\Validation\Validator as v;
 
 class Document implements Xml, IArray
 {
@@ -25,11 +25,11 @@ class Document implements Xml, IArray
 
     /**
      * Instancia a classe com o tipo CPF
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @throws \InvalidArgumentException Quando o CPF for inválido
-     * 
+     *
      * @return self
      */
     public static function cpf(string $value): self
@@ -44,11 +44,11 @@ class Document implements Xml, IArray
 
     /**
      * Instancia a classe com o tipo CNPJ
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @throws \InvalidArgumentException Quando o CNPJ for inválido
-     * 
+     *
      * @return self
      */
     public static function cnpj(string $value): self

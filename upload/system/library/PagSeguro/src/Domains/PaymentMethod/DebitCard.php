@@ -30,9 +30,9 @@ class DebitCard extends AbstractPaymentMethod implements Xml
 
     /**
      * Define o nome da instituição financeira
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setBank(string $value): self

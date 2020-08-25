@@ -25,9 +25,9 @@ class CartItem implements Xml, IArray
     /**
      * Identifica o item. Você pode escolher códigos que tenham significado para
      * seu sistema e informá-los nestes parâmetros.
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setId(string $value): self
@@ -48,9 +48,9 @@ class CartItem implements Xml, IArray
      * Descreve o item. A descrição é o texto que o PagSeguro mostra associado a
      * cada item quando o comprador está finalizando o pagamento, portanto é
      * importante que ela seja clara e explicativa.
-     * 
+     *
      * @param string $value
-     * 
+     *
      * @return self
      */
     public function setDescription(string $value): self
@@ -71,17 +71,18 @@ class CartItem implements Xml, IArray
      * Representa o preço unitário do item. Este método define o valor de uma
      * unidade do item, que será multiplicado pela quantidade para obter o valor
      * total dentro do pagamento.
-     * 
+     *
      * @param float $value
-     * 
+     *
      * @throws \InvalidArgumentException Caso o valor possua mais de duas casas decimais
-     * 
+     *
      * @return self
      */
     public function setAmount(float $value): self
     {
         if (!v::Money(2)->validate($value)) {
-            throw new \InvalidArgumentException('Amount invalid. The value must have two decimal places. Was: ' . $value);
+            throw new \InvalidArgumentException('Amount invalid. The value must have two decimal places. ' .
+            'Was: ' . $value);
         }
 
         $this->amount = number_format($value, 2, '.', '');
@@ -101,9 +102,9 @@ class CartItem implements Xml, IArray
      * Representa a quantidade comprada de determinado item. Esta função define
      * a quantidade de um item, que será multiplicado pelo valor unitário para
      * obter o valor total dentro do pagamento.
-     * 
+     *
      * @param int $value
-     * 
+     *
      * @return self
      */
     public function setQuantity(int $value): self

@@ -13,7 +13,7 @@ abstract class AbstractEnum
 
     /**
      * Captura a lista de constantes
-     * 
+     *
      * @return array
      */
     private static function getEnums(): array
@@ -29,12 +29,12 @@ abstract class AbstractEnum
             self::$enums[$calledClass] = $reflect->getConstants();
         }
 
-        return self::$enums[$calledClass]; 
+        return self::$enums[$calledClass];
     }
 
     /**
      * Verifica se determinada chave existe
-     * 
+     *
      * @return bool
      */
     public static function has($name): bool
@@ -44,7 +44,7 @@ abstract class AbstractEnum
 
     /**
      * Verifica se determinado valor existe
-     * 
+     *
      * @return bool
      */
     public static function isValidValue($value): bool

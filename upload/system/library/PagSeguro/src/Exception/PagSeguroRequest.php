@@ -14,8 +14,13 @@ class PagSeguroRequest extends \Exception
     private $requestBody;
     private $errors = [];
 
-    public function __construct(Curl $curl, $requestBody, string $message = null, int $code = 0, Throwable $previous = null)
-    {
+    public function __construct(
+        Curl $curl,
+        $requestBody,
+        string $message = null,
+        int $code = 0,
+        Throwable $previous = null
+    ) {
         parent::__construct($message, $code, $previous);
 
         $this->request = $curl;
@@ -50,9 +55,9 @@ class PagSeguroRequest extends \Exception
 
     /**
      * Define o corpo da mensagem enviada
-     * 
+     *
      * @param mixed $value
-     * 
+     *
      * @return self
      */
     public function setRequestBody($value)
@@ -80,7 +85,7 @@ class PagSeguroRequest extends \Exception
 
     /**
      * Verifica os erros recebidos pela API
-     * 
+     *
      * @return void
      */
     private function checkErrors()
