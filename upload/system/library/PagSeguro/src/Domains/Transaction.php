@@ -53,7 +53,7 @@ class Transaction implements Xml
 
     /** @var int */
     private $itemCount;
-    
+
 
     /** @var string */
     private $reference;

@@ -14,19 +14,19 @@ class GatewaySystem implements Xml
 {
     /** @var string */
     private $type;
-    
+
     /** @var string */
     private $authorizationCode;
-    
+
     /** @var string */
     private $nsu;
-    
+
     /** @var string */
     private $tid;
-    
+
     /** @var string */
     private $establishmentCode;
-    
+
     /** @var string */
     private $acquirerName;
 
@@ -93,27 +93,27 @@ class GatewaySystem implements Xml
         if ($type->count() > 0) {
             $instance->type = $type->item(0)->textContent;
         }
-        
+
         $authorizationCode = $dom->getElementsByTagName('authorizationCode');
-        
+
         if ($authorizationCode->count() > 0) {
             $instance->authorizationCode = $authorizationCode->item(0)->textContent;
         }
-        
+
         $nsu = $dom->getElementsByTagName('nsu');
 
         if ($nsu->count() > 0) {
             $instance->nsu = $nsu->item(0)->textContent;
         }
-        
+
         $tid = $dom->getElementsByTagName('tid');
-        
+
         if ($tid->count() > 0) {
             $instance->tid = $tid->item(0)->textContent;
         }
 
         $establishmentCode = $dom->getElementsByTagName('establishmentCode');
-        
+
         if ($establishmentCode->count() > 0) {
             $instance->establishmentCode = $establishmentCode->item(0)->textContent;
         }

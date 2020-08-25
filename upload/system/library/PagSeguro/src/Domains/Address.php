@@ -69,7 +69,7 @@ class Address implements Xml, IArray
             $this->setComplement($complement);
         }
     }
-    
+
     /**
      * Define o nome da rua
      *
@@ -260,7 +260,7 @@ class Address implements Xml, IArray
         if ($number->count() > 0) {
             $instance->number = $number->item(0)->textContent;
         }
-        
+
         $district = $dom->getElementsByTagName('district');
 
         if ($district->count() > 0) {
@@ -278,25 +278,25 @@ class Address implements Xml, IArray
         if ($state->count() > 0) {
             $instance->state = $state->item(0)->textContent;
         }
-        
+
         $country = $dom->getElementsByTagName('country');
 
         if ($country->count() > 0) {
             $instance->country = $country->item(0)->textContent;
         }
-        
+
         $postalCode = $dom->getElementsByTagName('postalCode');
 
         if ($postalCode->count() > 0) {
             $instance->postalCode = $postalCode->item(0)->textContent;
         }
-        
+
         $complement = $dom->getElementsByTagName('complement');
 
         if ($complement->count() > 0) {
             $instance->complement = $complement->item(0)->textContent;
         }
-        
+
 
         return $instance;
     }

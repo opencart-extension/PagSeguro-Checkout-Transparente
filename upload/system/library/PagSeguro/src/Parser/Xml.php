@@ -15,11 +15,11 @@ class Xml
     }
 
     /**
-     * Transforma um array no elemento DOM
+     * Transforma um array num elemento DOM
      *
      * @param array
      *
-     * @return ?DOMDocument
+     * @return DOMDocument|null
      */
     public function parser(array $arr)
     {
@@ -44,14 +44,14 @@ class Xml
             if (is_numeric($key)) {
                 $key = 'item';
             }
-    
+
             if (is_array($value)) {
                 $element = $this->dom->createElement($key);
                 $this->build($value, $element);
             } else {
                 $element = new DOMElement($key, $value);
             }
-            
+
             $newDomDocument->appendChild($element);
         }
 

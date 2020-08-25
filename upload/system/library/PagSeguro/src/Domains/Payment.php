@@ -401,7 +401,7 @@ class Payment
         if ($this->payment instanceof CreditCard) {
             $arr['creditCard'] = $this->payment->toArray(true);
         }
-        
+
         $parser = new XmlParser();
         $result = $parser->parser([
             'payment' => $arr

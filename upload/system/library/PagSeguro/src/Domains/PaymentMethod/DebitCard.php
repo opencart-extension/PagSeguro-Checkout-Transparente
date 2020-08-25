@@ -61,15 +61,15 @@ class DebitCard extends AbstractPaymentMethod implements Xml
         $instance = new self();
 
         $xpath = new DOMXPath($dom);
-        
+
         $type = $xpath->query('/transaction/paymentMethod/type');
-        
+
         if ($type->count() > 0) {
             $instance->type = $type->item(0)->textContent;
         }
 
         $code = $xpath->query('/transaction/paymentMethod/code');
-        
+
         if ($code->count() > 0) {
             $instance->code = $code->item(0)->textContent;
         }
@@ -89,7 +89,7 @@ class DebitCard extends AbstractPaymentMethod implements Xml
     public function toXml(): string
     {
         $arr = get_object_vars($this);
-        
+
         if ($this->bank) {
             $arr['bank'] = [
                 'name' => $this->bank

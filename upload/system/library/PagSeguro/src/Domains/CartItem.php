@@ -12,13 +12,13 @@ class CartItem implements Xml, IArray
 {
     /** @var string Identificador do produto. Deve ser único */
     private $id;
-    
+
     /** @var string */
     private $description;
-    
+
     /** @var float */
     private $amount;
-    
+
     /** @var int */
     private $quantity;
 

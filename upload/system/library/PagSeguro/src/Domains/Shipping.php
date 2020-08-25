@@ -165,7 +165,7 @@ class Shipping implements Xml, IArray
     public function toXml(): string
     {
         $arr = $this->toArray();
-        
+
         if ($this->addressRequired) {
             $arr["addressRequired"] = 'true';
         }
