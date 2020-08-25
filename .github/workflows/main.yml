@@ -24,3 +24,8 @@ jobs:
               run: |
                 cd upload/system/library/PagSeguro
                 php vendor/bin/phpunit
+
+            - name: PHPCS
+              run: |
+                cd upload/system/library/PagSeguro
+                composer phpcs
