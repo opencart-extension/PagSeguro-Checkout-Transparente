@@ -214,4 +214,44 @@ class SaleTest extends TestCase
 
         $newPayment = $stub->create($payment);
     }
+
+    /**
+     * @test
+     */
+    public function cancelPaymentWithValidArguments()
+    {
+        $env = Environment::sandbox('pagseguro@valdeir.dev', '1234567890');
+
+        $stub = $this->getMockBuilder(Sale::class)
+            ->setConstructorArgs([$env])
+            ->setMethods(['buildUrl'])
+            ->getMock();
+
+        $stub->expects($this->once())
+            ->method('buildUrl')
+            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/cancel-sale-valid-data');
+
+        $result = $stub->void('abc123');
+        $this->assertTrue($result);
+    }
+
+    /**
+     * @test
+     */
+    public function refundPaymentWithValidArguments()
+    {
+        $env = Environment::sandbox('pagseguro@valdeir.dev', '1234567890');
+
+        $stub = $this->getMockBuilder(Sale::class)
+            ->setConstructorArgs([$env])
+            ->setMethods(['buildUrl'])
+            ->getMock();
+
+        $stub->expects($this->once())
+            ->method('buildUrl')
+            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/refund-sale-valid-data');
+
+        $result = $stub->refund('abc123');
+        $this->assertTrue($result);
+    }
 }
