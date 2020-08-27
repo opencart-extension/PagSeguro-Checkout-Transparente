@@ -17,6 +17,18 @@ class Sale
         $this->env = $env;
     }
 
+    /**
+     * Envia as configurações de pagamento para o PagSeguro
+     * No caso de boleto ou transferência, é retornar um link
+     * para impressão ou autenticação, respectivamente.
+     *
+     * @param Payment $payment
+     *
+     * @throws AuthException Caso as credenciais sejam inválidas
+     * @throws PagSeguroRequestException Caso alguma informação seja enviada incorretamente.
+     *
+     * @return Transaction
+     */
     public function create(Payment $payment)
     {
         return Transaction::fromXml($this->request($payment));
