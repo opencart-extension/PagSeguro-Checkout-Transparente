@@ -35,6 +35,11 @@ class Sale
         return Transaction::fromXml($this->request($payment));
     }
 
+    public function info(string $paymentId)
+    {
+        return Transaction::fromXml($this->request(null, "/{$paymentId}", 'GET'));
+    }
+
     /**
      * Cancela pagamento
      *
@@ -95,20 +100,24 @@ class Sale
     /**
      * {@inheritDoc}
      */
-    protected function request($data, string $path = '')
+    protected function request($data, string $path = '', string $method = 'POST')
     {
         $url = $this->buildUrl($path);
 
         $request = Factory::request($this->env);
 
-        if ($data instanceof Payment) {
-            $request->setHeader('Content-Type', 'application/xml; charset=ISO-8859-1');
-            $data = $data->toXml();
-        } else {
-            $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        if ($method === 'POST') {
+            if ($data instanceof Payment) {
+                $request->setHeader('Content-Type', 'application/xml; charset=ISO-8859-1');
+                $data = $data->toXml();
+            } else {
+                $request->setHeader('Content-Type', 'application/x-www-form-urlencoded');
+            }
+            $request->post($url, $data);
+        } elseif ($method === 'GET') {
+            $request->get($url);
         }
 
-        $request->post($url, $data);
         $request->close();
 
         if ($request->isSuccess()) {

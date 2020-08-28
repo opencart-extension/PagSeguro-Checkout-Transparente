@@ -254,4 +254,30 @@ class SaleTest extends TestCase
         $result = $stub->refund('abc123');
         $this->assertTrue($result);
     }
+
+    /**
+     * @test
+     */
+    public function captureTransactioInfoWihoutError()
+    {
+        $env = Environment::sandbox('pagseguro@valdeir.dev', '0123456789');
+
+        $stub = $stub = $this->getMockBuilder(Sale::class)
+            ->setConstructorArgs([$env])
+            ->setMethods(['buildUrl'])
+            ->getMock();
+
+        $stub->expects($this->once())
+            ->method('buildUrl')
+            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/info-sale-valid-data');
+
+        $transaction = $stub->info('C9133EB990AE44E5963F027E6B908B41');
+
+        $this->assertEquals('C9133EB9-90AE-44E5-963F-027E6B908B41', $transaction->getCode());
+        $this->assertEquals(43.4, $transaction->getGrossAmount());
+        $this->assertEquals(
+            'https://sandbox.pagseguro.uol.com.br/checkout/payment/booklet/print.jhtml?c=ac680d9c3cc7c02e267b6f3c5ab2436f6b605ef9124307f20b9296c57cb90e319b74953b59fee8d',
+            $transaction->getPayment()->getPaymentLink()
+        );
+    }
 }
