@@ -29,6 +29,9 @@
       </div>
 
       <div class="panel-body">
+        <!-- ---- -->
+        <!-- Tabs -->
+        <!-- ---- -->
         <ul class="nav nav-tabs" role="tablist">
           <li class="active"><a href="#tab-home" data-toggle="tab">{{ tab_home }}</a></li>
           <li><a href="#tab-custom-fields" data-toggle="tab">{{ tab_custom_fields }}</a></li>
@@ -42,6 +45,9 @@
         </ul>
 
         <form action="{{ action }}" class="form form-horizontal tab-content" id="form-payment" method="POST">
+          <!-- -------- -->
+          <!-- Tab Home -->
+          <!-- -------- -->
           <div class="tab-pane active" id="tab-home">
             <div class="form-group required">
               <label for="input-status" class="control-label col-sm-2">{{ entry_status }}</label>
@@ -123,6 +129,9 @@
             </div>
           </div>
 
+          <!-- ----------------- -->
+          <!-- Tab Custom Fields -->
+          <!-- ----------------- -->
           <div class="tab-pane" id="tab-custom-fields">
             <div class="form-group">
               <label for="input-custom-fields-cpf" class="control-label col-sm-2">{{ entry_custom_field_cpf }}</label>
@@ -176,6 +185,9 @@
             </div>
           </div>
 
+          <!-- ------------ -->
+          <!-- Tab Discount -->
+          <!-- ------------ -->
           <div class="tab-pane" id="tab-discount">
             <fieldset>
               <legend>{{ text_discount }}</legend>
@@ -228,6 +240,9 @@
             </fieldset>
           </div>
 
+          <!-- ---------------- -->
+          <!-- Tab Order Status -->
+          <!-- ---------------- -->
           <div class="tab-pane" id="tab-order-status">
             <div class="form-group required">
               <label for="input-order-status-pending" class="control-label col-sm-2">{{ entry_order_status_pending }}</label>
@@ -377,6 +392,9 @@
             </div>
           </div>
 
+          <!-- ------- -->
+          <!-- Tab Geo -->
+          <!-- ------- -->
           <div class="tab-pane" id="tab-geo">
             <div class="form-group">
               <label for="input-geo-zone-id" class="control-label col-sm-2">{{ entry_geo_zone_id }}</label>
@@ -418,6 +436,9 @@
             </div>
           </div>
 
+          <!-- --------------- -->
+          <!-- Tab Installment -->
+          <!-- --------------- -->
           <div class="tab-pane" id="tab-installment">
             <div class="form-group required">
               <label for="input-installment-total" class="control-label col-sm-2">{{ entry_installment_total }}</label>
@@ -450,6 +471,9 @@
             </div>
           </div>
 
+          <!-- ------------------- -->
+          <!-- Tab Payment Methods -->
+          <!-- ------------------- -->
           <div class="tab-pane" id="tab-methods">
             <fieldset>
               <legend>{{ text_boleto }}</legend>
@@ -515,6 +539,9 @@
             </fieldset>
           </div>
 
+          <!-- ---------- -->
+          <!-- Tab Layout -->
+          <!-- ---------- -->
           <div class="tab-pane" id="tab-layout">
             <div class="form group required">
               <label for="input-layout" class="control-label col-sm-2">{{ entry_layout_credit }}</label>
@@ -530,6 +557,9 @@
             </div>
           </div>
 
+          <!-- --------- -->
+          <!-- Tab Debug -->
+          <!-- --------- -->
           <div class="tab-pane" id="tab-debug">
             <div class="row">
               <div class="col-sm-4">
