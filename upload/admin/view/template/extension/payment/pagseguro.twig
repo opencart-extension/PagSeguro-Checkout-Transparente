@@ -195,21 +195,21 @@
               <div class="form-group">
                 <label for="input-discount-boleto" class="control-label col-sm-2">{{ entry_discount_boleto }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="discount_boleto" value="{{ discount_boleto }}" id="input-discount-boleto" class="form-control" />
+                  <input type="text" name="discount_boleto" value="{{ discount_boleto }}" id="input-discount-boleto" class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="input-discount-credit" class="control-label col-sm-2">{{ entry_discount_credit }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="discount_credit" value="{{ discount_credit }}" id="input-discount-credit" class="form-control" />
+                  <input type="text" name="discount_credit" value="{{ discount_credit }}" id="input-discount-credit" class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="input-discount-debit" class="control-label col-sm-2">{{ entry_discount_debit }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="discount_debit" value="{{ discount_debit }}" id="input-discount-debit" class="form-control" />
+                  <input type="text" name="discount_debit" value="{{ discount_debit }}" id="input-discount-debit" class="form-control" />
                 </div>
               </div>
             </fieldset>
@@ -220,21 +220,21 @@
               <div class="form-group">
                 <label for="input-fee-boleto" class="control-label col-sm-2">{{ entry_fee_boleto }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="fee_boleto" value="{{ fee_boleto }}" id="input-fee-boleto" class="form-control" />
+                  <input type="text" name="fee_boleto" value="{{ fee_boleto }}" id="input-fee-boleto" class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="input-fee-credit" class="control-label col-sm-2">{{ entry_fee_credit }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="fee_credit" value="{{ fee_credit }}" id="input-fee-credit" class="form-control" />
+                  <input type="text" name="fee_credit" value="{{ fee_credit }}" id="input-fee-credit" class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="input-fee-debit" class="control-label col-sm-2">{{ entry_fee_debit }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="fee_debit" value="{{ fee_debit }}" id="input-fee-debit" class="form-control" />
+                  <input type="text" name="fee_debit" value="{{ fee_debit }}" id="input-fee-debit" class="form-control" />
                 </div>
               </div>
             </fieldset>
@@ -416,7 +416,7 @@
             <div class="form-group">
               <label for="input-geo-sort-order" class="control-label col-sm-2">{{ entry_geo_sort_order }}</label>
               <div class="col-sm-10">
-                <input type="number" name="geo_sort_order" value="{{ geo_sort_order }}" id="input-geo-sort-order" class="form-control" />
+                <input type="text" name="geo_sort_order" value="{{ geo_sort_order }}" id="input-geo-sort-order" class="form-control" />
               </div>
             </div>
 
@@ -443,17 +443,17 @@
             <div class="form-group required">
               <label for="input-installment-total" class="control-label col-sm-2">{{ entry_installment_total }}</label>
               <div class="col-sm-10">
-                <input type="number" name="installment_total" value="{{ installment_total }}" id="input-installment-total" class="form-control" required />
+                <input type="text" name="installment_total" value="{{ installment_total }}" id="input-installment-total" class="form-control" required />
                 {% if error_field_installment_total %}
                 <span class="text-danger">{{ error_field_installment_total }}</span>
                 {% endif %}
               </div>
             </div>
 
-            <div class="form-group required">
+            <div class="form-group">
               <label for="input-installment-free" class="control-label col-sm-2">{{ entry_installment_free }}</label>
               <div class="col-sm-10">
-                <input type="number" name="installment_free" value="{{ installment_free }}" id="input-installment-free" class="form-control" required />
+                <input type="text" name="installment_free" value="{{ installment_free }}" id="input-installment-free" class="form-control" required />
                 {% if error_field_installment_free %}
                 <span class="text-danger">{{ error_field_installment_free }}</span>
                 {% endif %}
@@ -463,7 +463,7 @@
             <div class="form-group required">
               <label for="input-installment-minimum-value" class="control-label col-sm-2">{{ entry_installment_minimum_value }}</label>
               <div class="col-sm-10">
-                <input type="number" name="installment_minimum_value" value="{{ installment_minimum_value }}" id="input-installment-minimum-value" class="form-control" required />
+                <input type="text" name="installment_minimum_value" value="{{ installment_minimum_value }}" id="input-installment-minimum-value" class="form-control" required />
                 {% if error_field_installment_minimum_value %}
                 <span class="text-danger">{{ error_field_installment_minimum_value }}</span>
                 {% endif %}
@@ -491,7 +491,7 @@
               <div class="form-group">
                 <label for="input-methods-boleto-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="methods_boleto_minimum_amount" value="{{ methods_boleto_minimum_amount }}" id="input-methods-boleto-minimum-amount" class="form-control" />
+                  <input type="text" name="methods_boleto_minimum_amount" value="{{ methods_boleto_minimum_amount }}" id="input-methods-boleto-minimum-amount" class="form-control" />
                 </div>
               </div>
             </fieldset>
@@ -512,7 +512,7 @@
               <div class="form-group">
                 <label for="input-methods-credit-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="methods_credit_minimum_amount" value="{{ methods_credit_minimum_amount }}" id="input-methods-credit-minimum-amount" class="form-control" />
+                  <input type="text" name="methods_credit_minimum_amount" value="{{ methods_credit_minimum_amount }}" id="input-methods-credit-minimum-amount" class="form-control" />
                 </div>
               </div>
             </fieldset>
@@ -533,7 +533,7 @@
               <div class="form-group">
                 <label for="input-methods-debit-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
                 <div class="col-sm-10">
-                  <input type="number" name="methods_debit_minimum_amount" value="{{ methods_debit_minimum_amount }}" id="input-methods-debit-minimum-amount" class="form-control" />
+                  <input type="text" name="methods_debit_minimum_amount" value="{{ methods_debit_minimum_amount }}" id="input-methods-debit-minimum-amount" class="form-control" />
                 </div>
               </div>
             </fieldset>
@@ -597,6 +597,27 @@
     } else {
       $('#debug-clear, #debug-download').fadeOut()
     }
+  })
+
+  $(function() {
+    $('#input-geo-sort-order, #input-installment-total').mask("#0", {reverse: true});
+
+    const floats = [
+      '#input-discount-boleto',
+      '#input-discount-credit',
+      '#input-discount-debit',
+      '#input-fee-boleto',
+      '#input-fee-credit',
+      '#input-fee-debit',
+      '#input-installment-free',
+      '#input-installment-minimum-value',
+      '#input-methods-boleto-minimum-amount',
+      '#methods_boleto_minimum_amount',
+      '#methods_credit_minimum_amount',
+      '#methods_debit_minimum_amount',
+    ];
+
+    $(floats.join(',')).mask("#.00", {reverse: true});
   })
 </script>
 

@@ -15,6 +15,8 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->document->setTitle($this->language->get('heading_title'));
 
+        $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js');
+
         if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate()) {
             $this->load->model('setting/setting');
 
@@ -192,7 +194,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'geo_sort_order'                => ['required' => false],
             'geo_stores'                    => ['required' => false],
             'installment_total'             => ['required' => true],
-            'installment_free'              => ['required' => true],
+            'installment_free'              => ['required' => false],
             'installment_minimum_value'     => ['required' => true],
             'methods_boleto_status'         => ['required' => false],
             'methods_boleto_minimum_amount' => ['required' => false],
