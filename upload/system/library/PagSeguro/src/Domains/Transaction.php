@@ -33,6 +33,9 @@ class Transaction implements Xml
     /** @var int */
     private $status;
 
+    /** @var string */
+    private $cancellationSource;
+
     /** @var DateTime */
     private $lastEventDate;
 
@@ -41,6 +44,9 @@ class Transaction implements Xml
 
     /** @var float */
     private $discountAmount;
+
+    /** @var CreditorFees */
+    private $creditorFees;
 
     /** @var float */
     private $feeAmount;
@@ -60,6 +66,9 @@ class Transaction implements Xml
 
     /** @var float */
     private $extraAmount;
+
+    /** @var DateTime */
+    private $escrowEndDate;
 
     /** @var CartItem[] */
     private $items = [];
@@ -114,6 +123,14 @@ class Transaction implements Xml
     }
 
     /**
+     * @return string
+     */
+    public function getCancellationSource(): string
+    {
+        return $this->cancellationSource;
+    }
+
+    /**
      * @return DateTime
      */
     public function getLastEventDate(): DateTime
@@ -135,6 +152,14 @@ class Transaction implements Xml
     public function getDiscountAmount(): float
     {
         return $this->discountAmount;
+    }
+
+    /**
+     * @return CreditorFees
+     */
+    public function getCreditorFees(): CreditorFees
+    {
+        return $this->creditorFees;
     }
 
     /**
@@ -183,6 +208,14 @@ class Transaction implements Xml
     public function getExtraAmount(): float
     {
         return $this->extraAmount;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getEscrowEndDate(): DateTime
+    {
+        return $this->escrowEndDate;
     }
 
     /**
@@ -267,6 +300,18 @@ class Transaction implements Xml
             $instance->status = intval($status->item(0)->textContent);
         }
 
+        $cancellationSource = $xpath->query('/transaction/cancellationSource');
+
+        if ($cancellationSource->count() > 0) {
+            $instance->cancellationSource = $cancellationSource->item(0)->textContent;
+        }
+
+        $creditorFees = $xpath->query('/transaction/creditorFees');
+
+        if ($creditorFees->count() > 0) {
+            $instance->creditorFees = CreditorFees::fromXml($dom->saveXML($creditorFees->item(0)));
+        }
+
         $lastEventDate = $xpath->query('/transaction/lastEventDate');
 
         if ($lastEventDate->count() > 0) {
@@ -322,6 +367,15 @@ class Transaction implements Xml
 
         if ($extraAmount->count() > 0) {
             $instance->extraAmount = floatval($extraAmount->item(0)->textContent);
+        }
+
+        $escrowEndDate = $xpath->query('/transaction/escrowEndDate');
+
+        if ($escrowEndDate->count() > 0) {
+            $instance->escrowEndDate = DateTime::createFromFormat(
+                'Y-m-d\TH:i:s\.000P',
+                $escrowEndDate->item(0)->textContent
+            );
         }
 
         $items = $xpath->query('/transaction/items/item');
