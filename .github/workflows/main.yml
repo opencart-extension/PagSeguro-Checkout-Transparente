@@ -16,7 +16,9 @@ jobs:
 
             - name: Get Composer Cache Directory
               id: composer-cache
-              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+              run: |
+                cd upload/system/library/PagSeguro
+                echo "::set-output name=dir::$(composer config cache-files-dir)"
 
             - uses: actions/cache@v2
               with:
