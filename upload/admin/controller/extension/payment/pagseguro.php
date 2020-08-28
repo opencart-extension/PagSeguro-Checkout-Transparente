@@ -60,6 +60,10 @@ class ControllerExtensionPaymentPagseguro extends Controller
             $data[$key] = $this->request->post[$key] ?? $this->config->get(self::FIELD_PREFIX . $key);
         }
 
+        if (empty($data['callback_token'])) {
+            $data['callback_token'] = token(32);
+        }
+
         $this->load->model('customer/custom_field');
 
         $data['custom_fields'] = $this->model_customer_custom_field->getCustomFields();
