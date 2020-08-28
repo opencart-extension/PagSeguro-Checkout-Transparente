@@ -30,25 +30,25 @@
 
       <div class="panel-body">
         <ul class="nav nav-tabs" role="tablist">
-          <li class="active"><a href="#tab-home" data-toggle="tab">tab_home</a></li>
-          <li><a href="#tab-custom-fields" data-toggle="tab">tab_custom_fields</a></li>
-          <li><a href="#tab-discount" data-toggle="tab">tab_discount</a></li>
-          <li><a href="#tab-order-status" data-toggle="tab">tab_order_status</a></li>
-          <li><a href="#tab-geo" data-toggle="tab">tab_geo</a></li>
-          <li><a href="#tab-installment" data-toggle="tab">tab_installment</a></li>
-          <li><a href="#tab-methods" data-toggle="tab">tab_methods</a></li>
-          <li><a href="#tab-layout" data-toggle="tab">tab_layout</a></li>
-          <li><a href="#tab-debug" data-toggle="tab">tab_debug</a></li>
+          <li class="active"><a href="#tab-home" data-toggle="tab">{{ tab_home }}</a></li>
+          <li><a href="#tab-custom-fields" data-toggle="tab">{{ tab_custom_fields }}</a></li>
+          <li><a href="#tab-discount" data-toggle="tab">{{ tab_discount }}</a></li>
+          <li><a href="#tab-order-status" data-toggle="tab">{{ tab_order_status }}</a></li>
+          <li><a href="#tab-geo" data-toggle="tab">{{ tab_geo }}</a></li>
+          <li><a href="#tab-installment" data-toggle="tab">{{ tab_installment }}</a></li>
+          <li><a href="#tab-methods" data-toggle="tab">{{ tab_methods }}</a></li>
+          <li><a href="#tab-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+          <li><a href="#tab-debug" data-toggle="tab">{{ tab_debug }}</a></li>
         </ul>
 
         <form action="{{ action }}" class="form form-horizontal tab-content" id="form-payment" method="POST">
           <div class="tab-pane active" id="tab-home">
             <div class="form-group required">
-              <label for="input-status" class="control-label col-sm-2">entry_status</label>
+              <label for="input-status" class="control-label col-sm-2">{{ entry_status }}</label>
               <div class="col-sm-10">
                 <select name="status" id="input-status" class="form-control">
-                  <option value="1" {{ status ?? 'selected' }}>text_enabled</option>
-                  <option value="0" {{ status ?: 'selected' }}>text_disabled</option>
+                  <option value="1" {{ status ?? 'selected' }}>{{ text_enabled }}</option>
+                  <option value="0" {{ status ?: 'selected' }}>{{ text_disabled }}</option>
                 </select>
                 {% if error_field_status %}
                 <span class="text-danger">{{ error_field_status }}</span>
@@ -57,7 +57,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-email" class="control-label col-sm-2">entry_email</label>
+              <label for="input-email" class="control-label col-sm-2">{{ entry_email }}</label>
               <div class="col-sm-10">
                 <input type="email" name="email" id="input-email" value="{{ email }}" class="form-control" required />
                 {% if error_field_email is defined %}
@@ -67,7 +67,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-token" class="control-label col-sm-2">entry_token</label>
+              <label for="input-token" class="control-label col-sm-2">{{ entry_token }}</label>
               <div class="col-sm-10">
                 <input type="text" name="token" id="input-token" value="{{ token }}" class="form-control" required />
                 {% if error_field_token %}
@@ -77,11 +77,11 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-sandbox" class="control-label col-sm-2">entry_sandbox</label>
+              <label for="input-sandbox" class="control-label col-sm-2">{{ entry_sandbox }}</label>
               <div class="col-sm-10">
                 <select name="sandbox" id="input-sandbox" class="form-control">
-                  <option value="1" {{ sandbox ?? 'selected' }}>text_enabled</option>
-                  <option value="0" {{ sandbox ?: 'selected' }}>text_disabled</option>
+                  <option value="1" {{ sandbox ?? 'selected' }}>{{ text_enabled }}</option>
+                  <option value="0" {{ sandbox ?: 'selected' }}>{{ text_disabled }}</option>
                 </select>
                 {% if error_field_sandbox %}
                 <span class="text-danger">{{ error_field_sandbox }}</span>
@@ -90,11 +90,11 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-customer-notify" class="control-label col-sm-2">entry_customer_notify</label>
+              <label for="input-customer-notify" class="control-label col-sm-2">{{ entry_customer_notify }}</label>
               <div class="col-sm-10">
                 <select name="customer_notify" id="input-customer-notify" class="form-control">
-                  <option value="1" {{ customer_notify ?? 'selected' }}>text_enabled</option>
-                  <option value="0" {{ customer_notify ?: 'selected' }}>text_disabled</option>
+                  <option value="1" {{ customer_notify ?? 'selected' }}>{{ text_enabled }}</option>
+                  <option value="0" {{ customer_notify ?: 'selected' }}>{{ text_disabled }}</option>
                 </select>
                 {% if error_field_notify %}
                 <span class="text-danger">{{ error_field_notify }}</span>
@@ -103,7 +103,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-customer-notify" class="control-label col-sm-2">entry_callback_token</label>
+              <label for="input-customer-notify" class="control-label col-sm-2">{{ entry_callback_token }}</label>
               <div class="col-sm-10">
                 <input type="text" name="callback_token" value="{{ callback_token }}" class="form-control">
                 {% if error_field_callback_token %}
@@ -111,11 +111,21 @@
                 {% endif %}
               </div>
             </div>
+
+            <div class="form-group required">
+              <label for="input-telemetry" class="control-label col-sm-2">{{ entry_telemetry }}</label>
+              <div class="col-sm-10">
+                <select name="telemetry" id="input-telemetry" class="form-control">
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                </select>
+              </div>
+            </div>
           </div>
 
           <div class="tab-pane" id="tab-custom-fields">
             <div class="form-group">
-              <label for="input-custom-fields-cpf" class="control-label col-sm-2">CPF</label>
+              <label for="input-custom-fields-cpf" class="control-label col-sm-2">{{ entry_custom_field_cpf }}</label>
               <div class="col-sm-10">
                 <select name="custom_fields_cpf" id="input-custom-fields-cpf" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -132,7 +142,7 @@
             </div>
 
             <div class="form-group">
-              <label for="input-custom-fields-number" class="control-label col-sm-2">Número Residencial</label>
+              <label for="input-custom-fields-number" class="control-label col-sm-2">{{ entry_custom_field_address_number }}</label>
               <div class="col-sm-10">
                 <select name="custom_fields_number" id="input-custom-fields-number" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -149,7 +159,7 @@
             </div>
 
             <div class="form-group">
-              <label for="input-custom-fields-birthday" class="control-label col-sm-2">Data de Nascimento</label>
+              <label for="input-custom-fields-birthday" class="control-label col-sm-2">{{ entry_custom_field_birthdate }}</label>
               <div class="col-sm-10">
                 <select name="custom_fields_birthday" id="input-custom-fields-birthday" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -168,24 +178,24 @@
 
           <div class="tab-pane" id="tab-discount">
             <fieldset>
-              <legend>text_discount</legend>
+              <legend>{{ text_discount }}</legend>
 
               <div class="form-group">
-                <label for="input-discount-boleto" class="control-label col-sm-2">entry_discount_boleto</label>
+                <label for="input-discount-boleto" class="control-label col-sm-2">{{ entry_discount_boleto }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="discount_boleto" value="{{ discount_boleto }}" id="input-discount-boleto" class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="input-discount-credit" class="control-label col-sm-2">entry_discount_credit</label>
+                <label for="input-discount-credit" class="control-label col-sm-2">{{ entry_discount_credit }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="discount_credit" value="{{ discount_credit }}" id="input-discount-credit" class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="input-discount-debit" class="control-label col-sm-2">entry_discount_debit</label>
+                <label for="input-discount-debit" class="control-label col-sm-2">{{ entry_discount_debit }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="discount_debit" value="{{ discount_debit }}" id="input-discount-debit" class="form-control" />
                 </div>
@@ -193,24 +203,24 @@
             </fieldset>
 
             <fieldset>
-              <legend>text_fee</legend>
+              <legend>{{ text_fee }}</legend>
 
               <div class="form-group">
-                <label for="input-fee-boleto" class="control-label col-sm-2">entry_fee_boleto</label>
+                <label for="input-fee-boleto" class="control-label col-sm-2">{{ entry_fee_boleto }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="fee_boleto" value="{{ fee_boleto }}" id="input-fee-boleto" class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="input-fee-credit" class="control-label col-sm-2">entry_fee_credit</label>
+                <label for="input-fee-credit" class="control-label col-sm-2">{{ entry_fee_credit }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="fee_credit" value="{{ fee_credit }}" id="input-fee-credit" class="form-control" />
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="input-fee-debit" class="control-label col-sm-2">entry_fee_debit</label>
+                <label for="input-fee-debit" class="control-label col-sm-2">{{ entry_fee_debit }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="fee_debit" value="{{ fee_debit }}" id="input-fee-debit" class="form-control" />
                 </div>
@@ -220,7 +230,7 @@
 
           <div class="tab-pane" id="tab-order-status">
             <div class="form-group required">
-              <label for="input-order-status-pending" class="control-label col-sm-2">entry_order_status_pending</label>
+              <label for="input-order-status-pending" class="control-label col-sm-2">{{ entry_order_status_pending }}</label>
               <div class="col-sm-10">
                 <select name="order_status_pending" id="input-order-status-pending" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -241,7 +251,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-order-status-analysing" class="control-label col-sm-2">entry_order_status_analysing</label>
+              <label for="input-order-status-analysing" class="control-label col-sm-2">{{ entry_order_status_analysing }}</label>
               <div class="col-sm-10">
                 <select name="order_status_analysing" id="input-order-status-analysing" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -262,7 +272,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-order-status-paid" class="control-label col-sm-2">entry_order_status_paid</label>
+              <label for="input-order-status-paid" class="control-label col-sm-2">{{ entry_order_status_paid }}</label>
               <div class="col-sm-10">
                 <select name="order_status_paid" id="input-order-status-paid" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -283,7 +293,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-order-status-available" class="control-label col-sm-2">entry_order_status_available</label>
+              <label for="input-order-status-available" class="control-label col-sm-2">{{ entry_order_status_available }}</label>
               <div class="col-sm-10">
                 <select name="order_status_available" id="input-order-status-available" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -304,7 +314,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-order-status-disputed" class="control-label col-sm-2">entry_order_status_disputed</label>
+              <label for="input-order-status-disputed" class="control-label col-sm-2">{{ entry_order_status_disputed }}</label>
               <div class="col-sm-10">
                 <select name="order_status_disputed" id="input-order-status-disputed" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -325,7 +335,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-order-status-returned" class="control-label col-sm-2">entry_order_status_returned</label>
+              <label for="input-order-status-returned" class="control-label col-sm-2">{{ entry_order_status_returned }}</label>
               <div class="col-sm-10">
                 <select name="order_status_returned" id="input-order-status-returned" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -346,7 +356,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-order-status-cancelled" class="control-label col-sm-2">entry_order_status_cancelled</label>
+              <label for="input-order-status-cancelled" class="control-label col-sm-2">{{ entry_order_status_cancelled }}</label>
               <div class="col-sm-10">
                 <select name="order_status_cancelled" id="input-order-status-cancelled" class="form-control">
                   <option value="">{{ text_none }}</option>
@@ -369,7 +379,7 @@
 
           <div class="tab-pane" id="tab-geo">
             <div class="form-group">
-              <label for="input-geo-zone-id" class="control-label col-sm-2">entry_geo_zone_id</label>
+              <label for="input-geo-zone-id" class="control-label col-sm-2">{{ entry_geo_zone_id }}</label>
               <div class="col-sm-10">
                 <select name="geo_zone_id" id="input-geo-zone-id" class="form-control">
                   <option value="all">All</option>
@@ -386,14 +396,14 @@
             </div>
 
             <div class="form-group">
-              <label for="input-geo-sort-order" class="control-label col-sm-2">entry_geo_sort_order</label>
+              <label for="input-geo-sort-order" class="control-label col-sm-2">{{ entry_geo_sort_order }}</label>
               <div class="col-sm-10">
                 <input type="number" name="geo_sort_order" value="{{ geo_sort_order }}" id="input-geo-sort-order" class="form-control" />
               </div>
             </div>
 
             <div class="form-group">
-              <label for="input-geo-stores" class="control-label col-sm-2">entry_geo_stores</label>
+              <label for="input-geo-stores" class="control-label col-sm-2">{{ entry_geo_stores }}</label>
               <div class="col-sm-10">
                 <select name="geo_stores" id="input-geo-stores" multiple class="form-control">
                   {% for store in stores %}
@@ -410,7 +420,7 @@
 
           <div class="tab-pane" id="tab-installment">
             <div class="form-group required">
-              <label for="input-installment-total" class="control-label col-sm-2">entry_installment_total</label>
+              <label for="input-installment-total" class="control-label col-sm-2">{{ entry_installment_total }}</label>
               <div class="col-sm-10">
                 <input type="number" name="installment_total" value="{{ installment_total }}" id="input-installment-total" class="form-control" required />
                 {% if error_field_installment_total %}
@@ -420,7 +430,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-installment-free" class="control-label col-sm-2">entry_installment_free</label>
+              <label for="input-installment-free" class="control-label col-sm-2">{{ entry_installment_free }}</label>
               <div class="col-sm-10">
                 <input type="number" name="installment_free" value="{{ installment_free }}" id="input-installment-free" class="form-control" required />
                 {% if error_field_installment_free %}
@@ -430,7 +440,7 @@
             </div>
 
             <div class="form-group required">
-              <label for="input-installment-minimum-value" class="control-label col-sm-2">entry_installment_minimum_value</label>
+              <label for="input-installment-minimum-value" class="control-label col-sm-2">{{ entry_installment_minimum_value }}</label>
               <div class="col-sm-10">
                 <input type="number" name="installment_minimum_value" value="{{ installment_minimum_value }}" id="input-installment-minimum-value" class="form-control" required />
                 {% if error_field_installment_minimum_value %}
@@ -442,20 +452,20 @@
 
           <div class="tab-pane" id="tab-methods">
             <fieldset>
-              <legend>text_boleto</legend>
+              <legend>{{ text_boleto }}</legend>
 
               <div class="form-group">
-                <label for="input-methods-boleto-status" class="control-label col-sm-2">entry_status</label>
+                <label for="input-methods-boleto-status" class="control-label col-sm-2">{{ entry_status }}</label>
                 <div class="col-sm-10">
                   <select name="methods_boleto_status" id="input-methods-boleto-status" class="form-control">
-                    <option value="1" {{ methods_boleto_status ?? 'selected' }}>text_enabled</option>
-                    <option value="0" {{ methods_boleto_status ?: 'selected' }}>text_disabled</option>
+                    <option value="1" {{ methods_boleto_status ?? 'selected' }}>{{ text_enabled }}</option>
+                    <option value="0" {{ methods_boleto_status ?: 'selected' }}>{{ text_disabled }}</option>
                   </select>
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="input-methods-boleto-minimum-amount" class="control-label col-sm-2">entry_minimum_amount</label>
+                <label for="input-methods-boleto-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="methods_boleto_minimum_amount" value="{{ methods_boleto_minimum_amount }}" id="input-methods-boleto-minimum-amount" class="form-control" />
                 </div>
@@ -463,20 +473,20 @@
             </fieldset>
 
             <fieldset>
-              <legend>text_credit</legend>
+              <legend>{{ text_credit }}</legend>
 
               <div class="form-group">
-                <label for="input-methods-credit-status" class="control-label col-sm-2">entry_status</label>
+                <label for="input-methods-credit-status" class="control-label col-sm-2">{{ entry_status }}</label>
                 <div class="col-sm-10">
                   <select name="methods_credit_status" id="input-methods-credit-status" class="form-control">
-                    <option value="1" {{ methods_credit_status ?? 'selected' }}>text_enabled</option>
-                    <option value="0" {{ methods_credit_status ?: 'selected' }}>text_disabled</option>
+                    <option value="1" {{ methods_credit_status ?? 'selected' }}>{{ text_enabled }}</option>
+                    <option value="0" {{ methods_credit_status ?: 'selected' }}>{{ text_disabled }}</option>
                   </select>
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="input-methods-credit-minimum-amount" class="control-label col-sm-2">entry_minimum_amount</label>
+                <label for="input-methods-credit-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="methods_credit_minimum_amount" value="{{ methods_credit_minimum_amount }}" id="input-methods-credit-minimum-amount" class="form-control" />
                 </div>
@@ -484,20 +494,20 @@
             </fieldset>
 
             <fieldset>
-              <legend>text_debit</legend>
+              <legend>{{ text_debit }}</legend>
 
               <div class="form-group">
-                <label for="input-methods-debit-status" class="control-label col-sm-2">entry_status</label>
+                <label for="input-methods-debit-status" class="control-label col-sm-2">{{ entry_status }}</label>
                 <div class="col-sm-10">
                   <select name="methods_debit_status" id="input-methods-debit-status" class="form-control">
-                    <option value="1" {{ methods_debit_status ?? 'selected' }}>text_enabled</option>
-                    <option value="0" {{ methods_debit_status ?: 'selected' }}>text_disabled</option>
+                    <option value="1" {{ methods_debit_status ?? 'selected' }}>{{ text_enabled }}</option>
+                    <option value="0" {{ methods_debit_status ?: 'selected' }}>{{ text_disabled }}</option>
                   </select>
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="input-methods-debit-minimum-amount" class="control-label col-sm-2">entry_minimum_amount</label>
+                <label for="input-methods-debit-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
                 <div class="col-sm-10">
                   <input type="number" name="methods_debit_minimum_amount" value="{{ methods_debit_minimum_amount }}" id="input-methods-debit-minimum-amount" class="form-control" />
                 </div>
@@ -507,7 +517,7 @@
 
           <div class="tab-pane" id="tab-layout">
             <div class="form group required">
-              <label for="input-layout" class="control-label col-sm-2">entry_layout</label>
+              <label for="input-layout" class="control-label col-sm-2">{{ entry_layout_credit }}</label>
               <div class="col-sm-10">
                 <select name="layout" id="input-layout" class="form-control">
                   <option value="default">text_default</option>

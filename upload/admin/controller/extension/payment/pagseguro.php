@@ -165,6 +165,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'sandbox'                       => ['required' => false], // Obrigatório, porém sem necessidade de validação
             'customer_notify'               => ['required' => false], // Obrigatório, porém sem necessidade de validação
             'callback_token'                => ['required' => true],
+            'telemetry'                     => ['required' => false],
             'custom_fields_cpf'             => ['required' => false],
             'custom_fields_number'          => ['required' => false],
             'custom_fields_birthday'        => ['required' => false],
