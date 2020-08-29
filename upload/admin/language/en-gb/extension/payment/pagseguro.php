@@ -49,6 +49,7 @@ $_['entry_layout_credit']               = 'Tela para cartão de crédito';
 
 // Text
 $_['text_pagseguro'] = '<a href="https://valdeir.dev"><img src="/admin/view/image/payment/pagseguro.png" /></a>';
+$_['text_extension'] = 'Extensões';
 $_['text_success']   = 'Módulo alterado com sucesso';
 $_['text_discount']  = 'Descontos';
 $_['text_fee']       = 'Taxas';
