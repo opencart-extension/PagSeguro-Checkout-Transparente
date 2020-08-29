@@ -265,6 +265,8 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->model_setting_extension->install('payment', 'pagseguro_boleto');
         $this->model_setting_extension->install('payment', 'pagseguro_credit');
         $this->model_setting_extension->install('payment', 'pagseguro_debit');
+        $this->model_setting_extension->install('total', 'pagseguro_discount');
+        $this->model_setting_extension->install('total', 'pagseguro_fee');
 
         $this->load->model('user/user_group');
 
@@ -276,5 +278,21 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/payment/pagseguro_debit');
         $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/payment/pagseguro_debit');
+
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/total/pagseguro_discount');
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/total/pagseguro_discount');
+
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/total/pagseguro_fee');
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/total/pagseguro_fee');
+
+        $this->load->model('setting/setting');
+
+        $this->model_setting_setting->editSetting('total_pagseguro_discount', [
+            'total_pagseguro_discount_status' => true
+        ]);
+
+        $this->model_setting_setting->editSetting('total_pagseguro_fee', [
+            'total_pagseguro_fee_status' => true
+        ]);
     }
 }
