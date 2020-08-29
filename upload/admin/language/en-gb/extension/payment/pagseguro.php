@@ -48,12 +48,13 @@ $_['entry_minimum_amount']              = 'Valor mínimo';
 $_['entry_layout_credit']               = 'Tela para cartão de crédito';
 
 // Text
-$_['text_success']  = 'Módulo alterado com sucesso';
-$_['text_discount'] = 'Descontos';
-$_['text_fee']      = 'Taxas';
-$_['text_boleto']   = 'Boleto';
-$_['text_credit']   = 'Cartão de Crédito';
-$_['text_debit']    = 'Cartão de Débito';
+$_['text_pagseguro'] = '<a href="https://valdeir.dev"><img src="/admin/view/image/payment/pagseguro.png" /></a>';
+$_['text_success']   = 'Módulo alterado com sucesso';
+$_['text_discount']  = 'Descontos';
+$_['text_fee']       = 'Taxas';
+$_['text_boleto']    = 'Boleto';
+$_['text_credit']    = 'Cartão de Crédito';
+$_['text_debit']     = 'Cartão de Débito';
 
 // Error
 $_['error_permission']        = 'Atenção! vocẽ não tem permissão para modificar o módulo';

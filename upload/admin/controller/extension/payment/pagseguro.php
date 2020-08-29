@@ -32,7 +32,23 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
             $data = array_combine($keys, array_values($this->request->post));
 
+            /** Salva os dados de configuração */
             $this->model_setting_setting->editSetting('payment_pagseguro', $data);
+
+            /** Ativa/desativa o pagamento via Boleto */
+            $this->model_setting_setting->editSetting('payment_pagseguro_boleto', [
+                'payment_pagseguro_boleto_status' => $this->request->post['methods_boleto_status']
+            ]);
+
+            /** Ativa/desativa o pagamento via Cartão de Crédito */
+            $this->model_setting_setting->editSetting('payment_pagseguro_credit', [
+                'payment_pagseguro_credit_status' => $this->request->post['methods_credit_status']
+            ]);
+
+            /** Ativa/desativa o pagamento via Débito */
+            $this->model_setting_setting->editSetting('payment_pagseguro_debit', [
+                'payment_pagseguro_debit_status' => $this->request->post['methods_debit_status']
+            ]);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
@@ -234,5 +250,31 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'methods_debit_minimum_amount'  => ['required' => false],
             'layout'                        => ['required' => true],
         ];
+    }
+
+    /**
+     * Instala e adiciona permissão para editar os módulos de pagamento:
+     *  - PagSeguro Boleto
+     *  - PagSeguro Cartão de Crédito
+     *  - PagSeguro Débito
+     */
+    public function install()
+    {
+        $this->load->model('setting/extension');
+
+        $this->model_setting_extension->install('payment', 'pagseguro_boleto');
+        $this->model_setting_extension->install('payment', 'pagseguro_credit');
+        $this->model_setting_extension->install('payment', 'pagseguro_debit');
+
+        $this->load->model('user/user_group');
+
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/payment/pagseguro_boleto');
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/payment/pagseguro_boleto');
+
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/payment/pagseguro_credit');
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/payment/pagseguro_credit');
+
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/payment/pagseguro_debit');
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/payment/pagseguro_debit');
     }
 }
