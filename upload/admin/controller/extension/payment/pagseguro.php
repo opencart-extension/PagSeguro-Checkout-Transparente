@@ -11,11 +11,17 @@ class ControllerExtensionPaymentPagseguro extends Controller
      */
     public function index()
     {
+        if (!defined('PAGSEGURO_LOG')) {
+            define('PAGSEGURO_LOG', DIR_SYSTEM . '/library/PagSeguro/log');
+        }
+
         $data = $this->load->language('extension/payment/pagseguro');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
         $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js');
+        $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js');
+        $this->document->addStyle('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css');
 
         if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate()) {
             $this->load->model('setting/setting');
@@ -87,6 +93,16 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'name'     => $this->config->get('config_name') . $this->language->get('text_default')
         ];
 
+        $logs = new DirectoryIterator(PAGSEGURO_LOG);
+
+        $data['logs_date'] = [];
+
+        foreach ($logs as $log) {
+            if ($log->isFile()) {
+                $data['logs_date'][] = preg_replace('/^(\d{4}-\d{2}-\d{2}).+/', '$1', $log->getFilename());
+            }
+        }
+
         $data['action'] = $this->buildUrl('extension/payment/pagseguro');
         $data['cancel'] = $this->buildUrl('marketplace/extension', [
             'type' => 'payment'
@@ -97,6 +113,20 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $data['footer'] = $this->load->controller('common/footer');
 
         $this->response->setOutput($this->load->view('extension/payment/pagseguro', $data));
+    }
+
+    public function log()
+    {
+        if (!defined('PAGSEGURO_LOG')) {
+            define('PAGSEGURO_LOG', DIR_SYSTEM . '/library/PagSeguro/log');
+        }
+
+        $date = $this->request->get['date'] ?? null;
+
+        if ($date && file_exists(PAGSEGURO_LOG . "/{$date}.log")) {
+            $this->response->addHeader('Content-Type: text/html; charset=utf-8');
+            $this->response->setOutput(file_get_contents(PAGSEGURO_LOG . "/{$date}.log"));
+        }
     }
 
     /**
