@@ -1,0 +1,60 @@
+{% if warning %}
+  <div class="alert alert-danger" id="warning" role="alert">{{ warning }}</div>
+{% else %}
+  <div id="warning" class="alert alert-danger" role="alert" style="display:none"></div>
+  <div id="info" class="alert alert-info" role="alert" style="display:none">{{ text_wait }}.</div>
+
+  <div class="col-sm-5 col-md-offset-3">
+    <div class="form-group col-md-12">
+      <label for="cpf">{{ entry_cpf }}</label>
+      <input type="text" name="cpf" id="cpf" value="" placeholder="{{ entry_cpf }}" class="form-control">
+    </div>
+
+    <div class="form-group col-md-12">
+      <button type="button" id="button-print" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-left">
+        <i class="fa fa-barcode"></i>
+        {{ btn_print }}
+      </button>
+
+      <button type="button" id="button-download" data-loading-text="{{ text_wait }}" class="btn btn-link pull-right">
+        <i class="fa fa-download"></i>
+        {{ btn_download }}
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.colorbox/1.6.4/jquery.colorbox-min.js" integrity="sha512-DAVSi/Ovew9ZRpBgHs6hJ+EMdj1fVKE+csL7mdf9v7tMbzM1i4c/jAvHE8AhcKYazlFl7M8guWuO3lDNzIA48A==" crossorigin="anonymous"></script>
+
+  <script type="text/javascript">
+    (function (src) {
+      const script = document.createElement('script')
+      script.async = true
+      script.src = src
+      script.addEventListener('load', loadedScriptSuccess)
+      script.addEventListener('error', loadedScriptFailed)
+      document.head.appendChild(script)
+    })('{{ javascript_src }}')
+
+    function loadedScriptSuccess() {
+      alert('Sucesso')
+
+      PagSeguroDirectPayment.setSessionId('{{ session }}');
+
+      document.querySelector('#cpf').addEventListener('input', formatCpf)
+    }
+
+    function loadedScriptFailed() {
+      alert('Error loaded script')
+    }
+
+    /**
+     * Formata o número do CPF
+     */
+    function formatCpf(e) {
+      e.target.value = e.target
+        .value
+        .replace(/\D/g, '')
+        .replace(/(\d{3})(\d{3})?(\d{3})?(\d{2})?/g, '$1.$2.$3-$4')
+    }
+  </script>
+{% endif %}
