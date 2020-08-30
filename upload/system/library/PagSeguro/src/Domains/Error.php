@@ -24,7 +24,7 @@ class Error
     /**
      * @return string
      */
-    public function getMessage(): int
+    public function getMessage(): string
     {
         return $this->msg;
     }

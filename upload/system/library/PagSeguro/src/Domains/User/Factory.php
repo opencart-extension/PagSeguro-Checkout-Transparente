@@ -2,6 +2,8 @@
 
 namespace ValdeirPsr\PagSeguro\Domains\User;
 
+use ValdeirPsr\PagSeguro\Domains\Document;
+
 class Factory
 {
     /**
@@ -78,7 +80,7 @@ class Factory
         string $name = null,
         string $email = null,
         string $phone = null,
-        string $document = null
+        Document $document = null
     ): Abstractuser {
         if ($name) {
             $user->setName($name);
