@@ -294,5 +294,59 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->model_setting_setting->editSetting('total_pagseguro_fee', [
             'total_pagseguro_fee_status' => true
         ]);
+
+        $this->load->model('extension/payment/pagseguro');
+
+        $this->model_extension_payment_pagseguro->createTables();
+    }
+
+    /**
+     * Remove permissões para editar os módulos de pagamento:
+     *  - PagSeguro Boleto
+     *  - PagSeguro Cartão de Crédito
+     *  - PagSeguro Débito
+     *
+     * Remove as tabelas criadas pelo módulo
+     */
+    public function uninstall()
+    {
+        $this->load->model('setting/extension');
+
+        $this->model_setting_extension->uninstall('payment', 'pagseguro_boleto');
+        $this->model_setting_extension->uninstall('payment', 'pagseguro_credit');
+        $this->model_setting_extension->uninstall('payment', 'pagseguro_debit');
+        $this->model_setting_extension->uninstall('total', 'pagseguro_discount');
+        $this->model_setting_extension->uninstall('total', 'pagseguro_fee');
+
+        $this->load->model('user/user_group');
+
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'access', 'extension/payment/pagseguro_boleto');
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'modify', 'extension/payment/pagseguro_boleto');
+
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'access', 'extension/payment/pagseguro_credit');
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'modify', 'extension/payment/pagseguro_credit');
+
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'access', 'extension/payment/pagseguro_debit');
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'modify', 'extension/payment/pagseguro_debit');
+
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'access', 'extension/total/pagseguro_discount');
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'modify', 'extension/total/pagseguro_discount');
+
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'access', 'extension/total/pagseguro_fee');
+        $this->model_user_user_group->removePermission($this->user->getGroupId(), 'modify', 'extension/total/pagseguro_fee');
+
+        $this->load->model('setting/setting');
+
+        $this->model_setting_setting->editSetting('total_pagseguro_discount', [
+            'total_pagseguro_discount_status' => false
+        ]);
+
+        $this->model_setting_setting->editSetting('total_pagseguro_fee', [
+            'total_pagseguro_fee_status' => false
+        ]);
+
+        $this->load->model('extension/payment/pagseguro');
+
+        $this->model_extension_payment_pagseguro->dropTables();
     }
 }
