@@ -2,10 +2,9 @@
 
 class ModelExtensionTotalPagSeguroDiscount extends Model
 {
-    const EXTENSION_PAYMENT_PREFIX = 'payment_pagseguro_';
-    const EXTENSION_PAGSEGURO_BOLETO = self::EXTENSION_PAYMENT_PREFIX . 'boleto';
-    const EXTENSION_PAGSEGURO_CREDIT = self::EXTENSION_PAYMENT_PREFIX . 'credit';
-    const EXTENSION_PAGSEGURO_DEBIT = self::EXTENSION_PAYMENT_PREFIX . 'debit';
+    const EXTENSION_PAGSEGURO_BOLETO = 'pagseguro_boleto';
+    const EXTENSION_PAGSEGURO_CREDIT = 'pagseguro_credit';
+    const EXTENSION_PAGSEGURO_DEBIT = 'pagseguro_debit';
 
     public function getTotal($total) {
         $status_key = self::EXTENSION_PAYMENT_PREFIX . 'status';
