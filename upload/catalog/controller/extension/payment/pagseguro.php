@@ -13,32 +13,31 @@ class ControllerExtensionPaymentPagSeguro extends Controller
 
         $transaction = $this->model_extension_payment_pagseguro->checkStatusByNotificationCode($notificationCode);
 
-        var_dump($transaction);
-        die();
-
         // Logger
 
-        $status = $transaction->getStatus();
+        if ($transaction) {
+            $status = $transaction['status'];
 
-        $statuses = [
-            0 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_pending'),
-            1 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_pending'),
-            2 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_analysing'),
-            3 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_paid'),
-            4 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_available'),
-            5 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_disputed'),
-            6 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_returned'),
-            7 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_cancelled')
-        ];
+            $statuses = [
+                0 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_pending'),
+                1 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_pending'),
+                2 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_analysing'),
+                3 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_paid'),
+                4 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_available'),
+                5 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_disputed'),
+                6 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_returned'),
+                7 => $this->config->get(self::EXTENSION_PREFIX . 'order_status_cancelled')
+            ];
 
-        if (array_key_exists($status, $statuses)) {
-            $statusId = $statuses[$status];
-        } else {
-            $statusId = reset($statuses);
+            if (array_key_exists($status, $statuses)) {
+                $statusId = $statuses[$status];
+            } else {
+                $statusId = reset($statuses);
+            }
+
+            $customer_notify = !!$this->config->get(self::EXTENSION_PREFIX . 'customer_notify');
+
+            $this->model_checkout_order->addOrderHistory($transaction['order_id'], $statusId, '', $customer_notify);
         }
-
-        $customer_notify = !!$this->config->get(self::EXTENSION_PREFIX . 'customer_notify');
-
-        $this->model_checkout_order->addOrderHistory($transaction['order_id'], $statusId, '', $customer_notify);
     }
 }
