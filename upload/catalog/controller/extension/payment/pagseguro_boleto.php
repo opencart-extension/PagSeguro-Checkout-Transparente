@@ -130,7 +130,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
         $payment->setMode('default');
         $payment->setSender($sender);
         $payment->setCurrency('BRL');
-        $payment->setNotificationUrl($this->url->link('extension/payment/pagseguro', 'order_id=' . $this->session->data['order_id'] . '&token=' . $token, true));
+        $payment->setNotificationUrl($this->url->link('extension/payment/pagseguro/callback', 'order_id=' . $this->session->data['order_id'] . '&token=' . $token, true));
         $payment->setCartItems($items);
         $payment->setExtraAmount($extra_amount);
         $payment->setReference($order_info['comment']);
