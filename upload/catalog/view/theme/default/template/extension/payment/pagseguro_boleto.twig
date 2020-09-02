@@ -184,7 +184,7 @@
      * Confirma pedido
      */
     function confirmPayment() {
-      setTimeout(() => location.href = `{{ confirm }}${paymentCode}`, 1000)
+      setTimeout(() => location.href = `{{ confirm }}${paymentCode}`.replace(/&amp;/, '&'), 1000)
     }
   </script>
 {% endif %}
