@@ -13,6 +13,9 @@ class ControllerExtensionPaymentPagSeguro extends Controller
 
         $transaction = $this->model_extension_payment_pagseguro->checkStatusByNotificationCode($notificationCode);
 
+        var_dump($transaction);
+        die();
+
         // Logger
 
         $status = $transaction->getStatus();

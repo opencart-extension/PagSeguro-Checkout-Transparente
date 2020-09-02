@@ -3,6 +3,7 @@
 require_once DIR_SYSTEM . 'library/PagSeguro/vendor/autoload.php';
 
 use ValdeirPsr\PagSeguro\Domains\Environment;
+use ValdeirPsr\PagSeguro\Domains\Transaction;
 use ValdeirPsr\PagSeguro\Request\Session;
 use ValdeirPsr\PagSeguro\Request\Notification;
 
@@ -48,9 +49,14 @@ class ModelExtensionPaymentPagSeguro extends Model
      */
     public function checkStatusByNotificationCode(string $notification_code): ?array
     {
-        $env = $this->factoryEnvironment();
-        $request = new Notification($env);
-        $transaction = $request->capture($notification_code);
+        try {
+            $env = $this->factoryEnvironment();
+            $request = new Notification($env);
+            $transaction = $request->capture($notification_code);
+        } catch (Exception $e) {
+            // Logger
+            return null;
+        }
 
         $order = $this->db->query('
         SELECT
@@ -67,6 +73,52 @@ class ModelExtensionPaymentPagSeguro extends Model
         }
 
         return null;
+    }
+
+    /**
+     * Salva os dados no banco de dados
+     *
+     * @param int $order_id
+     * @param Transaction $transaction
+     *
+     * @return void
+     */
+    public function addOrder(int $order_id, Transaction $transaction)
+    {
+        $code = $this->db->escape($transaction->getCode());
+        $last_event_date = $this->db->escape($transaction->getLastEventDate()->format('Y-m-d'));
+
+        $payment_method = $this->db->escape($transaction->getPayment()->getMethod());
+
+        if ($payment_method === 'boleto') {
+            $payment_link = $this->db->escape($transaction->getPayment()->getPaymentLink());
+        } else {
+            $payment_link = '';
+        }
+
+        $gross_amount = $this->db->escape($transaction->getGrossAmount());
+        $discount_amount = $this->db->escape($transaction->getDiscountAmount());
+        $fee_amount = $this->db->escape($transaction->getFeeAmount());
+        $net_amount = $this->db->escape($transaction->getNetAmount());
+        $extra_amount = $this->db->escape($transaction->getExtraAmount());
+        $raw = $this->db->escape(serialize($transaction));
+
+        $this->db->query('
+            INSERT INTO ' . DB_PREFIX . 'pagseguro_orders
+            VALUES (
+                "' . $code . '",
+                "' . $order_id . '",
+                "' . $last_event_date . '",
+                "' . $payment_method . '",
+                "' . $payment_link . '",
+                "' . $gross_amount . '",
+                "' . $discount_amount . '",
+                "' . $fee_amount . '",
+                "' . $net_amount . '",
+                "' . $extra_amount . '",
+                "' . $raw . '"
+            );
+        ');
     }
 
     /**
