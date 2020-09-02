@@ -12,6 +12,7 @@ class ModelExtensionPaymentPagSeguro extends Model
         $this->db->query('
         CREATE TABLE `' . DB_PREFIX . 'pagseguro_orders` (
           `code` VARCHAR(100) PRIMARY KEY,
+          `order_id` INT(11),
           `last_event_date` VARCHAR(50),
           `payment_method` VARCHAR(20),
           `payment_link` VARCHAR(255),
