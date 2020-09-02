@@ -55,7 +55,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
 
         $data['action_create_sale'] = $this->url->link('extension/payment/pagseguro_boleto/transaction', 'order_id=' . $this->session->data['order_id'], true);
         $data['action_download_boleto'] = $this->url->link('extension/payment/pagseguro_boleto/download', 'url=', true);
-        $data['confirm'] = $this->url->link('extension/payment/pagseguro_boleto/confirm', '', true);
+        $data['confirm'] = $this->url->link('extension/payment/pagseguro_boleto/confirm', 'code=', true);
 
         return $this->load->view('extension/payment/pagseguro_boleto', $data);
     }
@@ -166,6 +166,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
             $sale = new Sale($env);
             $response = $sale->create($payment);
             $result['payment_link'] = $response->getPayment()->getPaymentLink();
+            $result['code'] = $response->getCode();
 
             $shipping_cost = $this->model_extension_payment_pagseguro->addOrder($order_id, $response);
         } catch (AuthException $e) {
@@ -210,7 +211,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
      * Realiz a confirmação do pedido
      */
     public function confirm() {
-        $confirm = $this->request->get['code'];
+        $confirm = $this->request->get['code'] ?? null;
 
         if ($confirm) {
             $this->load->model('checkout/order');

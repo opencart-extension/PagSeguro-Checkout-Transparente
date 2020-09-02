@@ -34,9 +34,11 @@
   <script type="text/javascript">
     /**
      * Link do boleto
+     * Código da transação
      * Identificador do pedido
      */
     let paymentLink;
+    let paymentCode;
     let hash;
 
     /**
@@ -159,6 +161,7 @@
      */
     function requestSuccess(response) {
       paymentLink = response.payment_link
+      paymentCode = response.code
 
       document.querySelector('#cpf').closest('.form-group').classList.toggle('hidden')
       document.querySelector('#button-confirm').classList.toggle('hidden')
@@ -181,7 +184,7 @@
      * Confirma pedido
      */
     function confirmPayment() {
-      setTimeout(() => location.href = '{{ confirm }}', 1000)
+      setTimeout(() => location.href = `{{ confirm }}${paymentCode}`, 1000)
     }
   </script>
 {% endif %}
