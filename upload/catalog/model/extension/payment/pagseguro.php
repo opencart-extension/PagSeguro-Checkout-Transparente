@@ -4,6 +4,7 @@ require_once DIR_SYSTEM . 'library/PagSeguro/vendor/autoload.php';
 
 use ValdeirPsr\PagSeguro\Domains\Environment;
 use ValdeirPsr\PagSeguro\Request\Session;
+use ValdeirPsr\PagSeguro\Request\Notification;
 
 class ModelExtensionPaymentPagSeguro extends Model
 {
@@ -36,6 +37,36 @@ class ModelExtensionPaymentPagSeguro extends Model
         $env = $this->factoryEnvironment();
         $session = new Session($env);
         return $session->generate();
+    }
+
+    /**
+     * Captura o status do pedido, de acordo com o código da notificação
+     *
+     * @param string $notification_code
+     *
+     * @return array|null
+     */
+    public function checkStatusByNotificationCode(string $notification_code): ?array
+    {
+        $env = $this->factoryEnvironment();
+        $request = new Notification($env);
+        $transaction = $request->capture($notification_code);
+
+        $order = $this->db->query('
+        SELECT
+            order_id
+        FROM ' . DB_PREFIX . 'pagseguro_orders
+        WHERE `code` = "' . $this->db->escape($transaction->getCode()) . '"
+        ');
+
+        if (isset($order->row['order_id'])) {
+            return [
+                "order_id" => $order->row['order_id'],
+                "status" => $transaction->getStatus()
+            ];
+        }
+
+        return null;
     }
 
     /**
