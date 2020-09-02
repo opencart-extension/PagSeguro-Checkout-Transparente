@@ -166,6 +166,8 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
             $sale = new Sale($env);
             $response = $sale->create($payment);
             $result['payment_link'] = $response->getPayment()->getPaymentLink();
+
+            $shipping_cost = $this->model_extension_payment_pagseguro->addOrder($order_id, $response);
         } catch (AuthException $e) {
             $result['errors'] = [
                 'error' => $this->language->get(sprintf('error_%s_auth', $environment_name))
