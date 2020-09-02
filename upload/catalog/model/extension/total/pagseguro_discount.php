@@ -2,9 +2,10 @@
 
 class ModelExtensionTotalPagSeguroDiscount extends Model
 {
+    const EXTENSION_PAYMENT_PREFIX = 'payment_pagseguro_';
     const EXTENSION_PAGSEGURO_BOLETO = 'pagseguro_boleto';
     const EXTENSION_PAGSEGURO_CREDIT = 'pagseguro_credit';
-    const EXTENSION_PAGSEGURO_DEBIT = 'pagseguro_debit';
+    const EXTENSION_PAGSEGURO_DEBIT = 'pagseguro_zdebit';
 
     public function getTotal($total) {
         $status_key = self::EXTENSION_PAYMENT_PREFIX . 'status';
@@ -41,7 +42,7 @@ class ModelExtensionTotalPagSeguroDiscount extends Model
      */
     private function getDiscountValue(): float
     {
-        switch ($this->session->data['payment_method']) {
+        switch ($this->session->data['payment_method']['code']) {
             case self::EXTENSION_PAGSEGURO_BOLETO:
                 return floatval($this->config->get(self::EXTENSION_PAYMENT_PREFIX . 'discount_boleto'));
             break;
