@@ -87,82 +87,82 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
             return;
         }
 
-        $customer_document = Document::cpf(preg_replace('/\D/', '', $cpf));
+        try {
+            $customer_document = Document::cpf(preg_replace('/\D/', '', $cpf));
 
-        $sender = FactoryUser::sender(
-            sprintf('%s %s', $order_info['firstname'], $order_info['lastname']),
-            $order_info['email'],
-            $order_info['telephone'],
-            $customer_document,
-            $hash
-        );
-
-        $products = $this->model_checkout_order->getOrderProducts($order_id);
-
-        $items = [];
-
-        foreach ($products as $key => $product) {
-            $item = new CartItem();
-            $item->setId(sprintf('ID%d_K%d', $product['product_id'], $key));
-            $item->setDescription($product['name'] . '  ::  ' . $product['model']);
-            $item->setQuantity(intval($product['quantity']));
-            $item->setAmount(number_format($product['total'], 2, '.', ''));
-            $items[] = $item;
-        }
-
-        $vouchers = $this->session->data['vouchers'] ?? [];
-
-        foreach ($vouchers as $key => $voucher) {
-            $item = new CartItem();
-            $item->setId(sprintf('Voucher_%s', $key));
-            $item->setDescription($voucher['description']);
-            $item->setQuantity(1);
-            $item->setAmount(number_format($voucher['amount'], 2, '.', ''));
-            $items[] = $item;
-        }
-
-        $order_totals = $this->model_checkout_order->getOrderTotals($order_id);
-
-        $token = $this->config->get(self::EXTENSION_PREFIX . 'callback_token');
-        $extra_amount = $this->model_extension_payment_pagseguro->getExtraAmount($order_totals);
-
-        $payment = new Payment();
-        $payment->setMode('default');
-        $payment->setSender($sender);
-        $payment->setCurrency('BRL');
-        $payment->setNotificationUrl($this->url->link('extension/payment/pagseguro/callback', 'order_id=' . $this->session->data['order_id'] . '&token=' . $token, true));
-        $payment->setCartItems($items);
-        $payment->setExtraAmount($extra_amount);
-        $payment->setReference($order_info['comment']);
-        $payment->setPayment(new Boleto());
-
-        if ($this->cart->hasShipping()) {
-            $address = new Address(
-                $order_info['shipping_address_1'],
-                $order_info['shipping_custom_field'][$custom_field_number_id],
-                $order_info['shipping_address_2'],
-                $order_info['shipping_city'],
-                $order_info['shipping_zone_code'],
-                preg_replace('/\D/', '', $order_info['shipping_postcode']),
-                $order_info['shipping_company'],
+            $sender = FactoryUser::sender(
+                sprintf('%s %s', $order_info['firstname'], $order_info['lastname']),
+                $order_info['email'],
+                $order_info['telephone'],
+                $customer_document,
+                $hash
             );
 
-            $shipping_cost = $this->model_extension_payment_pagseguro->getShippingCost($order_totals);
+            $products = $this->model_checkout_order->getOrderProducts($order_id);
 
-            $shipping = new Shipping();
-            $shipping->setType(ShippingTypes::UNKNOWN);
-            $shipping->setCost(number_format($shipping_cost, 2, '.', ''));
-            $shipping->setAddressRequired(true);
-            $shipping->setAddress($address);
+            $items = [];
 
-            $payment->setShipping($shipping);
-        }
+            foreach ($products as $key => $product) {
+                $item = new CartItem();
+                $item->setId(sprintf('ID%d_K%d', $product['product_id'], $key));
+                $item->setDescription($product['name'] . '  ::  ' . $product['model']);
+                $item->setQuantity(intval($product['quantity']));
+                $item->setAmount(number_format($product['total'], 2, '.', ''));
+                $items[] = $item;
+            }
 
-        $env = $this->model_extension_payment_pagseguro->factoryEnvironment();
-        $environment_name = $this->config->get(self::EXTENSION_PREFIX . 'sandbox') == 1 ? 'debug' : 'production';
-        $result = [];
+            $vouchers = $this->session->data['vouchers'] ?? [];
 
-        try {
+            foreach ($vouchers as $key => $voucher) {
+                $item = new CartItem();
+                $item->setId(sprintf('Voucher_%s', $key));
+                $item->setDescription($voucher['description']);
+                $item->setQuantity(1);
+                $item->setAmount(number_format($voucher['amount'], 2, '.', ''));
+                $items[] = $item;
+            }
+
+            $order_totals = $this->model_checkout_order->getOrderTotals($order_id);
+
+            $token = $this->config->get(self::EXTENSION_PREFIX . 'callback_token');
+            $extra_amount = $this->model_extension_payment_pagseguro->getExtraAmount($order_totals);
+
+            $payment = new Payment();
+            $payment->setMode('default');
+            $payment->setSender($sender);
+            $payment->setCurrency('BRL');
+            $payment->setNotificationUrl($this->url->link('extension/payment/pagseguro/callback', 'order_id=' . $this->session->data['order_id'] . '&token=' . $token, true));
+            $payment->setCartItems($items);
+            $payment->setExtraAmount($extra_amount);
+            $payment->setReference($order_info['comment']);
+            $payment->setPayment(new Boleto());
+
+            if ($this->cart->hasShipping()) {
+                $address = new Address(
+                    $order_info['shipping_address_1'],
+                    $order_info['shipping_custom_field'][$custom_field_number_id],
+                    $order_info['shipping_address_2'],
+                    $order_info['shipping_city'],
+                    $order_info['shipping_zone_code'],
+                    preg_replace('/\D/', '', $order_info['shipping_postcode']),
+                    $order_info['shipping_company'],
+                );
+
+                $shipping_cost = $this->model_extension_payment_pagseguro->getShippingCost($order_totals);
+
+                $shipping = new Shipping();
+                $shipping->setType(ShippingTypes::UNKNOWN);
+                $shipping->setCost(number_format($shipping_cost, 2, '.', ''));
+                $shipping->setAddressRequired(true);
+                $shipping->setAddress($address);
+
+                $payment->setShipping($shipping);
+            }
+
+            $env = $this->model_extension_payment_pagseguro->factoryEnvironment();
+            $environment_name = $this->config->get(self::EXTENSION_PREFIX . 'sandbox') == 1 ? 'debug' : 'production';
+            $result = [];
+
             $sale = new Sale($env);
             $response = $sale->create($payment);
             $result['payment_link'] = $response->getPayment()->getPaymentLink();
@@ -179,8 +179,18 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
                     'error' => $error->getMessage()
                 ];
             }, $e->getErrors());
+        } catch (InvalidArgumentException $e) {
+            $result['errors'] = [
+                'error' => $e->getMessage()
+            ];
+        } catch (Exception $e) {
+            $result['errors'] = [
+                'error' => $e->getMessage()
+            ];
         } finally {
-            $this->response->setOutput(json_encode($result));
+            $statusCode = isset($result['errors']) ? 400 : 200;
+            $statusName = $statusCode === 400 ? 'Bad Request' : 'OK';
+            $this->setOutputJson($result, $statusCode, $statusName);
         }
     }
 
@@ -275,5 +285,18 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
 
             header('location: ' . $this->url->link('checkout/success'));
         }
-	}
+    }
+
+    /**
+     * Retorna um JSON válido
+     *
+     * @param array $response
+     * @param int $statusCode
+     * @param stirng $statusName
+     */
+    private function setOutputJson(array $response = [], $statusCode = 200, $statusName = 'OK') {
+        header("HTTP/1.0 $statusCode $statusName");
+        echo json_encode($response);
+        die();
+    }
 }

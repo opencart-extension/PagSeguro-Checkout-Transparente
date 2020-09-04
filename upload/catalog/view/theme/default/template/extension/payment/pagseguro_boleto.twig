@@ -1,8 +1,8 @@
 {% if warning %}
   <div class="alert alert-danger" id="warning" role="alert">{{ warning }}</div>
 {% else %}
-  <div id="warning" class="alert alert-danger" role="alert" style="display:none"></div>
-  <div id="info" class="alert alert-info" role="alert" style="display:none">{{ text_wait }}.</div>
+  <div id="warning" class="alert alert-danger" role="alert" style="display: none"></div>
+  <div id="info" class="alert alert-info" role="alert" style="display: none">{{ text_wait }}.</div>
 
   <div class="col-sm-5 col-md-offset-3">
     <div class="form-group col-md-12">
@@ -101,6 +101,8 @@
      * Envia as informações para o PagSeguro e cria uma transação
      */
     function createSale() {
+      $('#warning').html('').hide()
+
       const body = new FormData();
       body.set('hash', hash)
       body.set('cpf', $('#cpf').val())
@@ -116,14 +118,12 @@
         .then((response) => response.json())
         .then((response) => {
           if (response.payment_link) {
-            requestSuccess(response)
-          } else if (response.errors) {
-            requestFailed(response)
+            return requestSuccess(response)
           }
+
+          requestFailed(response)
         })
-        .catch((err) => {
-          $('#warning').html(err)
-        })
+        .catch(requestFailed)
         .then(() => {
           $('#button-confirm').button('reset');
         })
@@ -160,6 +160,10 @@
      * Esconde o botão de confirmação e o campo de CPF
      */
     function requestSuccess(response) {
+      if (response.errors) {
+        return requestFailed(response)
+      }
+
       paymentLink = response.payment_link
       paymentCode = response.code
 
@@ -174,9 +178,11 @@
      */
     function requestFailed(response) {
       const ul = document.createElement('ul')
-      for (let error of response.errors) {
-        ul.insertAdjacentHTML('beforeEnd', `<li>${error.error}</li>`)
+
+      for (let error of Object.values(response.errors)) {
+        ul.insertAdjacentHTML('beforeEnd', `<li>${error.error || error}</li>`)
       }
+
       $('#warning').html(ul).show()
     }
 
