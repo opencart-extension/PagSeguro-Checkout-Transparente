@@ -22,7 +22,7 @@ class Holder extends AbstractUser implements Xml, IArray
      *
      * @return self
      */
-    public function setBirthdate(DateTime $value): self
+    public function setBirthdate(?DateTime $value): self
     {
         $this->birthDate = $value;
 
@@ -94,14 +94,7 @@ class Holder extends AbstractUser implements Xml, IArray
     public function toXml(): string
     {
         $arr = [
-            'holder' => [
-                'name' => $this->name,
-                'documents' => [
-                    'document' => $this->document->toArray()
-                ],
-                'birthDate' => $this->birthDate->format('d/m/Y'),
-                'phone' => $this->phone,
-            ]
+            'holder' => $this->toArray()
         ];
 
         $parser = new XmlParser();
@@ -117,7 +110,7 @@ class Holder extends AbstractUser implements Xml, IArray
     {
         $arr = [
             'name' => $this->name,
-            'birthDate' => $this->birthDate->format('d/m/Y'),
+            'birthDate' => $this->birthDate ? $this->birthDate->format('d/m/Y') : null,
             'documents' => [
                 'document' => $this->document->toArray()
             ],

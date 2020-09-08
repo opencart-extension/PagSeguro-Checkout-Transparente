@@ -216,7 +216,7 @@ class CreditCard extends AbstractPaymentMethod implements IArray, Xml
             'token' => $this->token,
             'installment' => array_filter([
                 'quantity' => $this->installmentQuantity,
-                'value' => $this->installmentValue,
+                'value' => number_format($this->installmentValue, 2, '.', ''),
                 'noInterestInstallmentQuantity' => $this->noInterestInstallmentQuantity
             ]),
             'holder' => $this->holder->toArray(),

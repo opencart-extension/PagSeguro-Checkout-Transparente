@@ -48,7 +48,7 @@ class Notification
         } elseif ($request->getHttpStatus() === 401) {
             throw new AuthException('Check your credentials', 1000);
         } else {
-            throw new PagSeguroRequestException($request, $data);
+            throw new PagSeguroRequestException($request, $path);
         }
     }
 }

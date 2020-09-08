@@ -402,6 +402,12 @@ class Payment
             $arr['creditCard'] = $this->payment->toArray(true);
         }
 
+        if ($this->payment instanceof DebitCard) {
+            $arr['bank'] = [
+                'name' => $this->payment->getBank()
+            ];
+        }
+
         $parser = new XmlParser();
         $result = $parser->parser([
             'payment' => $arr
