@@ -328,8 +328,6 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
      * Retorna um JSON válido
      *
      * @param array $response
-     * @param int $statusCode
-     * @param stirng $statusName
      */
     private function setOutputJson(array $response = []) {
         $statusCode = isset($result['errors']) ? 400 : 200;

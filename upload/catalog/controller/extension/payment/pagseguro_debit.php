@@ -94,17 +94,11 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
                 $customer_document,
                 $hash
             );
-        } catch (InvalidArgumentException $e) {
-            $this->setOutputJson([
-                'error' => $e->getMessage()
-            ], 400, 'Bad Request');
-        }
 
-        $products = $this->model_checkout_order->getOrderProducts($order_id);
+            $products = $this->model_checkout_order->getOrderProducts($order_id);
 
-        $items = [];
+            $items = [];
 
-        try {
             foreach ($products as $key => $product) {
                 $item = new CartItem();
                 $item->setId(sprintf('ID%d_K%d', $product['product_id'], $key));
@@ -124,18 +118,13 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
                 $item->setAmount(number_format($voucher['amount'], 2, '.', ''));
                 $items[] = $item;
             }
-        } catch (InvalidArgumentException $e) {
-            $this->setOutputJson([
-                'error' => $e->getMessage()
-            ], 400, 'Bad Request');
-        }
 
-        $order_totals = $this->model_checkout_order->getOrderTotals($order_id);
+            $order_totals = $this->model_checkout_order->getOrderTotals($order_id);
 
-        $token = $this->config->get(self::EXTENSION_PREFIX . 'callback_token');
-        $extra_amount = $this->model_extension_payment_pagseguro->getExtraAmount($order_totals);
+            $token = $this->config->get(self::EXTENSION_PREFIX . 'callback_token');
+            $extra_amount = $this->model_extension_payment_pagseguro->getExtraAmount($order_totals);
 
-        try {
+
             $debitCard = new DebitCard();
             $debitCard->setBank($bank_name);
 
@@ -170,17 +159,11 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
 
                 $payment->setShipping($shipping);
             }
-        } catch (InvalidArgumentException $e) {
-            $this->setOutputJson([
-                'error' => $e->getMessage()
-            ], 400, 'Bad Request');
-        }
 
-        $env = $this->model_extension_payment_pagseguro->factoryEnvironment();
-        $environment_name = $this->config->get(self::EXTENSION_PREFIX . 'sandbox') == 1 ? 'debug' : 'production';
-        $result = [];
+            $env = $this->model_extension_payment_pagseguro->factoryEnvironment();
+            $environment_name = $this->config->get(self::EXTENSION_PREFIX . 'sandbox') == 1 ? 'debug' : 'production';
+            $result = [];
 
-        try {
             $sale = new Sale($env);
             $response = $sale->create($payment);
             $result['payment_link'] = $response->getPayment()->getPaymentLink();
@@ -190,17 +173,21 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
 
             $this->setOutputJson($result);
         } catch (AuthException $e) {
-            $this->setOutputJson([
+            $this->setOutputJson(['errors' => [
                 'error' => $this->language->get(sprintf('error_%s_auth', $environment_name))
-            ], 400, 'Bad Request');
+            ]]);
         } catch (PagSeguroRequestException $e) {
-            $errors = array_map(function ($error) {
-                return [
-                    'error' => $error->getMessage()
-                ];
-            }, $e->getErrors());
-
-            $this->setOutputJson(['errors' => $errors], 400, 'Bad Request');
+            $this->setOutputJson(['errors' => array_map(function ($error) {
+                return $error->getMessage();
+            }, $e->getErrors())]);
+        } catch (InvalidArgumentException $e) {
+            $this->setOutputJson(['errors' => [
+                'error' => $e->getMessage()
+            ]]);
+        } catch (Exception $e) {
+            $this->setOutputJson(['errors' => [
+                'error' => $e->getMessage()
+            ]]);
         }
     }
 
@@ -277,10 +264,11 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
      * Retorna um JSON válido
      *
      * @param array $response
-     * @param int $statusCode
-     * @param stirng $statusName
      */
-    private function setOutputJson(array $response = [], $statusCode = 200, $statusName = 'OK') {
+    private function setOutputJson(array $response = []) {
+        $statusCode = isset($result['errors']) ? 400 : 200;
+        $statusName = $statusCode === 400 ? 'Bad Request' : 'OK';
+
         header("HTTP/1.0 $statusCode $statusName");
         echo json_encode($response);
         die();

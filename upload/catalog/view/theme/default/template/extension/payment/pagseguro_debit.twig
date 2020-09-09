@@ -16,6 +16,10 @@
   #pagseguro #warning, #info, #button-continue {
     display: none
   }
+
+  #button-confirm {
+    width: 100%;
+  }
 </style>
 
 <div class="content" id="pagseguro">
@@ -205,15 +209,15 @@
   function requestFailed(response) {
     const ul = document.createElement('ul')
 
-    if (response.error) {
-      response.errors = []
-      response.errors.push({
-        error: response.error
-      })
-    }
+    try {
+      const errors = response.errors
 
-    for (let error of response.errors) {
-      ul.insertAdjacentHTML('beforeEnd', `<li>${error.error}</li>`)
+      for (let error in errors) {
+        ul.insertAdjacentHTML('beforeEnd', `<li>${errors[error]}</li>`)
+      }
+    } catch (e) {
+      console.log(e)
+      ul.insertAdjacentHTML('beforeEnd', `<li>${response}</li>`)
     }
 
     $('#warning').html(ul).show()

@@ -179,8 +179,15 @@
     function requestFailed(response) {
       const ul = document.createElement('ul')
 
-      for (let error of Object.values(response.errors)) {
-        ul.insertAdjacentHTML('beforeEnd', `<li>${error.error || error}</li>`)
+      try {
+        const errors = response.errors
+
+        for (let error in errors) {
+          ul.insertAdjacentHTML('beforeEnd', `<li>${errors[error]}</li>`)
+        }
+      } catch (e) {
+        console.log(e)
+        ul.insertAdjacentHTML('beforeEnd', `<li>${response}</li>`)
       }
 
       $('#warning').html(ul).show()

@@ -163,32 +163,27 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
 
             $sale = new Sale($env);
             $response = $sale->create($payment);
-            $result['payment_link'] = $response->getPayment()->getPaymentLink();
-            $result['code'] = $response->getCode();
 
-            $shipping_cost = $this->model_extension_payment_pagseguro->addOrder($order_id, $response);
+            $this->setOutputJson([
+                'payment_link' => $response->getPayment()->getPaymentLink(),
+                'code' => $response->getCode()
+            ]);
         } catch (AuthException $e) {
-            $result['errors'] = [
+            $this->setOutputJson(['errors' => [
                 'error' => $this->language->get(sprintf('error_%s_auth', $environment_name))
-            ];
+            ]]);
         } catch (PagSeguroRequestException $e) {
-            $result['errors'] = array_map(function ($error) {
-                return [
-                    'error' => $error->getMessage()
-                ];
-            }, $e->getErrors());
+            $this->setOutputJson(['errors' => array_map(function ($error) {
+                return $error->getMessage();
+            }, $e->getErrors())]);
         } catch (InvalidArgumentException $e) {
-            $result['errors'] = [
+            $this->setOutputJson(['errors' => [
                 'error' => $e->getMessage()
-            ];
+            ]]);
         } catch (Exception $e) {
-            $result['errors'] = [
+            $this->setOutputJson(['errors' => [
                 'error' => $e->getMessage()
-            ];
-        } finally {
-            $statusCode = isset($result['errors']) ? 400 : 200;
-            $statusName = $statusCode === 400 ? 'Bad Request' : 'OK';
-            $this->setOutputJson($result, $statusCode, $statusName);
+            ]]);
         }
     }
 
@@ -289,10 +284,11 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
      * Retorna um JSON válido
      *
      * @param array $response
-     * @param int $statusCode
-     * @param stirng $statusName
      */
-    private function setOutputJson(array $response = [], $statusCode = 200, $statusName = 'OK') {
+    private function setOutputJson(array $response = []) {
+        $statusCode = isset($result['errors']) ? 400 : 200;
+        $statusName = $statusCode === 400 ? 'Bad Request' : 'OK';
+
         header("HTTP/1.0 $statusCode $statusName");
         echo json_encode($response);
         die();
