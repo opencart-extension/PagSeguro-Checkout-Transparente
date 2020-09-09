@@ -6,6 +6,7 @@ use DOMDocument;
 use DOMXPath;
 use Throwable;
 use ValdeirPsr\PagSeguro\Domains\Error;
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use Curl\Curl;
 
 class PagSeguroRequest extends \Exception
@@ -22,6 +23,13 @@ class PagSeguroRequest extends \Exception
         Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
+
+        Logger::notice('Check your order details', [
+            'Request' => $requestBody,
+            'Response' => $curl->getResponse(),
+            'Response Headers' => $curl->getResponseHeaders(),
+            'Status Code' => $curl->getHttpStatus()
+        ]);
 
         $this->request = $curl;
         $this->requestBody = $requestBody;
