@@ -1,7 +1,25 @@
 <?php
 
 // Heading
-$_['heading_title'] = 'PagSeguro Carao de Crédito';
+$_['heading_title'] = 'PagSeguro Cartão de Crédito';
+
+// Entry
+$_['entry_holder_name']            = 'Nome do titular';
+$_['entry_holder_birthdate']       = 'Data de Nascimento';
+$_['entry_holder_cpf']             = 'CPF';
+$_['entry_credit_card_number']     = 'Número do cartão';
+$_['entry_credit_card_expiration'] = 'Validade';
+$_['entry_credit_card_cvv']        = 'Código de Segurança';
+$_['entry_installments']           = 'Parcelas';
+$_[''] = '';
+
+// Text
+$_['text_month'] = 'Mês';
+$_['text_year']  = 'Ano';
+$_['text_wait']  = 'Aguarde...';
+
+// Button
+$_['button_confirm'] = 'Pagar';
 
 // Error
 $_["error_code_5003"]  = "Falha de comunicação com a instituição financeira";

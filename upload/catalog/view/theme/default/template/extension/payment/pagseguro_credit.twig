@@ -54,7 +54,7 @@ label[for="card-number"] + div {
 
         <div id="form" class="col-sm-12">
           <div class="form-group col-sm-12">
-            <label class="col-sm-3 control-label" for="customer-name">Nome:</label>
+            <label class="col-sm-3 control-label" for="customer-name">{{ entry_holder_name }}</label>
             <div class="col-sm-8">
               <input class="form-control" type="text" id="customer-name" name="customer_name" placeholder="Ex: Valdeir Santana" autocomplete="cc-name" required />
               <input type="hidden" id="input-brand" name="brand" />
@@ -62,7 +62,7 @@ label[for="card-number"] + div {
           </div>
 
           <div class="form-group col-sm-12">
-            <label class="col-sm-3 control-label" for="card-number">Número do Cartão:</label>
+            <label class="col-sm-3 control-label" for="card-number">{{ entry_credit_card_number }}</label>
             <div class="col-sm-8">
               <input class="form-control" type="text" id="card-number" name="card_number" autocomplete="cc-number" required />
               <span id="card-brand"></span>
@@ -70,10 +70,10 @@ label[for="card-number"] + div {
           </div>
 
           <div class="form-group col-sm-12">
-            <label class="col-sm-3 control-label" for="validate-year">Validade:</label>
+            <label class="col-sm-3 control-label" for="validate-year">{{ entry_credit_card_expiration }}</label>
             <div class="col-sm-8" id="validate">
               <select name="validate_month" class="col-sm-6 form-control" id="validate-month" required>
-                <option value="" disabled selected>Mês</option>
+                <option value="" disabled selected>{{ text_month }}</option>
 
                 {% for month in validate.month %}
                 <option value="{{ month }}">{{ "%02d"|format(month) }}</option>
@@ -81,7 +81,7 @@ label[for="card-number"] + div {
               </select>
 
               <select name="validate_year" class="col-sm-6 form-control" id="validate-year">
-                <option value="" disabled selected>Ano</option>
+                <option value="" disabled selected>{{ text_year }}</option>
 
                 {% for year in validate.year %}
                 <option value="{{ year }}">{{ year }}</option>
@@ -91,7 +91,7 @@ label[for="card-number"] + div {
           </div>
 
           <div class="form-group col-sm-12">
-            <label class="col-sm-3 control-label" for="cvv" required pattern="[0-9]+">Código de Segurança:</label>
+            <label class="col-sm-3 control-label" for="cvv" required pattern="[0-9]+">{{ entry_credit_card_cvv }}</label>
             <div class="col-sm-8">
               <input class="form-control" type="text" id="cvv" name="cvv" placeholder="Ex: 123 ou 1234" autocomplete="cc-csc" />
             </div>
@@ -99,7 +99,7 @@ label[for="card-number"] + div {
 
           {% if birthday != null %}
           <div class="form-group col-sm-12">
-            <label class="col-sm-3 control-label" for="birthdate">Data de Nascimento:</label>
+            <label class="col-sm-3 control-label" for="birthdate">{{ entry_holder_birthdate }}</label>
             <div class="col-sm-8">
               <input class="form-control" type="date" id="birthdate" name="birthdate" placeholder="Ex: 07/03/1808" value="{{ data_nascimento }}" />
             </div>
@@ -107,14 +107,14 @@ label[for="card-number"] + div {
           {% endif %}
 
           <div class="form-group col-sm-12">
-            <label class="col-sm-3 control-label" for="cpf">CPF:</label>
+            <label class="col-sm-3 control-label" for="cpf">{{ entry_holder_cpf }}</label>
             <div class="col-sm-8">
               <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" value="{{ cpf }}" required />
             </div>
           </div>
 
           <div class="form-group col-sm-12" style="display: none">
-            <label class="col-sm-3 control-label" for="installments">Parcelas:</label>
+            <label class="col-sm-3 control-label" for="installments">{{ entry_installments }}</label>
             <div class="col-sm-8">
               <select class="form-control" id="installments" name="installments" required></select>
             </div>
@@ -122,9 +122,9 @@ label[for="card-number"] + div {
 
           <div class="form-group col-sm-12" style="display: none">
             <div class="col-sm-8 col-sm-offset-3">
-              <button type="button" id="button-confirm" class="btn btn-primary" data-loading-text="Aguarde...">
+              <button type="button" id="button-confirm" class="btn btn-primary" data-loading-text="{{ text_wait }}">
                 <i class="fa fa-credit-card-alt"></i>
-                Pagar
+                {{ button_confirm }}
               </button>
             </div>
           </div>
