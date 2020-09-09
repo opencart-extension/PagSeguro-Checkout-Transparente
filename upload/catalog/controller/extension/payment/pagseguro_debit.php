@@ -33,11 +33,9 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
         try {
             $data['session'] = $this->model_extension_payment_pagseguro->generateSession();
         } catch (AuthException $e) {
-            $data['error'] = $this->language->get(sprintf('error_%s_auth', $environment_name));
-        } catch (PagSeguroRequestException $e) {
-            var_dump($e);
+            $data['warning'] = $this->language->get(sprintf('error_%s_auth', $environment_name));
         } catch (Exception $e) {
-            $data['error'] = $this->language->get(sprintf('error_%s_unknown', $environment_name));
+            $data['warning'] = $this->language->get(sprintf('error_%s_unknown', $environment_name));
         }
 
         if ($environment_name === 'debug') {
