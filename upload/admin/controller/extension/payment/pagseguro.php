@@ -298,6 +298,10 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->load->model('extension/payment/pagseguro');
 
         $this->model_extension_payment_pagseguro->createTables();
+
+        $this->load->model('setting/event');
+
+        $this->model_setting_event->addEvent('pagseguro', 'catalog/view/account/order_info/before', 'event/extension/payment/pagseguro/boleto2');
     }
 
     /**
@@ -348,5 +352,9 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->load->model('extension/payment/pagseguro');
 
         $this->model_extension_payment_pagseguro->dropTables();
+
+        $this->load->model('setting/event');
+
+        $this->model_setting_event->deleteEventByCode('pagseguro');
     }
 }
