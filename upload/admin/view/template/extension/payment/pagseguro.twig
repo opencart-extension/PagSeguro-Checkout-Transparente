@@ -562,10 +562,34 @@
           <!-- --------- -->
           <div class="tab-pane" id="tab-debug">
             <div class="row">
-              <div class="col-sm-3">
-                <input type="text" class="form-control" id="filter-log-date" />
-              </div>
+              <div class="col-sm-12">
+                <div class="col-sm-3">
+                    <fieldset>
+                      <caption>Filtrar por data</caption>
+                      <input type="text" id="filter-log-date" class="form-control" />
+                    </fieldset>
+                </div>
 
+                <div class="col-sm-3">
+                  <fieldset>
+                    <caption>Filtrar por nível</caption>
+                    <select id="filter-log-level" class="form-control">
+                      <option value="0">{{ text_all }}</option>
+                      <option value="100">Debug</option>
+                      <option value="200">Info</option>
+                      <option value="250">Notice</option>
+                      <option value="300">Warning</option>
+                      <option value="400">Error</option>
+                      <option value="500">Critical</option>
+                      <option value="550">Alert</option>
+                      <option value="600">Emergency</option>
+                    </select>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
               <div class="col-sm-3">
                 <a class="btn btn-default btn-lg btn-block">Portfolio</a>
               </div>
@@ -636,16 +660,6 @@
 
     loadLog('{{ logs_date|last }}')
   })
-
-  function loadLog(date) {
-    fetch(`/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`)
-      .then(response => response.text())
-      .then(response => {
-        const code = document.querySelector('#tab-debug pre > code')
-        code.innerHTML = '';
-        code.insertAdjacentHTML('beforeEnd', response)
-      })
-  }
 </script>
 
 <script>
@@ -672,6 +686,38 @@ function downloadLog() {
   const date = document.querySelector('#filter-log-date').value
   location.href = `/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`
 }
+
+/**
+ * Carrega log
+ */
+ function loadLog(date) {
+  fetch(`/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`)
+    .then(response => response.text())
+    .then(response => {
+      const code = document.querySelector('#tab-debug pre > code')
+      code.innerHTML = '';
+      code.insertAdjacentHTML('beforeEnd', response)
+    })
+}
+
+/**
+ * Filtra log por nível
+ */
+ document.querySelector('#filter-log-level')
+  .addEventListener('change', filterLogByLevel)
+
+ function filterLogByLevel(e) {
+   document.querySelectorAll('#tab-debug pre > code > div[data-level]')
+    .forEach((item) => {
+      let display = 'none'
+
+      if ([0, item.dataset.level].includes(e.target.value)) {
+        display = 'block'
+      }
+
+      item.style.display = display
+    })
+ }
 </script>
 
 <style>
