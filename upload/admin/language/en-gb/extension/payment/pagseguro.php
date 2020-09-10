@@ -58,6 +58,7 @@ $_['text_fee']            = 'Taxas';
 $_['text_boleto']         = 'Boleto';
 $_['text_credit']         = 'Cartão de Crédito';
 $_['text_debit']          = 'Cartão de Débito';
+$_['text_question']       = 'Saiba mais';
 
 // Error
 $_['error_permission']        = 'Atenção! vocẽ não tem permissão para modificar o módulo';

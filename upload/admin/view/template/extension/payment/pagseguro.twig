@@ -11,6 +11,20 @@
       </ul>
 
       <div class="pull-right">
+        <div class="btn-group">
+          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-question"></i>
+            {{ text_question }}
+          </button>
+
+          <ul class="dropdown-menu">
+            <li><a href="https://github.com/opencart-extension/PagSeguro-Checkout-Transparente" target="_blank">GitHub</a></li>
+            <li><a href="#" target="_blank">Documentação</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="https://www.valdeirsantana.com.br" target="_blank">Portfolio</a></li>
+          </ul>
+        </div>
+
         <button class="btn btn-danger" id="debug-clear" data-toggle="tooltip" title="{{ text_debug_clear }}"><i class="fa fa-trash"></i></button>
         <button class="btn btn-success" id="debug-download" data-toggle="tooltip" title="{{ text_debug_download }}"><i class="fa fa-download"></i></button>
         <button type="submit" form="form-payment" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
@@ -574,7 +588,7 @@
                   <fieldset>
                     <caption>Filtrar por nível</caption>
                     <select id="filter-log-level" class="form-control">
-                      <option value="0">{{ text_all }}</option>
+                      <option value="0">{{ text_select_all }}</option>
                       <option value="100">Debug</option>
                       <option value="200">Info</option>
                       <option value="250">Notice</option>
@@ -589,19 +603,6 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="col-sm-3">
-                <a class="btn btn-default btn-lg btn-block">Portfolio</a>
-              </div>
-
-              <div class="col-sm-3">
-                <a class="btn btn-default btn-lg btn-block">GitHub</a>
-              </div>
-
-              <div class="col-sm-3">
-                <a class="btn btn-default btn-lg btn-block">Documentação</a>
-              </div>
-            </div>
             <div class="clearfix">&nbsp;</div>
 
             <pre class="pre-scrollable" style="min-height: 400px">
