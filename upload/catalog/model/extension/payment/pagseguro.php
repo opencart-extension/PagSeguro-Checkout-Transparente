@@ -174,4 +174,55 @@ class ModelExtensionPaymentPagSeguro extends Model
 
         return Environment::production($email, $token);
     }
+
+    /**
+     * Captura as informações de uma transação
+     *
+     * @param string $order_id_or_code
+     * @param array $columns `null` para todas, exceto includeRaw
+     * @param bool $includeRaw
+     *
+     * @return array
+     */
+    public function getTransactionInfo($order_id_or_code, $columns = null, bool $includeRaw = false)
+    {
+        $columns_default = [
+            'code',
+            'order_id',
+            'last_event_date',
+            'payment_method',
+            'payment_link',
+            'gross_amount',
+            'discount_amount',
+            'fee_amount',
+            'net_amount',
+            'extra_amount',
+        ];
+
+        if ($columns === null && $includeRaw === true) {
+            array_push($columns_default, 'raw');
+        }
+
+        if ($columns === null) {
+            $columns = $columns_default;
+        }
+
+        $columns = array_map(function ($item) {
+            return  (strpos($item, '.') !== false) ? $item : 'po.' . $item;
+        }, $columns);
+
+        $id = $this->db->escape($order_id_or_code);
+
+        $query = $this->db->query('
+            SELECT ' . implode(',', $columns) . '
+            FROM ' . DB_PREFIX . 'pagseguro_orders po
+            LEFT JOIN ' . DB_PREFIX . 'order o
+                on (o.order_id = po.order_id)
+            WHERE
+                po.`code` = "' . $id . '"
+                OR po.`order_id` = "' . $id . '"
+        ');
+
+        return $query->row;
+    }
 }

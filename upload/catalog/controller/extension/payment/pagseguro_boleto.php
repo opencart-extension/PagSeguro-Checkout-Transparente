@@ -192,13 +192,26 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
      */
     public function download()
     {
-        if (isset($this->session->data['order_id'])) {
-            $url = base64_decode($this->request->get['url']);
+        $order_id = $this->session->data['order_id'] ?? $this->request->get['order_id'] ?? null;
+
+        if ($order_id) {
+            if (isset($this->request->get['url'])) {
+                $url = base64_decode($this->request->get['url']);
+            } elseif (isset($this->request->get['transaction_id'])) {
+                $this->load->model('extension/payment/pagseguro');
+                $env = $this->model_extension_payment_pagseguro->factoryEnvironment();
+                $sale = new Sale($env);
+                $transaction = $sale->info($this->request->get['transaction_id']);
+                $url = $transaction->getPayment()->getPaymentLink();
+            } else {
+                die('PSR');
+            }
+
             $url = str_replace('print.jhtml', 'print_pdf.jhtml', $url);
 
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename=psr_pedido_' . $this->session->data['order_id'] . '.pdf');
+            header('Content-Disposition: attachment; filename=psr_pedido_' . $order_id . '.pdf');
             header('Content-Transfer-Encoding: binary');
             header('Expires: 0');
             header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
