@@ -648,6 +648,32 @@
   }
 </script>
 
+<script>
+/**
+ * Realiza limpeza do log
+ */
+document.querySelector('#debug-clear')
+  .addEventListener('click', clearLog)
+
+function clearLog() {
+  const date = document.querySelector('#filter-log-date').value
+  fetch(`/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`, {
+    method: 'DELETE'
+  })
+}
+
+/**
+ * Realiza o download do log
+ */
+document.querySelector('#debug-download')
+  .addEventListener('click', downloadLog)
+
+function downloadLog() {
+  const date = document.querySelector('#filter-log-date').value
+  location.href = `/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`
+}
+</script>
+
 <style>
 #debug-clear, #debug-download {
   display: none

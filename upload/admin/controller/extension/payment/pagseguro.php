@@ -131,6 +131,9 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->response->setOutput($this->load->view('extension/payment/pagseguro', $data));
     }
 
+    /**
+     * Gerencia logs
+     */
     public function log()
     {
         if (!defined('PAGSEGURO_LOG')) {
@@ -138,10 +141,23 @@ class ControllerExtensionPaymentPagseguro extends Controller
         }
 
         $date = $this->request->get['date'] ?? null;
+        $request_method = $this->request->server['REQUEST_METHOD'] ?? 'GET';
+        $file = PAGSEGURO_LOG . "/{$date}.log";
+        $isValid = $date && file_exists($file);
 
-        if ($date && file_exists(PAGSEGURO_LOG . "/{$date}.log")) {
-            $this->response->addHeader('Content-Type: text/html; charset=utf-8');
-            $this->response->setOutput(file_get_contents(PAGSEGURO_LOG . "/{$date}.log"));
+        if ($request_method == 'GET' && $isValid) {
+            header('Content-Description: File Transfer');
+            header('Content-Type: text/html');
+            header('Content-Disposition: attachment');
+            header('Content-Transfer-Encoding: binary');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+            echo file_get_contents($file);
+            exit;
+
+        } elseif ($request_method == 'DELETE' && $isValid) {
+            unlink($file);
         }
     }
 
