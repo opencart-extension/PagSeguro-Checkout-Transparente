@@ -147,7 +147,7 @@
           <!-- Tab Custom Fields -->
           <!-- ----------------- -->
           <div class="tab-pane" id="tab-custom-fields">
-            <div class="form-group">
+            <div class="form-group required">
               <label for="input-custom-fields-cpf" class="control-label col-sm-2">{{ entry_custom_field_cpf }}</label>
               <div class="col-sm-10">
                 <select name="custom_fields_cpf" id="input-custom-fields-cpf" class="form-control">
@@ -161,10 +161,13 @@
                     {% endif %}
                   {% endfor %}
                 </select>
+                {% if error_field_custom_fields_cpf %}
+                <span class="text-danger">{{ error_field_custom_fields_cpf }}</span>
+                {% endif %}
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group required">
               <label for="input-custom-fields-number" class="control-label col-sm-2">{{ entry_custom_field_address_number }}</label>
               <div class="col-sm-10">
                 <select name="custom_fields_number" id="input-custom-fields-number" class="form-control">
@@ -178,6 +181,9 @@
                     {% endif %}
                   {% endfor %}
                 </select>
+                {% if error_field_custom_fields_number %}
+                <span class="text-danger">{{ error_field_custom_fields_number }}</span>
+                {% endif %}
               </div>
             </div>
 

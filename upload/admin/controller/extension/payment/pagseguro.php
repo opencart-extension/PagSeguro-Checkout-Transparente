@@ -234,8 +234,8 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'customer_notify'               => ['required' => false], // Obrigatório, porém sem necessidade de validação
             'callback_token'                => ['required' => true],
             'telemetry'                     => ['required' => false],
-            'custom_fields_cpf'             => ['required' => false],
-            'custom_fields_number'          => ['required' => false],
+            'custom_fields_cpf'             => ['required' => true],
+            'custom_fields_number'          => ['required' => true],
             'custom_fields_birthday'        => ['required' => false],
             'discount_boleto'               => ['required' => false],
             'discount_credit'               => ['required' => false],
@@ -300,6 +300,9 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'extension/total/pagseguro_fee');
         $this->model_user_user_group->addPermission($this->user->getGroupId(), 'modify', 'extension/total/pagseguro_fee');
+
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'sale/pagseguro_manager_order/cancel');
+        $this->model_user_user_group->addPermission($this->user->getGroupId(), 'access', 'sale/pagseguro_manager_order/refund');
 
         $this->load->model('setting/setting');
 
