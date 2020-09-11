@@ -59,6 +59,7 @@ $_['text_boleto']         = 'Boleto';
 $_['text_credit']         = 'Cartão de Crédito';
 $_['text_debit']          = 'Cartão de Débito';
 $_['text_question']       = 'Saiba mais';
+$_['text_boleto_fee']     = 'Atenção! O PagSeguro adiciona uma taxa de R$1,00 para o cliente. Para removê-la, entre em contato com o pagSeguro.';
 
 // Error
 $_['error_permission']        = 'Atenção! vocẽ não tem permissão para modificar o módulo';
