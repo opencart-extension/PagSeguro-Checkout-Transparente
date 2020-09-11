@@ -169,7 +169,7 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
             $result['payment_link'] = $response->getPayment()->getPaymentLink();
             $result['code'] = $response->getCode();
 
-            $shipping_cost = $this->model_extension_payment_pagseguro->addOrder($order_id, $response);
+            $this->model_extension_payment_pagseguro->addOrder($order_id, $response);
 
             $this->setOutputJson($result);
         } catch (AuthException $e) {

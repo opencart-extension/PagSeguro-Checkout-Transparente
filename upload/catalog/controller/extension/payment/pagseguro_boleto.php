@@ -164,6 +164,8 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
             $sale = new Sale($env);
             $response = $sale->create($payment);
 
+            $this->model_extension_payment_pagseguro->addOrder($order_id, $response);
+
             $this->setOutputJson([
                 'payment_link' => $response->getPayment()->getPaymentLink(),
                 'code' => $response->getCode()

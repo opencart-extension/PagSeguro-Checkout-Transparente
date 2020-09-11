@@ -79,6 +79,9 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
         return $this->load->view('extension/payment/pagseguro_credit', $data);
     }
 
+    /**
+     * Cria a transação no PagSeguro
+     */
     public function transaction()
     {
         $this->response->addHeader('Content-Type: application/json');
@@ -231,6 +234,8 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
 
             $sale = new Sale($env);
             $response = $sale->create($payment);
+
+            $this->model_extension_payment_pagseguro->addOrder($order_id, $response);
 
             $this->setOutputJson([
                 'success' => true,
