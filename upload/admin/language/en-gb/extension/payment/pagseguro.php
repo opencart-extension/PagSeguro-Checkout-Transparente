@@ -63,6 +63,7 @@ $_['text_question']          = 'Saiba mais';
 $_['text_boleto_fee']        = 'Atenção! O PagSeguro adiciona uma taxa de R$1,00 para o cliente. Para removê-la, entre em contato com o pagSeguro.';
 $_['text_pagseguro_details'] = 'Detalhes';
 $_['text_view']              = 'Visualizar';
+$_['text_alert_cancel']      = 'Transação deverá estar com os status %s ou %s';
 
 // Error
 $_['error_permission']        = 'Atenção! vocẽ não tem permissão para modificar o módulo';
