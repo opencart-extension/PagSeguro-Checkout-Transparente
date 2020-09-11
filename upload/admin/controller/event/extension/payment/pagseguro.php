@@ -29,6 +29,17 @@ class ControllerEventExtensionPaymentPagseguro extends Controller
             $this->load->model('extension/payment/pagseguro');
 
             $new_data['details'] = $this->details($order_id, $order_info);
+            $new_data['cancel'] = $this->cancel($order_id, $order_info, $data);
+            $new_data['pagseguro_success'] = $this->session->data['pagseguro_success'] ?? false;
+            $new_data['pagseguro_failed'] = $this->session->data['pagseguro_failed'] ?? false;
+
+            if (isset($this->session->data['pagseguro_success'])) {
+                unset($this->session->data['pagseguro_success']);
+            }
+
+            if (isset($this->session->data['pagseguro_failed'])) {
+                unset($this->session->data['pagseguro_failed']);
+            }
 
             $data['pagseguro'] = $this->load->view('sale/order_pagseguro', $new_data);
             return;
@@ -95,6 +106,39 @@ class ControllerEventExtensionPaymentPagseguro extends Controller
             'installmentCount' => $result->getInstallmentCount(),
             'paymentLink' => $payment_link,
             'creditorFees' => $creditor_fees_data
+        ];
+    }
+
+    /**
+     * Captura os detalhes da transação
+     *
+     * @param int $order_id
+     * @param array $order_info
+     * @param array $data
+     *
+     * @return array
+     */
+    private function cancel($order_id, $order_info, $data)
+    {
+        $status_pending = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_pending');
+        });
+        $status_pending = reset($status_pending);
+
+        $status_analysing = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_analysing');
+        });
+        $status_analysing = reset($status_analysing);
+
+        $cancel_availabled = in_array($order_info['order_status_id'], [
+            $status_pending['order_status_id'],
+            $status_analysing['order_status_id']
+        ]);
+
+        return [
+            'text_alert_cancel' => sprintf($this->language->get('text_alert_cancel'), $status_pending['name'], $status_analysing['name']),
+            'availabled' => $cancel_availabled,
+            'url' => $this->url->link('sale/pagseguro_manager_order/cancel', 'order_id=' . $order_id)
         ];
     }
 
