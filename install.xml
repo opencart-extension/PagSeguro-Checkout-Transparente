@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+  <name>PagSeguro Checkout Transparente</name>
+  <code>valdeir_pagseguro_checkout_transparente</code>
+  <version>2.0</version>
+  <author>Valdeir S.</author>
+  <link>https://valdeir.dev</link>
+
+  <file path="admin/view/template/sale/order_info.twig">
+    <operation>
+      <search>
+        <![CDATA[<h3 class="panel-title"><i class="fa fa-comment-o"></i> {{ text_history }}</h3>]]>
+      </search>
+      <add position="before" offset="2">
+        <![CDATA[
+        {{ pagseguro }}
+        ]]>
+      </add>
+    </operation>
+  </file>
+</modification>
