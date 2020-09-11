@@ -33,4 +33,47 @@ class ModelExtensionPaymentPagSeguro extends Model
     {
         $this->db->query('DROP TABLE IF EXISTS `' . DB_PREFIX . 'pagseguro_orders`;');
     }
+
+    /**
+     * Captura as informações de uma transação
+     *
+     * @param string $order_id
+     * @param array $columns `null` para todas, exceto includeRaw
+     * @param bool $includeRaw
+     *
+     * @return array
+     */
+    public function getTransactionInfo($order_id, $columns = null, bool $includeRaw = false)
+    {
+        $columns_default = [
+            'code',
+            'order_id',
+            'last_event_date',
+            'payment_method',
+            'payment_link',
+            'gross_amount',
+            'discount_amount',
+            'fee_amount',
+            'net_amount',
+            'extra_amount',
+        ];
+
+        if ($columns === null && $includeRaw === true) {
+            array_push($columns_default, 'raw');
+        }
+
+        if ($columns === null) {
+            $columns = $columns_default;
+        }
+
+        $id = $this->db->escape($order_id);
+
+        $query = $this->db->query('
+            SELECT ' . implode(',', $columns) . '
+            FROM ' . DB_PREFIX . 'pagseguro_orders
+            WHERE `order_id` = "' . $id . '"
+        ');
+
+        return $query->row;
+    }
 }
