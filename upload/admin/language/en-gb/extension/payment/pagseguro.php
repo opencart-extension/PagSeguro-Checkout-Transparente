@@ -48,18 +48,32 @@ $_['entry_minimum_amount']              = 'Valor mínimo';
 $_['entry_layout_credit']               = 'Tela para cartão de crédito';
 
 // Text
-$_['text_pagseguro']      = '<a href="https://valdeir.dev"><img src="/admin/view/image/payment/pagseguro.png" /></a>';
-$_['text_extension']      = 'Extensões';
-$_['text_success']        = 'Módulo alterado com sucesso';
-$_['text_debug_clear']    = 'Limpa do Log';
-$_['text_debug_download'] = 'Download do Log';
-$_['text_discount']       = 'Descontos';
-$_['text_fee']            = 'Taxas';
-$_['text_boleto']         = 'Boleto';
-$_['text_credit']         = 'Cartão de Crédito';
-$_['text_debit']          = 'Cartão de Débito';
-$_['text_question']       = 'Saiba mais';
-$_['text_boleto_fee']     = 'Atenção! O PagSeguro adiciona uma taxa de R$1,00 para o cliente. Para removê-la, entre em contato com o pagSeguro.';
+$_['text_pagseguro']         = '<a href="https://valdeir.dev"><img src="/admin/view/image/payment/pagseguro.png" /></a>';
+$_['text_pagseguro_string']  = 'PagSeguro';
+$_['text_extension']         = 'Extensões';
+$_['text_success']           = 'Módulo alterado com sucesso';
+$_['text_debug_clear']       = 'Limpa do Log';
+$_['text_debug_download']    = 'Download do Log';
+$_['text_discount']          = 'Descontos';
+$_['text_fee']               = 'Taxas';
+$_['text_boleto']            = 'Boleto';
+$_['text_credit']            = 'Cartão de Crédito';
+$_['text_debit']             = 'Cartão de Débito';
+$_['text_question']          = 'Saiba mais';
+$_['text_boleto_fee']        = 'Atenção! O PagSeguro adiciona uma taxa de R$1,00 para o cliente. Para removê-la, entre em contato com o pagSeguro.';
+$_['text_pagseguro_details'] = 'Detalhes';
+$_['text_view']              = 'Visualizar';
+$_['text_alert_cancel']      = 'Transação deverá estar com os status %s ou %s';
+$_['text_alert_refund']      = 'Transação deverá estar com os status %s, %s ou %s';
+$_['text_modal_cancel']      = 'Atenção! Essa ação <b>não</b> poderá ser desfeita.<br>Tem certeza que deseja continuar?';
+$_['text_modal_refund']      = 'Atenção! Essa ação <b>não</b> poderá ser desfeita.<br>Tem certeza que deseja continuar?';
+$_['text_cancel_text']       = 'Cancelar';
+$_['text_refund_text']       = 'Reembolsar';
+$_['text_attention']         = 'Atenção!';
+$_['text_void_success']      = 'Pedido cancelado com sucesso!';
+$_['text_void_failed']       = 'Não foi possível cancelar o pedido. Caso a opção <i>debug</i> esteja ativada, consulte o <i>log</i>!';
+$_['text_refund_success']    = 'Pedido reembolsado com sucesso';
+$_['text_refund_failed']     = 'Não foi possível reembolsar o cliente. Caso a opção <i>debug</i> esteja ativada, consulte o <i>log</i>!';
 
 // Error
 $_['error_permission']        = 'Atenção! vocẽ não tem permissão para modificar o módulo';
