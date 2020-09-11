@@ -22,6 +22,7 @@ $_['entry_sandbox']                     = 'Modo de desenvolvimento';
 $_['entry_customer_notify']             = 'Notificar clientes';
 $_['entry_callback_token']              = 'Token de segurança';
 $_['entry_telemetry']                   = 'Telemetria';
+$_['entry_newsletter']                  = 'Informe seu e-mail para receber atualizações';
 $_['entry_custom_field_cpf']            = 'CPF';
 $_['entry_custom_field_address_number'] = 'Número da residência';
 $_['entry_custom_field_birthdate']      = 'Data de Nascimento';

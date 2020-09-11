@@ -3,6 +3,7 @@
 class ControllerExtensionPaymentPagseguro extends Controller
 {
     const FIELD_PREFIX = 'payment_pagseguro_';
+    const EXTENSION_VERSION = '2.0.0';
 
     private $error = [];
 
@@ -51,6 +52,8 @@ class ControllerExtensionPaymentPagseguro extends Controller
             ]);
 
             $this->session->data['success'] = $this->language->get('text_success');
+
+            $this->telemetry();
 
             $this->response->redirect($this->buildUrl('marketplace/extension', [
                 'type' => 'payment'
@@ -234,6 +237,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'customer_notify'               => ['required' => false], // Obrigatório, porém sem necessidade de validação
             'callback_token'                => ['required' => true],
             'telemetry'                     => ['required' => false],
+            'newsletter'                    => ['required' => false],
             'custom_fields_cpf'             => ['required' => true],
             'custom_fields_number'          => ['required' => true],
             'custom_fields_birthday'        => ['required' => false],
@@ -266,6 +270,37 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'methods_debit_minimum_amount'  => ['required' => false],
             'layout'                        => ['required' => true],
         ];
+    }
+
+    /**
+     * Envia os dados para telemetria
+     */
+    private function telemetry()
+    {
+        if ($this->request->post['telemetry']) {
+            $fields_remove = [
+                'email',
+                'token',
+                'callback_token',
+                'newsletter'
+            ];
+
+            $fields = array_filter($this->request->post, function($value, $key) use ($fields_remove) {
+                return !in_array($key, $fields_remove);
+            }, ARRAY_FILTER_USE_BOTH);
+
+            $fields['version'] = self::EXTENSION_VERSION;
+            $fields['uuid'] = password_hash($this->request->post['email'], PASSWORD_BCRYPT);
+
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, 'https://opencart.valdeirsantana.com.br/telemetry');
+            curl_setopt($curl, CURLOPT_USERAGENT, 'PagSeguro Checkout Transparente for OpenCart');
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($fields));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
+            curl_exec($curl);
+            curl_close($curl);
+        }
     }
 
     /**
