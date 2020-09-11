@@ -14,7 +14,8 @@
   <div class="panel-body">
     <ul class="nav nav-tabs">
       <li><a href="#tab-pagseguro-detail" data-toggle="tab">{{ text_pagseguro_details }}</a></li>
-      <li class="active"><a href="#tab-pagseguro-cancel" data-toggle="tab">{{ text_pagseguro_text }}</a></li>
+      <li><a href="#tab-pagseguro-cancel" data-toggle="tab">{{ text_cancel_text }}</a></li>
+      <li class="active"><a href="#tab-pagseguro-refund" data-toggle="tab">{{ text_refund_text }}</a></li>
     </ul>
 
     <div class="tab-content">
@@ -78,7 +79,7 @@
         </table>
       </div>
 
-      <div class="tab tab-pane active" id="tab-pagseguro-cancel">
+      <div class="tab tab-pane" id="tab-pagseguro-cancel">
         {% if cancel.availabled %}
         <button
           type="button"
@@ -87,10 +88,26 @@
           data-toggle="modal"
           data-target="#modal-pagseguro-cancel"
         >
-          {{ text_pagseguro_text }}
+          {{ text_cancel_text }}
         </button>
         {% else %}
         <p class="bg-info" style="padding: 15px">{{ cancel.text_alert_cancel }}</p>
+        {% endif %}
+      </div>
+
+      <div class="tab tab-pane active" id="tab-pagseguro-refund">
+        {% if refund.availabled %}
+        <button
+          type="button"
+          data-href="{{ refund.url }}"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#modal-pagseguro-refund"
+        >
+          {{ text_refund_text }}
+        </button>
+        {% else %}
+        <p class="bg-info" style="padding: 15px">{{ refund.text_alert_refund }}</p>
         {% endif %}
       </div>
     </div>
@@ -115,8 +132,30 @@
   </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-pagseguro-refund">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ text_attention }}</h4>
+      </div>
+      <div class="modal-body">
+        {{ text_modal_refund }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{ text_no }}</button>
+        <button type="button" class="btn btn-primary" onclick="pagseguroRefund()">{{ text_yes }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 function pagseguroCancel() {
   location.href = `{{ cancel.url }}`.replace(/&amp;/g, '&').concat(`&user_token=${getURLVar('user_token')}`)
+}
+
+function pagseguroRefund() {
+  location.href = `{{ refund.url }}`.replace(/&amp;/g, '&').concat(`&user_token=${getURLVar('user_token')}`)
 }
 </script>

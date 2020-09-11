@@ -30,6 +30,7 @@ class ControllerEventExtensionPaymentPagseguro extends Controller
 
             $new_data['details'] = $this->details($order_id, $order_info);
             $new_data['cancel'] = $this->cancel($order_id, $order_info, $data);
+            $new_data['refund'] = $this->refund($order_id, $order_info, $data);
             $new_data['pagseguro_success'] = $this->session->data['pagseguro_success'] ?? false;
             $new_data['pagseguro_failed'] = $this->session->data['pagseguro_failed'] ?? false;
 
@@ -110,7 +111,7 @@ class ControllerEventExtensionPaymentPagseguro extends Controller
     }
 
     /**
-     * Captura os detalhes da transação
+     * Captura os dados para cancelamento
      *
      * @param int $order_id
      * @param array $order_info
@@ -139,6 +140,50 @@ class ControllerEventExtensionPaymentPagseguro extends Controller
             'text_alert_cancel' => sprintf($this->language->get('text_alert_cancel'), $status_pending['name'], $status_analysing['name']),
             'availabled' => $cancel_availabled,
             'url' => $this->url->link('sale/pagseguro_manager_order/cancel', 'order_id=' . $order_id)
+        ];
+    }
+
+    /**
+     * Captura os dados para reembolso
+     *
+     * @param int $order_id
+     * @param array $order_info
+     * @param array $data
+     *
+     * @return array
+     */
+    private function refund($order_id, $order_info, $data)
+    {
+        $status_paid = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_paid');
+        });
+        $status_paid = reset($status_paid);
+
+        $status_available = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_available');
+        });
+        $status_available = reset($status_available);
+
+        $status_disputed = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_disputed');
+        });
+        $status_disputed = reset($status_disputed);
+
+        $refund_availabled = in_array($order_info['order_status_id'], [
+            $status_paid['order_status_id'],
+            $status_available['order_status_id'],
+            $status_disputed['order_status_id']
+        ]);
+
+        return [
+            'text_alert_refund' => sprintf(
+                $this->language->get('text_alert_refund'),
+                $status_paid['name'],
+                $status_available['name'],
+                $status_disputed['name']
+            ),
+            'availabled' => $refund_availabled,
+            'url' => $this->url->link('sale/pagseguro_manager_order/refund', 'order_id=' . $order_id)
         ];
     }
 

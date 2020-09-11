@@ -64,11 +64,16 @@ $_['text_boleto_fee']        = 'Atenção! O PagSeguro adiciona uma taxa de R$1,
 $_['text_pagseguro_details'] = 'Detalhes';
 $_['text_view']              = 'Visualizar';
 $_['text_alert_cancel']      = 'Transação deverá estar com os status %s ou %s';
+$_['text_alert_refund']      = 'Transação deverá estar com os status %s, %s ou %s';
 $_['text_modal_cancel']      = 'Atenção! Essa ação <b>não</b> poderá ser desfeita.<br>Tem certeza que deseja continuar?';
-$_['text_pagseguro_text']    = 'Cancelar';
+$_['text_modal_refund']      = 'Atenção! Essa ação <b>não</b> poderá ser desfeita.<br>Tem certeza que deseja continuar?';
+$_['text_cancel_text']       = 'Cancelar';
+$_['text_refund_text']       = 'Reembolsar';
 $_['text_attention']         = 'Atenção!';
 $_['text_void_success']      = 'Pedido cancelado com sucesso!';
 $_['text_void_failed']       = 'Não foi possível cancelar o pedido. Caso a opção <i>debug</i> esteja ativada, consulte o <i>log</i>!';
+$_['text_refund_success']    = 'Pedido reembolsado com sucesso';
+$_['text_refund_failed']     = 'Não foi possível reembolsar o cliente. Caso a opção <i>debug</i> esteja ativada, consulte o <i>log</i>!';
 
 // Error
 $_['error_permission']        = 'Atenção! vocẽ não tem permissão para modificar o módulo';
