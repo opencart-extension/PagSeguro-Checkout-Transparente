@@ -54,6 +54,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             $this->session->data['success'] = $this->language->get('text_success');
 
             $this->telemetry();
+            $this->newsletter();
 
             $this->response->redirect($this->buildUrl('marketplace/extension', [
                 'type' => 'payment'
@@ -301,6 +302,29 @@ class ControllerExtensionPaymentPagseguro extends Controller
             curl_exec($curl);
             curl_close($curl);
         }
+    }
+
+    /**
+     * Cadastra e-mail para receber alertas
+     */
+    private function newsletter()
+    {
+        $method = !empty($this->request->post['newsletter'])
+            ? 'POST'
+            : 'DELETE';
+
+        $fields = [
+            'email' => $this->request->post['newsletter']
+        ];
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'https://opencart.valdeirsantana.com.br/newsletter');
+        curl_setopt($curl, CURLOPT_USERAGENT, 'PagSeguro Checkout Transparente for OpenCart');
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($fields));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
+        curl_exec($curl);
+        curl_close($curl);
     }
 
     /**
