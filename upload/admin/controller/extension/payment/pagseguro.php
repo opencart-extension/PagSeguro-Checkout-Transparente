@@ -296,6 +296,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             $fields['version'] = self::EXTENSION_VERSION;
             $fields['uuid'] = password_hash($this->request->post['email'], PASSWORD_BCRYPT);
             $fields['plataform'] = 'OpenCart ' . VERSION;
+            $fields['module'] = 'pagseguro_checkout_transparente';
 
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
@@ -323,7 +324,8 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $fields = [
             'email' => $this->request->post['newsletter'],
-            'plataform' => 'OpenCart ' . VERSION
+            'plataform' => 'OpenCart ' . VERSION,
+            'module' => 'pagseguro_checkout_transparente'
         ];
 
         $curl = curl_init();
