@@ -26,7 +26,25 @@ function loadAd() {
     .catch(console.warn)
 }
 
+function createInputTelemtryUrl() {
+  const input = document.createElement('input')
+  input.type = 'hidden'
+  input.name = 'telemetry_url'
+  input.value = 'https://telemetry.valdeirsantana.com.br'
+  document.querySelector('form[psr]').appendChild(input)
+}
+
+function createInputNewsletterUrl() {
+  const input = document.createElement('input')
+  input.type = 'hidden'
+  input.name = 'newsletter_url'
+  input.value = 'https://telemetry.valdeirsantana.com.br/newsletter'
+  document.querySelector('form[psr]').appendChild(input)
+}
+
 (() => {
   loadWidgetHelpDesk()
   loadAd()
+  createInputTelemtryUrl()
+  createInputNewsletterUrl()
 })()
