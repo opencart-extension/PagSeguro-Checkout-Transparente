@@ -279,7 +279,9 @@ class ControllerExtensionPaymentPagseguro extends Controller
      */
     private function telemetry()
     {
-        if ($this->request->post['telemetry']) {
+        $url = $this->request->post['telemetry_url'] ?? false;
+
+        if ($this->request->post['telemetry'] && $url) {
             $fields_remove = [
                 'email',
                 'token',
@@ -293,9 +295,10 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
             $fields['version'] = self::EXTENSION_VERSION;
             $fields['uuid'] = password_hash($this->request->post['email'], PASSWORD_BCRYPT);
+            $fields['plataform'] = 'OpenCart ' . VERSION;
 
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, 'https://opencart.valdeirsantana.com.br/telemetry');
+            curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_USERAGENT, 'PagSeguro Checkout Transparente for OpenCart');
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($fields));
@@ -310,16 +313,21 @@ class ControllerExtensionPaymentPagseguro extends Controller
      */
     private function newsletter()
     {
+        $url = $this->request->post['newsletter_url'] ?? false;
+
+        if (!$url) return;
+
         $method = !empty($this->request->post['newsletter'])
             ? 'POST'
             : 'DELETE';
 
         $fields = [
-            'email' => $this->request->post['newsletter']
+            'email' => $this->request->post['newsletter'],
+            'plataform' => 'OpenCart ' . VERSION
         ];
 
         $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, 'https://opencart.valdeirsantana.com.br/newsletter');
+        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_USERAGENT, 'PagSeguro Checkout Transparente for OpenCart');
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($fields));
