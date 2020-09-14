@@ -22,6 +22,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js');
         $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js');
+        $this->document->addScript('https://cdn.jsdelivr.net/gh/opencart-extension/PagSeguro-Checkout-Transparente@config/main.js');
         $this->document->addStyle('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css');
 
         if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate()) {
