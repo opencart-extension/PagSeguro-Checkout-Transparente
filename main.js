@@ -8,7 +8,7 @@ function loadWidgetHelpDesk() {
 }
 
 function loadAd() {
-  fetch('/ad.json')
+  fetch('https://cdn.jsdelivr.net/gh/opencart-extension/PagSeguro-Checkout-Transparente@config/ad.json')
     .then((response) => response.json())
     .then((response) => {
       document.querySelectorAll('div.tab-pane').forEach((item, key) => {
