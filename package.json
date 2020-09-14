@@ -1,0 +1,19 @@
+{
+  "name": "doc-pagseguro-checkout-transparente-for-oc",
+  "version": "0.0.1",
+  "description": "Aprenda como instalar e configurar a extensão para OpenCart",
+  "main": "index.js",
+  "authors": {
+    "name": "Valdeir S.",
+    "email": "contato@valdeir.dev"
+  },
+  "repository": "opencart-extension/PagSeguro-Checkout-Transparente/doc-pagseguro-checkout-transparente-for-oc",
+  "scripts": {
+    "dev": "vuepress dev src",
+    "build": "vuepress build src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  }
+}
