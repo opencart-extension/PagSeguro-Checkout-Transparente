@@ -2,7 +2,7 @@
 
 Cadastre nesta aba, descontos ou taxas **em porcentagem** para cada forma de pagamento (boleto, crédito e débito)
 
-![Aba Taxas e Descontos](/assets/tab-discount-and-fee.png#zoom)
+![Aba Taxas e Descontos](./assets/tab-discount-and-fee.png#zoom)
 
 ## Desconto
 

@@ -2,7 +2,7 @@
 
 Nesta aba, você poderá restringir as formas de pagamento por Estado, País ou loja.
 
-![Aba Zona Geográfica](/assets/tab-geo-zone.png#zoom)
+![Aba Zona Geográfica](./assets/tab-geo-zone.png#zoom)
 
 ## Campos
 

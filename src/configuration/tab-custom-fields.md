@@ -2,7 +2,7 @@
 
 Nesta aba, você irá selecionar os campos referente ao CPF, Data de Nascimento e Número de residência do cliente.
 
-![Aba Campos Personalizados](/assets/tab-custom-fields.png#zoom)
+![Aba Campos Personalizados](./assets/tab-custom-fields.png#zoom)
 
 ## Campos
 

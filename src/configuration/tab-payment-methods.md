@@ -2,7 +2,7 @@
 
 Nesta aba, você configurará quais métodos de pagamento estão disponíveis
 
-![Aba métodos de pagamento](/assets/tab-payment-methods.png#zoom)
+![Aba métodos de pagamento](./assets/tab-payment-methods.png#zoom)
 
 ## Campo
 

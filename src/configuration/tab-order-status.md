@@ -2,7 +2,7 @@
 
 Nesta aba, você configurará uma situação para cada mudança de pagamento
 
-![Aba situação do pedido](/assets/tab-order-status.png#zoom)
+![Aba situação do pedido](./assets/tab-order-status.png#zoom)
 
 ## Campos
 
