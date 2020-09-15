@@ -680,13 +680,34 @@
 
 <script>
 /**
+ * Filtra log por nível
+ */
+ const inputFilterLogLevel = document.querySelector('#filter-log-level')
+ inputFilterLogLevel.addEventListener('change', filterLogByLevel)
+
+ function filterLogByLevel(e) {
+   document.querySelectorAll('#tab-debug pre > code > div[data-level]')
+    .forEach((item) => {
+      let display = 'none'
+
+      if ([0, parseInt(item.dataset.level)].includes(parseInt(e.target.value))) {
+        display = 'block'
+      }
+
+      item.style.display = display
+    })
+ }
+
+/**
  * Realiza limpeza do log
  */
+ const inputFilterLogDate = document.querySelector('#filter-log-date')
+
 document.querySelector('#debug-clear')
   .addEventListener('click', clearLog)
 
 function clearLog() {
-  const date = document.querySelector('#filter-log-date').value
+  const date = inputFilterLogDate.value
   fetch(`/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`, {
     method: 'DELETE'
   })
@@ -699,8 +720,42 @@ document.querySelector('#debug-download')
   .addEventListener('click', downloadLog)
 
 function downloadLog() {
-  const date = document.querySelector('#filter-log-date').value
-  location.href = `/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`
+  const logs = querySelectorLog()
+  const logsHtml = elementToHtmlText(logs)
+
+  const content = new Blob(logsHtml, { mime: 'text/html' })
+
+  const anchor = document.createElement('a')
+  anchor.href = URL.createObjectURL(content)
+  anchor.download = `log_pagseguro_${inputFilterLogDate.value}_${inputFilterLogLevel.value}_psr.html`
+  anchor.click()
+  anchor.remove()
+}
+
+/**
+ * Captura todos os logs ativos
+ *
+ * @returns Node[]
+ */
+function querySelectorLog() {
+  const logs = document.querySelectorAll('#tab-debug > pre > code > div')
+
+  return Array.from(logs).filter((item) => {
+    return item.getBoundingClientRect().x !== 0
+  })
+}
+
+/**
+ * Converte um elemento HTML para texto
+ *
+ * @params {HTMLElement} elements
+ *
+ * @returns string[]
+ */
+function elementToHtmlText(elements) {
+  return elements.map((el) => {
+    return el.outerHTML
+  })
 }
 
 /**
@@ -715,25 +770,6 @@ function downloadLog() {
       code.insertAdjacentHTML('beforeEnd', response)
     })
 }
-
-/**
- * Filtra log por nível
- */
- document.querySelector('#filter-log-level')
-  .addEventListener('change', filterLogByLevel)
-
- function filterLogByLevel(e) {
-   document.querySelectorAll('#tab-debug pre > code > div[data-level]')
-    .forEach((item) => {
-      let display = 'none'
-
-      if ([0, item.dataset.level].includes(e.target.value)) {
-        display = 'block'
-      }
-
-      item.style.display = display
-    })
- }
 </script>
 
 <style>
