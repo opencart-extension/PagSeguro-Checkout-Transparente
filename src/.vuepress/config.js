@@ -38,6 +38,11 @@ module.exports = {
   description: description,
 
   /**
+   * Base
+   */
+  base: '/PagSeguro-Checkout-Transparente/',
+
+  /**
    * Extra tags to be injected to the page HTML `<head>`
    *
    * ref：https://v1.vuepress.vuejs.org/config/#head
