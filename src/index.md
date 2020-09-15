@@ -1,7 +1,6 @@
 ---
 home: true
 heroImage: https://oqueeucomprei.files.wordpress.com/2017/04/pagseguro-logo-2.png
-tagline: Documentaçao para a extensao desenvolvida para OpenCart
 actionText: Começar →
 actionLink: /guide/
 features:

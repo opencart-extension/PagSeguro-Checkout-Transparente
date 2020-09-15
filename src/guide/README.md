@@ -1,6 +1,6 @@
-# Requisitos
+# Início
 
-**Back-End**
+## Requisitos
 
 | Ferramenta | Versão |
 | ---------- | :----: |
@@ -10,7 +10,7 @@
 | SSL | - |
 | ext-iconv | - |
 
-**Navegadores**
+## Compatibilidade com navegadores
 
 | ![](/assets/browsers/edge.webp) | ![](/assets/browsers/firefox.webp) | ![](/assets/browsers/chrome.webp) | ![](/assets/browsers/safari.webp) | ![](/assets/browsers/safari.webp) | ![](/assets/browsers/browser_02.webp) | ![](/assets/browsers/chrome.webp) | ![](/assets/browsers/firefox.webp) | ![](/assets/browsers/browser_01.webp) | ![](/assets/browsers/opera.webp)
 | - | - | - | - | - | - | - | - | - | - | - | - | - | - |

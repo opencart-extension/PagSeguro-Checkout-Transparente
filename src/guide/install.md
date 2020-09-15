@@ -4,6 +4,8 @@
 
 1. Para instalar, baixe o arquivo na página [release](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/releases) no GitHub.
 
+ > Antes, confira se a versão é compatível com a versão de sua loja
+
 2. Após extrair, acesse no painel administrativo de sua loja.
 
 3. Acesse *Extensões* > *Instalador*

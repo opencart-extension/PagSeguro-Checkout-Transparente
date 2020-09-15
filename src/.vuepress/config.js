@@ -67,6 +67,13 @@ module.exports = {
     editLinkText: 'Ajude-nos a melhorar esta página!',
 
     lastUpdated: false,
+
+    themeConfig: {
+      search: false,
+      searchMaxSuggestions: 10,
+      searchPlaceholder: 'Pesquisar...'
+    },
+
     nav: [
       {
         text: 'Guide',
