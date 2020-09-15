@@ -59,8 +59,6 @@
      * Configuração inicial
      */
     function loadedScriptSuccess() {
-      alert('Sucesso')
-
       PagSeguroDirectPayment.setSessionId('{{ session }}');
 
       PagSeguroDirectPayment.onSenderHashReady(function(response){
