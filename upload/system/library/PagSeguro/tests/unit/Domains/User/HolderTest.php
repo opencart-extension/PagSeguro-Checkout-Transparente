@@ -57,13 +57,13 @@ class HolderTest extends TestCase
         $xml = '
         <holder>
             <name>Nome impresso no cartao</name>
-            <birthDate>20/10/1980</birthDate>
             <documents>
                 <document>
                     <type>CPF</type>
                     <value>22111944785</value>
                 </document>
             </documents>
+            <birthDate>20/10/1980</birthDate>
             <phone>
                 <areaCode>11</areaCode>
                 <number>999991111</number>

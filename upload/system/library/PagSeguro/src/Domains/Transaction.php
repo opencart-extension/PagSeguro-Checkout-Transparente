@@ -85,7 +85,7 @@ class Transaction implements Xml
     /**
      * @return DateTime
      */
-    public function getDate(): DateTime
+    public function getDate(): ?DateTime
     {
         return $this->date;
     }
@@ -93,7 +93,7 @@ class Transaction implements Xml
     /**
      * @return AbstractPaymentMethod
      */
-    public function getPayment(): AbstractPaymentMethod
+    public function getPayment(): ?AbstractPaymentMethod
     {
         return $this->payment;
     }
@@ -101,7 +101,7 @@ class Transaction implements Xml
     /**
      * @return string
      */
-    public function getCode(): string
+    public function getCode(): ?string
     {
         return $this->code;
     }
@@ -109,7 +109,7 @@ class Transaction implements Xml
     /**
      * @return int
      */
-    public function getType(): int
+    public function getType(): ?int
     {
         return $this->type;
     }
@@ -117,7 +117,7 @@ class Transaction implements Xml
     /**
      * @return int
      */
-    public function getStatus(): int
+    public function getStatus(): ?int
     {
         return $this->status;
     }
@@ -125,7 +125,7 @@ class Transaction implements Xml
     /**
      * @return string
      */
-    public function getCancellationSource(): string
+    public function getCancellationSource(): ?string
     {
         return $this->cancellationSource;
     }
@@ -133,7 +133,7 @@ class Transaction implements Xml
     /**
      * @return DateTime
      */
-    public function getLastEventDate(): DateTime
+    public function getLastEventDate(): ?DateTime
     {
         return $this->lastEventDate;
     }
@@ -141,7 +141,7 @@ class Transaction implements Xml
     /**
      * @return float
      */
-    public function getGrossAmount(): float
+    public function getGrossAmount(): ?float
     {
         return $this->grossAmount;
     }
@@ -149,7 +149,7 @@ class Transaction implements Xml
     /**
      * @return float
      */
-    public function getDiscountAmount(): float
+    public function getDiscountAmount(): ?float
     {
         return $this->discountAmount;
     }
@@ -157,7 +157,7 @@ class Transaction implements Xml
     /**
      * @return CreditorFees
      */
-    public function getCreditorFees(): CreditorFees
+    public function getCreditorFees(): ?CreditorFees
     {
         return $this->creditorFees;
     }
@@ -165,7 +165,7 @@ class Transaction implements Xml
     /**
      * @return float
      */
-    public function getFeeAmount(): float
+    public function getFeeAmount(): ?float
     {
         return $this->feeAmount;
     }
@@ -173,7 +173,7 @@ class Transaction implements Xml
     /**
      * @return float
      */
-    public function getNetAmount(): float
+    public function getNetAmount(): ?float
     {
         return $this->netAmount;
     }
@@ -181,7 +181,7 @@ class Transaction implements Xml
     /**
      * @return int
      */
-    public function getInstallmentCount(): int
+    public function getInstallmentCount(): ?int
     {
         return $this->installmentCount;
     }
@@ -189,7 +189,7 @@ class Transaction implements Xml
     /**
      * @return int
      */
-    public function getItemCount(): int
+    public function getItemCount(): ?int
     {
         return $this->itemCount;
     }
@@ -197,7 +197,7 @@ class Transaction implements Xml
     /**
      * @return string
      */
-    public function getReference(): string
+    public function getReference(): ?string
     {
         return $this->reference;
     }
@@ -205,7 +205,7 @@ class Transaction implements Xml
     /**
      * @return float
      */
-    public function getExtraAmount(): float
+    public function getExtraAmount(): ?float
     {
         return $this->extraAmount;
     }
@@ -213,7 +213,7 @@ class Transaction implements Xml
     /**
      * @return DateTime
      */
-    public function getEscrowEndDate(): DateTime
+    public function getEscrowEndDate(): ?DateTime
     {
         return $this->escrowEndDate;
     }
@@ -221,7 +221,7 @@ class Transaction implements Xml
     /**
      * @return CartItem[]
      */
-    public function getItems(): array
+    public function getItems(): ?array
     {
         return $this->items;
     }
@@ -229,7 +229,7 @@ class Transaction implements Xml
     /**
      * @return Sender
      */
-    public function getSender(): Sender
+    public function getSender(): ?Sender
     {
         return $this->sender;
     }
@@ -237,7 +237,7 @@ class Transaction implements Xml
     /**
      * @return Shipping
      */
-    public function getShipping(): Shipping
+    public function getShipping(): ?Shipping
     {
         return $this->shipping;
     }
@@ -245,7 +245,7 @@ class Transaction implements Xml
     /**
      * @return GatewaySystem
      */
-    public function getGatewaySystem(): GatewaySystem
+    public function getGatewaySystem(): ?GatewaySystem
     {
         return $this->gatewaySystem;
     }
@@ -265,7 +265,7 @@ class Transaction implements Xml
         $date = $xpath->query('/transaction/date');
 
         if ($date->count() > 0) {
-            $instance->date = $date->item(0)->textContent;
+            $instance->date = DateTime::createFromFormat('Y-m-d\TH:i:s.000P', $date->item(0)->textContent);
         }
 
         $payment = $xpath->query('/transaction/paymentMethod/type');

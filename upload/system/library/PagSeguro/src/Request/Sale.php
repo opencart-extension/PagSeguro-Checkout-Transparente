@@ -6,19 +6,16 @@ use DOMDocument;
 use ValdeirPsr\PagSeguro\Domains\Environment;
 use ValdeirPsr\PagSeguro\Domains\Payment;
 use ValdeirPsr\PagSeguro\Domains\Transaction;
-use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use ValdeirPsr\PagSeguro\Exception\Auth as AuthException;
 use ValdeirPsr\PagSeguro\Exception\PagSeguroRequest as PagSeguroRequestException;
 
 class Sale
 {
     private $env;
-    private $logId;
 
     public function __construct(Environment $env)
     {
         $this->env = $env;
-        $this->logId = uniqid();
     }
 
     /**
@@ -35,29 +32,19 @@ class Sale
      */
     public function create(Payment $payment)
     {
-        Logger::info('Creating a new order', [
-            'Log ID' => $this->logId,
-            'Request' => $payment->toXml()
-        ]);
-
         return Transaction::fromXml($this->request($payment));
     }
 
     /**
-     * Captura informações de uma transação
-     *
+     * Captura as informações de uma transação
+     * 
      * @param string $paymentId
-     *
+     * 
      * @return Transaction
      */
     public function info(string $paymentId)
     {
-        Logger::info('Capturing info order', [
-            'Log ID' => $this->logId,
-            'Payment ID' => $paymentId
-        ]);
-
-        return Transaction::fromXml($this->request(null, "/{$paymentId}", 'GET'));
+        return Transaction::fromXml($this->request(null, "/{$paymentId}", 'GET', 'v3'));
     }
 
     /**
@@ -69,11 +56,6 @@ class Sale
      */
     public function void($paymentId): bool
     {
-        Logger::info('Canceling an order', [
-            'Log ID' => $this->logId,
-            'Payment ID' => $paymentId
-        ]);
-
         $response = $this->request([
             'transactionCode' => $paymentId
         ], '/cancels');
@@ -82,12 +64,6 @@ class Sale
         $dom->loadXML($response);
 
         $result = $dom->getElementsByTagName('result');
-
-        Logger::info('Order canceled', [
-            'Log ID' => $this->logId,
-            'Payment ID' => $paymentId,
-            'Response' => $response
-        ]);
 
         return ($result->count() > 0)
             ? strtolower(trim($result->item(0)->textContent)) === 'ok'
@@ -103,23 +79,12 @@ class Sale
      */
     public function refund($paymentId): bool
     {
-        Logger::info('Refunding an order', [
-            'Log ID' => $this->logId,
-            'Payment ID' => $paymentId
-        ]);
-
         $response = $this->request([
             'transactionCode' => $paymentId
-        ], '/cancels');
+        ], '/refunds');
 
         $dom = new DOMDocument();
         $dom->loadXML($response);
-
-        Logger::info('Refunded order', [
-            'Log ID' => $this->logId,
-            'Payment ID' => $paymentId,
-            'Response' => $response
-        ]);
 
         $result = $dom->getElementsByTagName('result');
 
@@ -131,9 +96,9 @@ class Sale
     /**
      * {@inheritDoc}
      */
-    protected function buildUrl(string $path = ''): string
+    protected function buildUrl(string $path = '', $apiVersion = 'v2'): string
     {
-        return Factory::url($this->env, "v2/transactions{$path}", [
+        return Factory::url($this->env, "{$apiVersion}/transactions{$path}", [
             'email' => $this->env->getEmail(),
             'token' => $this->env->getToken()
         ]);
@@ -142,9 +107,9 @@ class Sale
     /**
      * {@inheritDoc}
      */
-    protected function request($data, string $path = '', string $method = 'POST')
+    protected function request($data, string $path = '', string $method = 'POST', $apiVersion = 'v2')
     {
-        $url = $this->buildUrl($path);
+        $url = $this->buildUrl($path, $apiVersion);
 
         $request = Factory::request($this->env);
 
@@ -165,7 +130,7 @@ class Sale
         if ($request->isSuccess()) {
             return $request->getResponse();
         } elseif ($request->getHttpStatus() === 401) {
-            throw new AuthException($this->env, 'Check your credentials', 1000);
+            throw new AuthException('Check your credentials', 1000);
         } else {
             throw new PagSeguroRequestException($request, $data);
         }

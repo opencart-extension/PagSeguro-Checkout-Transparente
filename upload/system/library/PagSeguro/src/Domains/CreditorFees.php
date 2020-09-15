@@ -22,7 +22,7 @@ class CreditorFees implements Xml, IArray
     /**
      * @return float
      */
-    public function getInstallmentFeeAmount(): float
+    public function getInstallmentFeeAmount(): ?float
     {
         return $this->installmentFeeAmount;
     }
@@ -30,7 +30,7 @@ class CreditorFees implements Xml, IArray
     /**
      * @return float
      */
-    public function getIntermediationRateAmount(): float
+    public function getIntermediationRateAmount(): ?float
     {
         return $this->intermediationRateAmount;
     }
@@ -38,7 +38,7 @@ class CreditorFees implements Xml, IArray
     /**
      * @return float
      */
-    public function getIntermediationFeeAmount(): float
+    public function getIntermediationFeeAmount(): ?float
     {
         return $this->intermediationFeeAmount;
     }

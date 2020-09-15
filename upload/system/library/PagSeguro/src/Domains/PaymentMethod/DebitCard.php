@@ -80,12 +80,6 @@ class DebitCard extends AbstractPaymentMethod implements Xml
             $instance->paymentLink = trim($paymentLink->item(0)->textContent);
         }
 
-        $bankName = $xpath->query('//bank/name');
-
-        if ($bankName->count() > 0) {
-            $instance->bank = trim($bankName->item(0)->textContent);
-        }
-
         return $instance;
     }
 
