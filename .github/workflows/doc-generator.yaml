@@ -1,0 +1,21 @@
+name: Generate Doc
+on:
+  push:
+    branches:
+      feature/doc
+
+jobs:
+  generate_doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy
+        uses: jenkey2011/vuepress-deploy@master
+        env:
+            ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+            BRANCH_FROM: feature/doc
+            BRANCH_TO: gh-pages
+            BUILD_SCRIPT: yarn && yarn build
+            BUILD_DIR: src/.vuepress/dist/
