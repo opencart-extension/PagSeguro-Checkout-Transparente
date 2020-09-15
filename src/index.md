@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: https://oqueeucomprei.files.wordpress.com/2017/04/pagseguro-logo-2.png
+heroImage: /assets/pagseguro-logo-2.png
 actionText: Começar →
 actionLink: /guide/
 features:
