@@ -15,3 +15,11 @@
 4. Clique em *Upload* e selecione o arquivo baixado **arquivo.ocmod.zip**
 
 ![Arquivo instalado](/assets/arquivo-ocmod-enviado.png)
+
+5. Acesse *Extensões* > *Modificações*
+
+![Menu lateral do OpenCart](/assets/menu2.png)
+
+6. Clique em *Atualizar* (botão azul)
+
+![Botões do OCMOD](/assets/botoes.png)
