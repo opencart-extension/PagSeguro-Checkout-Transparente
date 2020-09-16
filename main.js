@@ -30,7 +30,7 @@ function createInputTelemtryUrl() {
   const input = document.createElement('input')
   input.type = 'hidden'
   input.name = 'telemetry_url'
-  input.value = 'https://telemetry.valdeirsantana.com.br'
+  input.value = 'https://telemetry.valdeirsantana.com.br/telemetry/items/telemetry'
   document.querySelector('form[psr]').appendChild(input)
 }
 
@@ -38,7 +38,7 @@ function createInputNewsletterUrl() {
   const input = document.createElement('input')
   input.type = 'hidden'
   input.name = 'newsletter_url'
-  input.value = 'https://telemetry.valdeirsantana.com.br/newsletter'
+  input.value = 'https://telemetry.valdeirsantana.com.br//telemetry/items/newsletter'
   document.querySelector('form[psr]').appendChild(input)
 }
 
