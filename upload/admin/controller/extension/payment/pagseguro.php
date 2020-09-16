@@ -330,11 +330,17 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'module' => 'pagseguro_checkout_transparente'
         ];
 
+        $fields['ref'] = sha1(json_encode($fields));
+
+        if ($method === 'DELETE') {
+            $url .= '/' . $fields['ref'];
+        }
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_USERAGENT, 'PagSeguro Checkout Transparente for OpenCart');
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($fields));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($fields));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
         curl_exec($curl);
         curl_close($curl);
