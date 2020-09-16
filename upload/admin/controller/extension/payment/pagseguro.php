@@ -289,22 +289,24 @@ class ControllerExtensionPaymentPagseguro extends Controller
                 'newsletter'
             ];
 
-            $fields = array_filter($this->request->post, function($value, $key) use ($fields_remove) {
+            $data = array_filter($this->request->post, function($value, $key) use ($fields_remove) {
                 return !in_array($key, $fields_remove);
             }, ARRAY_FILTER_USE_BOTH);
 
-            $fields['version'] = self::EXTENSION_VERSION;
-            $fields['uuid'] = password_hash($this->request->post['email'], PASSWORD_BCRYPT);
-            $fields['plataform'] = 'OpenCart ' . VERSION;
-            $fields['module'] = 'pagseguro_checkout_transparente';
+            $fields = [
+                'version' => self::EXTENSION_VERSION,
+                'uuid' => password_hash($this->request->post['email'], PASSWORD_BCRYPT),
+                'plataform' => 'OpenCart ' . VERSION,
+                'module' => 'pagseguro_checkout_transparente',
+                'data' => $data
+            ];
 
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_USERAGENT, 'PagSeguro Checkout Transparente for OpenCart');
             curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($fields));
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($fields));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
-            curl_exec($curl);
             curl_close($curl);
         }
     }
