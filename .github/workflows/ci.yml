@@ -1,13 +1,63 @@
 name: Continuous Integration
 on:
   push:
-    branches:
-      - master
-      - develop
+    tags:
+      - 'v*'
 
 jobs:
+  generate_changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v1
+
+      - name: Running standard changelog
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          npx conventional-changelog-cli -p angular -o CHANGELOG.md -r 0
+          git add CHANGELOG.md
+          git commit -m "chore: autogeração do changelog"
+          git push
+
+  new_release:
+    name: New Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Zip Files
+        run: zip -r extension.ocmod.zip install.xml upload
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Extension Zipped
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./extension.ocmod.zip
+          asset_name: extension.ocmod.zip
+          asset_content_type: application/zip
+
   dispatch_newsletter:
-    name: Dispatch newsletter
+    name: Dispatch Newsletter
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

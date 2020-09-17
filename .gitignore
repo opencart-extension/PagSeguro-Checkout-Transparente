@@ -31,7 +31,7 @@
 !/.gitattributes
 !/.gitmessage
 !/README.md
-!/README.md
+!/CHANGELOG.md
 
 /upload/system/library/PagSeguro/phpcs.phar
 /upload/system/library/PagSeguro/vendor
