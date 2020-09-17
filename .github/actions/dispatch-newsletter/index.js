@@ -8,7 +8,7 @@
   const HTTP_OK = 200
 
   const module_name = github.context.repo.repo.toLocaleLowerCase().replace(/\W/g, ' ')
-  const module_code = module_name.replace(/\s/g, '-')
+  const module_code = module_name.replace(/\s/g, '_')
 
   const data = {
     module_name,
@@ -22,6 +22,8 @@
   }
 
   console.log('Sending...')
+  console.log(`Module name: ${module_name}`)
+  console.log(`Module code: ${module_code}`)
 
   axios.post(URL, data, config).then((response) => {
     if (response.status === HTTP_OK) {

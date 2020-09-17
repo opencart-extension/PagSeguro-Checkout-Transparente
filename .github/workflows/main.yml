@@ -2,9 +2,10 @@ name: Test SDK with PHPUnit
 on:
   push:
     branches:
-      - develop
-      - master
       - feature/sdk
+  push_request:
+    branches:
+      - master
 
 jobs:
     build:
