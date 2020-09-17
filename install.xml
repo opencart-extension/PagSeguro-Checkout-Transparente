@@ -6,6 +6,21 @@
   <author>Valdeir S.</author>
   <link>https://valdeir.dev</link>
 
+  <file path="catalog/view/theme/default/template/account/order_info.twig">
+    <operation>
+      <search>
+        <![CDATA[{{ continue }}]]>
+      </search>
+      <add position="before">
+        <![CDATA[
+        {% if boleto %}
+        <div class="pull-left"><a href="{{ boleto }}" class="btn btn-primary" target="_blank">{{ button_download_boleto }}</a></div>
+        {% endif %}
+        ]]>
+      </add>
+    </operation>
+  </file>
+
   <file path="admin/view/template/sale/order_info.twig">
     <operation>
       <search>
