@@ -28,7 +28,7 @@
 !/src/**
 !/package.json
 !/.gitignore
-!/.gitattribute
+!/.gitattributes
 !/.gitmessage
 !/README.md
 !/README.md
