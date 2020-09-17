@@ -2,7 +2,7 @@
 
 Nesta aba, você poderá escolher um *layout* diferenciado para cartão de crédito.
 
-![Aba layout](./assets/tab-layouts.png#zoom)
+![Aba layout](/assets/tab-layouts.png#zoom)
 
 ## Campos
 

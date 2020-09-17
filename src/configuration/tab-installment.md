@@ -2,7 +2,7 @@
 
 Nesta aba, confirme a quantidade parcelas, juros e valor mínimo para parcela.
 
-![Aba parcelamento](./assets/tab-installment.png#zoom)
+![Aba parcelamento](/assets/tab-installment.png#zoom)
 
 ## Campos
 

@@ -2,7 +2,7 @@
 
 Configure os dados básicos como credenciais e modo de desenvolvimento.
 
-![Tab Home](./assets/tab-home.png#zoom)
+![Tab Home](/assets/tab-home.png#zoom)
 
 **Campos**
 
