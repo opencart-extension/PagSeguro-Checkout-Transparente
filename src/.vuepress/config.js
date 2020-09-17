@@ -87,7 +87,7 @@ module.exports = {
       },
       {
         text: 'Central de Atendimento',
-        link: 'https://valdeir.dev'
+        link: 'https://valdeirpsr.atlassian.net/servicedesk/customer/portal/3'
       },
       {
         text: 'GitHub',
