@@ -10,16 +10,16 @@
 
 3. Acesse *Extensões* > *Instalador*
 
-![Menu lateral do OpenCart](/assets/menu1.png)
+![Menu lateral do OpenCart](/PagSeguro-Checkout-Transparente/assets/menu1.png)
 
 4. Clique em *Upload* e selecione o arquivo baixado **arquivo.ocmod.zip**
 
-![Arquivo instalado](/assets/arquivo-ocmod-enviado.png)
+![Arquivo instalado](/PagSeguro-Checkout-Transparente/assets/arquivo-ocmod-enviado.png)
 
 5. Acesse *Extensões* > *Modificações*
 
-![Menu lateral do OpenCart](/assets/menu2.png)
+![Menu lateral do OpenCart](/PagSeguro-Checkout-Transparente/assets/menu2.png)
 
 6. Clique em *Atualizar* (botão azul)
 
-![Botões do OCMOD](/assets/botoes.png)
+![Botões do OCMOD](/PagSeguro-Checkout-Transparente/assets/botoes.png)

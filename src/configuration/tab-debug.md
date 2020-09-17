@@ -2,11 +2,11 @@
 
 Nesta aba, você poderá filtrar os *logs* por data e *níveis*.
 
-![Aba debug](/assets/tab-debug.png#zoom)
+![Aba debug](/PagSeguro-Checkout-Transparente/assets/tab-debug.png#zoom)
 
 # Gerenciar *logs*
 
-![Botões para gerenciar logs](/assets/tab-debug-2.png)
+![Botões para gerenciar logs](/PagSeguro-Checkout-Transparente/assets/tab-debug-2.png)
 
 **Limpar *log*:** O botão vermelho é responsável por remover o arquivo de *log*. Esta opção não poderá ser desfeita.
 
