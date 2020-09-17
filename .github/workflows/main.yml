@@ -1,0 +1,44 @@
+name: Test SDK with PHPUnit
+on: [push, pull_request]
+
+jobs:
+    build:
+        name: Test SDK
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v1
+
+            - name: Install Composer
+              run: |
+                wget -qO- composer-setup.php https://getcomposer.org/installer | php -- composer-setup.php
+                composer --version
+
+            - name: Get Composer Cache Directory
+              id: composer-cache
+              run: |
+                cd upload/system/library/PagSeguro
+                echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - uses: actions/cache@v2
+              with:
+                path: ${{ steps.composer-cache.outputs.dir }}
+                key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                restore-keys: |
+                  ${{ runner.os }}-composer-
+
+            - name: Install PHPUnit e Dependencies
+              run: |
+                cd upload/system/library/PagSeguro
+                composer install
+                composer require phpunit/phpunit
+
+            - name: Run Tests
+              run: |
+                cd upload/system/library/PagSeguro
+                php vendor/bin/phpunit
+
+            - name: PHPCS
+              run: |
+                cd upload/system/library/PagSeguro
+                composer phpcs

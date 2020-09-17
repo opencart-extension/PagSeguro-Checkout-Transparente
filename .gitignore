@@ -35,3 +35,4 @@
 /upload/system/library/PagSeguro/log
 /node_modules
 /src/.vuepress/dist
+/upload/system/library/PagSeguro/tests
