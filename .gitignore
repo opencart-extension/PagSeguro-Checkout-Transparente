@@ -28,6 +28,7 @@
 !/src/**
 !/package.json
 !/.gitignore
+!/README.md
 
 /upload/system/library/PagSeguro/phpcs.phar
 /upload/system/library/PagSeguro/vendor
