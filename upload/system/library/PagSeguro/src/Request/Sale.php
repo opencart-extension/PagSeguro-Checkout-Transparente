@@ -37,9 +37,9 @@ class Sale
 
     /**
      * Captura as informações de uma transação
-     * 
+     *
      * @param string $paymentId
-     * 
+     *
      * @return Transaction
      */
     public function info(string $paymentId)

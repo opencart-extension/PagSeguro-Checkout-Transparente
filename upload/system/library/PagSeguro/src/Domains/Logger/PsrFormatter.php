@@ -13,10 +13,13 @@ class PsrFormatter extends HtmlFormatter
     {
         $th = htmlspecialchars($th, ENT_NOQUOTES, 'UTF-8');
         if ($escapeTd) {
-            $td = '<pre style="white-space: pre-wrap;">'.htmlspecialchars($td, ENT_NOQUOTES, 'UTF-8').'</pre>';
+            $td = '<pre style="white-space: pre-wrap;">' . htmlspecialchars($td, ENT_NOQUOTES, 'UTF-8') . '</pre>';
         }
 
-        return "<tr style=\"padding: 4px;text-align: left;\">\n<th style=\"vertical-align: top;background: #ccc;color: #000\" width=\"100\">$th:</th>\n<td style=\"padding: 4px;text-align: left;vertical-align: top;background: #eee;color: #000\">".$td."</td>\n</tr>";
+        return "<tr style=\"padding: 4px;text-align: left;\">\n" .
+        "<th style=\"vertical-align: top;background: #ccc;color: #000\" width=\"100\">$th:</th>\n" .
+        "<td style=\"padding: 4px;text-align: left;vertical-align: top;background: #eee;color: #000\">" .
+        $td . "</td>\n</tr>";
     }
 
     /**
@@ -48,6 +51,6 @@ class PsrFormatter extends HtmlFormatter
             $output .= $this->addRow('Extra', $embeddedTable, false);
         }
 
-        return $output.'</table></div>';
+        return $output . '</table></div>';
     }
 }
