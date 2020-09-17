@@ -1,0 +1,8 @@
+name: 'Dispatch Newsletter'
+description: 'Envia e-mail com atualização'
+inputs:
+  TOKEN:
+    required: true
+runs:
+  using: node12
+  main: index.js
