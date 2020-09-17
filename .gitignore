@@ -28,6 +28,9 @@
 !/src/**
 !/package.json
 !/.gitignore
+!/.gitattribute
+!/.gitmessage
+!/README.md
 !/README.md
 
 /upload/system/library/PagSeguro/phpcs.phar
