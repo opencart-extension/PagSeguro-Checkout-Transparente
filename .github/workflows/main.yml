@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - feature/sdk
-  push_request:
+  pull_request:
     branches:
       - master
 
