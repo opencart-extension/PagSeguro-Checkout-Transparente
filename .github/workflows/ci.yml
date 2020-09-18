@@ -1,29 +1,10 @@
-name: Continuous Integration
+name: Create Releasea by Tag
 on:
   push:
     tags:
       - 'v*'
 
 jobs:
-  generate_changelog:
-    name: Generate Changelog
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v1
-
-      - name: Running standard changelog
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          npx conventional-changelog-cli -p angular -o CHANGELOG.md -r 0
-          git add CHANGELOG.md
-          git commit -m "chore: autogeração do changelog"
-          git push
-
   new_release:
     name: New Release
     runs-on: ubuntu-latest
@@ -49,7 +30,7 @@ jobs:
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ github.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./extension.ocmod.zip
