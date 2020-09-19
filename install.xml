@@ -14,7 +14,7 @@
       <add position="before">
         <![CDATA[
         {% if boleto %}
-        <div class="pull-left"><a href="{{ boleto }}" class="btn btn-primary" target="_blank">{{ button_download_boleto }}</a></div>
+        <div class="pull-left"><a href="{{ boleto }}" class="btn btn-primary" target="_blank">2ª via do boleto</a></div>
         {% endif %}
         ]]>
       </add>
