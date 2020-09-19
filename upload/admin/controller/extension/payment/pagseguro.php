@@ -1,8 +1,14 @@
 <?php
 
+require_once DIR_SYSTEM . 'library/PagSeguro/vendor/autoload.php';
+
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
+use ValdeirPsr\PagSeguro\Request\Sale;
+use ValdeirPsr\PagSeguro\Domains\Environment;
+
 class ControllerExtensionPaymentPagseguro extends Controller
 {
-    const FIELD_PREFIX = 'payment_pagseguro_';
+    const EXTENSION_PREFIX = 'payment_pagseguro_';
     const EXTENSION_VERSION = '2.0.0';
 
     private $error = [];
@@ -13,7 +19,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
     public function index()
     {
         if (!defined('PAGSEGURO_LOG')) {
-            define('PAGSEGURO_LOG', DIR_SYSTEM . '/library/PagSeguro/log');
+            define('PAGSEGURO_LOG', DIR_SYSTEM . 'library/PagSeguro/log');
         }
 
         $data = $this->load->language('extension/payment/pagseguro');
@@ -29,7 +35,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             $this->load->model('setting/setting');
 
             $keys = array_map(function($key) {
-                return self::FIELD_PREFIX . $key;
+                return self::EXTENSION_PREFIX . $key;
             }, array_keys($this->request->post));
 
             $data = array_combine($keys, array_values($this->request->post));
@@ -86,7 +92,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         /** Captura configurações salvas */
         foreach($this->getAllFields() as $key => $value) {
-            $data[$key] = $this->request->post[$key] ?? $this->config->get(self::FIELD_PREFIX . $key);
+            $data[$key] = $this->request->post[$key] ?? $this->config->get(self::EXTENSION_PREFIX . $key);
         }
 
         if (empty($data['callback_token'])) {
@@ -164,6 +170,278 @@ class ControllerExtensionPaymentPagseguro extends Controller
         } elseif ($request_method == 'DELETE' && $isValid) {
             unlink($file);
         }
+    }
+
+    /**
+     * Exibe detalhes da transação
+     * Trigger: admin/view/sale/order/info/before
+     *
+     * @param mixed $route
+     * @param mixed $data
+     */
+    public function manager_order(&$route, &$data)
+    {
+        $new_data = $this->load->language('extension/payment/pagseguro');
+
+        $order_id = $this->request->get['order_id'] ?? 0;
+
+        $order_info = $this->model_sale_order->getOrder($order_id);
+
+        if ($order_info && strpos($order_info['payment_code'], 'pagseguro_') === 0) {
+
+            $this->load->model('extension/payment/pagseguro');
+
+            $new_data['details'] = $this->details($order_id, $order_info);
+            $new_data['cancel'] = $this->cancel($order_id, $order_info, $data);
+            $new_data['refund'] = $this->refund($order_id, $order_info, $data);
+            $new_data['pagseguro_success'] = $this->session->data['pagseguro_success'] ?? false;
+            $new_data['pagseguro_failed'] = $this->session->data['pagseguro_failed'] ?? false;
+
+            if (isset($this->session->data['pagseguro_success'])) {
+                unset($this->session->data['pagseguro_success']);
+            }
+
+            if (isset($this->session->data['pagseguro_failed'])) {
+                unset($this->session->data['pagseguro_failed']);
+            }
+
+            $data['pagseguro'] = $this->load->view('extension/payment/pagseguro_manager_order', $new_data);
+            return;
+        }
+
+        $data['pagseguro'] = '';
+    }
+
+    /**
+     * Cancela uma transação no PagSeguro
+     */
+    public function cancel_order()
+    {
+        $this->load->language('extension/payment/pagseguro');
+
+        $order_id = $this->request->get['order_id'] ?? 0;
+
+        $this->load->model('extension/payment/pagseguro');
+        $this->load->model('sale/order');
+
+        $transaction_info = $this->model_extension_payment_pagseguro->getTransactionInfo(
+            $order_id,
+            ['code']
+        );
+
+        if (!isset($transaction_info['code'])) {
+            header('HTTP/1.0 404 Not Found');
+            return;
+        }
+
+        try {
+            $request = new Sale($this->buildEnv());
+            $result = $request->void($transaction_info['code']);
+
+            if ($result) {
+                $this->session->data['pagseguro_success'] = $this->language->get('text_void_success');
+                $order_status_id = $this->config->get(self::EXTENSION_PREFIX . 'order_status_cancelled');
+                $this->db->query('UPDATE ' . DB_PREFIX . 'order SET order_status_id = "' . $order_status_id . '" WHERE order_id = "' . intval($order_id) . '"');
+                $this->db->query("INSERT INTO " . DB_PREFIX . "order_history SET order_id = '" . intval($order_id) . "', order_status_id = '" . $order_status_id . "', notify = '0', comment = '', date_added = NOW()");
+            } else {
+                $this->session->data['pagseguro_failed'] = $this->language->get('text_void_failed');
+            }
+        } catch (Exception $e) {
+            $this->session->data['pagseguro_failed'] = $this->language->get('text_void_failed');
+        }
+
+        $this->response->redirect(
+            $this->url->link(
+                'sale/order/info',
+                'order_id=' . $order_id .
+                '&user_token=' . $this->session->data['user_token']
+            )
+        );
+    }
+
+    /**
+     * Realiza reembolso total no PagSeguro
+     */
+    public function refund_order()
+    {
+        $this->load->language('extension/payment/pagseguro');
+
+        $order_id = $this->request->get['order_id'] ?? 0;
+
+        $this->load->model('extension/payment/pagseguro');
+        $this->load->model('sale/order');
+
+        $transaction_info = $this->model_extension_payment_pagseguro->getTransactionInfo(
+            $order_id,
+            ['code']
+        );
+
+        if (!isset($transaction_info['code'])) {
+            header('HTTP/1.0 404 Not Found');
+            return;
+        }
+
+        try {
+            $request = new Sale($this->buildEnv());
+            $result = $request->refund($transaction_info['code']);
+
+            if ($result) {
+                $this->session->data['pagseguro_success'] = $this->language->get('text_refund_success');
+                $order_status_id = $this->config->get(self::EXTENSION_PREFIX . 'order_status_returned');
+                $this->db->query('UPDATE ' . DB_PREFIX . 'order SET order_status_id = "' . $order_status_id . '" WHERE order_id = "' . intval($order_id) . '"');
+                $this->db->query("INSERT INTO " . DB_PREFIX . "order_history SET order_id = '" . intval($order_id) . "', order_status_id = '" . $order_status_id . "', notify = '0', comment = '', date_added = NOW()");
+            } else {
+                $this->session->data['pagseguro_failed'] = $this->language->get('text_refund_failed');
+            }
+        } catch (Exception $e) {
+            $this->session->data['pagseguro_failed'] = $this->language->get('text_refund_failed');
+        }
+
+        $this->response->redirect(
+            $this->url->link(
+                'sale/order/info',
+                'order_id=' . $order_id .
+                '&user_token=' . $this->session->data['user_token']
+            )
+        );
+    }
+
+    /**
+     * Captura os detalhes da transação
+     *
+     * @param int $order_id
+     * @param array $order_info
+     *
+     * @return array
+     */
+    private function details($order_id, $order_info)
+    {
+        $transaction_info = $this->model_extension_payment_pagseguro->getTransactionInfo(
+            $order_id,
+            ['code']
+        );
+
+        if (!isset($transaction_info['code'])) {
+            return;
+        }
+
+        $request = new Sale($this->buildEnv());
+
+        $result = $request->info($transaction_info['code']);
+
+        $payment = $result->getPayment();
+
+        $creditor_fees_data = [];
+
+        $creditor_fees = $result->getCreditorFees();
+
+        if ($creditor_fees) {
+            $creditor_fees_data = [
+                'installmentFeeAmount' => $this->currency->format($creditor_fees->getInstallmentFeeAmount(), 'BRL'),
+                'intermediationRateAmount' => $this->currency->format($creditor_fees->getIntermediationRateAmount(), 'BRL'),
+                'intermediationFeeAmount' => $this->currency->format($creditor_fees->getIntermediationFeeAmount(), 'BRL'),
+            ];
+        }
+
+        $payment_link = false;
+
+        if (
+            $payment->getMethod() === 'boleto' &&
+            $order_info['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_pending')
+        ) {
+            $payment_link = $payment->getPaymentLink();
+        }
+
+        return [
+            'date' => $result->getDate()->format('F j, Y, H:i:s'),
+            'code' => $result->getCode(),
+            'lastEventDate' => $result->getLastEventDate()->format('F j, Y, H:i:s'),
+            'grossAmount' => $this->currency->format($result->getGrossAmount(), 'BRL'),
+            'discountAmount' => $this->currency->format($result->getDiscountAmount(), 'BRL'),
+            'feeAmount' => $this->currency->format($result->getFeeAmount(), 'BRL'),
+            'netAmount' => $this->currency->format($result->getNetAmount(), 'BRL'),
+            'extraAmount' => $this->currency->format($result->getExtraAmount(), 'BRL'),
+            'installmentCount' => $result->getInstallmentCount(),
+            'paymentLink' => $payment_link,
+            'creditorFees' => $creditor_fees_data
+        ];
+    }
+
+    /**
+     * Captura os dados para cancelamento
+     *
+     * @param int $order_id
+     * @param array $order_info
+     * @param array $data
+     *
+     * @return array
+     */
+    private function cancel($order_id, $order_info, $data)
+    {
+        $status_pending = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_pending');
+        });
+        $status_pending = reset($status_pending);
+
+        $status_analysing = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_analysing');
+        });
+        $status_analysing = reset($status_analysing);
+
+        $cancel_availabled = in_array($order_info['order_status_id'], [
+            $status_pending['order_status_id'],
+            $status_analysing['order_status_id']
+        ]);
+
+        return [
+            'text_alert_cancel' => sprintf($this->language->get('text_alert_cancel'), $status_pending['name'], $status_analysing['name']),
+            'availabled' => $cancel_availabled,
+            'url' => $this->url->link('extension/payment/pagseguro/cancel_order', 'order_id=' . $order_id)
+        ];
+    }
+
+    /**
+     * Captura os dados para reembolso
+     *
+     * @param int $order_id
+     * @param array $order_info
+     * @param array $data
+     *
+     * @return array
+     */
+    private function refund($order_id, $order_info, $data)
+    {
+        $status_paid = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_paid');
+        });
+        $status_paid = reset($status_paid);
+
+        $status_available = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_available');
+        });
+        $status_available = reset($status_available);
+
+        $status_disputed = array_filter($data['order_statuses'], function ($item) {
+            return $item['order_status_id'] == $this->config->get(self::EXTENSION_PREFIX . 'order_status_disputed');
+        });
+        $status_disputed = reset($status_disputed);
+
+        $refund_availabled = in_array($order_info['order_status_id'], [
+            $status_paid['order_status_id'],
+            $status_available['order_status_id'],
+            $status_disputed['order_status_id']
+        ]);
+
+        return [
+            'text_alert_refund' => sprintf(
+                $this->language->get('text_alert_refund'),
+                $status_paid['name'],
+                $status_available['name'],
+                $status_disputed['name']
+            ),
+            'availabled' => $refund_availabled,
+            'url' => $this->url->link('extension/payment/pagseguro/refund_order', 'order_id=' . $order_id)
+        ];
     }
 
     /**
@@ -398,7 +676,8 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->load->model('setting/event');
 
-        $this->model_setting_event->addEvent('pagseguro', 'catalog/view/account/order_info/before', 'event/extension/payment/pagseguro/boleto2');
+        $this->model_setting_event->addEvent('pagseguro', 'admin/view/sale/order_info/before', 'extension/payment/pagseguro/manager_order');
+        $this->model_setting_event->addEvent('pagseguro', 'catalog/view/account/order_info/before', 'extension/payment/pagseguro/boleto2');
     }
 
     /**
@@ -453,5 +732,23 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->load->model('setting/event');
 
         $this->model_setting_event->deleteEventByCode('pagseguro');
+    }
+
+    /**
+     * Cria um ambiente de desenvolvimento
+     *
+     * @return Environment
+     */
+    private function buildEnv()
+    {
+        $email = $this->config->get(self::EXTENSION_PREFIX . 'email');
+        $token = $this->config->get(self::EXTENSION_PREFIX . 'token');
+        $sandbox = $this->config->get(self::EXTENSION_PREFIX . 'sandbox');
+
+        if ($sandbox) {
+            return Environment::sandbox($email, $token);
+        } else {
+            return Environment::production($email, $token);
+        }
     }
 }

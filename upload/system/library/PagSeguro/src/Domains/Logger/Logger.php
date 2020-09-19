@@ -18,7 +18,7 @@ class Logger
     public static function getInstance(): Monolog
     {
         if (self::$instance === null) {
-            self::init();
+            self::path();
 
             $dateFormat = "Y-m-d\TH:i:s";
             $output = "%datetime%  ::  %level_name%  ::  %message% %context% %extra%\n";
@@ -34,7 +34,7 @@ class Logger
         return self::$instance;
     }
 
-    private static function init()
+    public static function path()
     {
         if (!defined('DS')) {
             define('DS', DIRECTORY_SEPARATOR);

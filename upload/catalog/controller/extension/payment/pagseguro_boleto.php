@@ -143,7 +143,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
                     $order_info['shipping_city'],
                     $order_info['shipping_zone_code'],
                     preg_replace('/\D/', '', $order_info['shipping_postcode']),
-                    $order_info['shipping_company'],
+                    $order_info['shipping_company']
                 );
 
                 $shipping_cost = $this->model_extension_payment_pagseguro->getShippingCost($order_totals);
