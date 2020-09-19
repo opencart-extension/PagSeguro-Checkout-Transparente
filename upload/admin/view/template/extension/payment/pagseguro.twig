@@ -427,7 +427,7 @@
               <label for="input-geo-zone-id" class="control-label col-sm-2">{{ entry_geo_zone_id }}</label>
               <div class="col-sm-10">
                 <select name="geo_zone_id" id="input-geo-zone-id" class="form-control">
-                  <option value="all">All</option>
+                  <option value="0">All</option>
 
                   {% for zone in geo_zones %}
                     {% if zone.geo_zone_id == geo_zone_id %}
