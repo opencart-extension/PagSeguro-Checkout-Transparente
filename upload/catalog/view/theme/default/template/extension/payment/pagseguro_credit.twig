@@ -367,7 +367,6 @@ label[for="card-number"] + div {
     .then(requestSuccess)
     .catch(requestFailed)
     .then(() => {
-      $('#button-confirm').button('reset')
       $(inputCustomerName).prop('disabled', false)
       $(inputCardNumber).prop('disabled', false)
       $(inputCardBrand).prop('disabled', false)
@@ -414,6 +413,7 @@ label[for="card-number"] + div {
     }
 
     $('#warning').html(ul).show()
+    $('#button-confirm').button('reset')
   }
 
   /**
