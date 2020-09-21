@@ -12,6 +12,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Running Composer
+        uses: |
+          cd upload/system/library/PagSeguro
+          wget -qO- https://getcomposer.org/installer | php
+          php composer.phar install --no-dev
+          rm composer.phar
+
       - name: Zip Files
         run: zip -r extension.ocmod.zip install.xml upload
 
