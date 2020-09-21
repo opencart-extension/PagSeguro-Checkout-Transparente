@@ -4,13 +4,14 @@
 $_['heading_title'] = 'PagSeguro Débito';
 
 // Entry
-$_['choose_bank'] = 'Selecione seu banco';
+$_['entry_choose_bank'] = 'Selecione seu banco';
+$_['entry_cpf']         = 'CPF';
 
 // Text
 $_['text_wait'] = 'Aguarde...';
 
 // Button
-$_['button_confirm'] = 'Confirmar';
+$_['button_confirm']  = 'Confirmar';
 $_['button_continue'] = 'Continuar';
 
 // Error

@@ -35,14 +35,17 @@
       <div class="form-horizontal">
         <div class="form-group">
           <label class="col-sm-4 control-label">{{ entry_choose_bank }}</label>
-          <div id="banks" class="col-sm-4"></div>
+          <div class="col-sm-4">
+            <select id="bank-name" name="bank_name" class="form-control">
+              <option value="">{{ entry_choose_bank }}</option>
+            </select>
+          </div>
         </div>
 
         <div class="form-group">
           <label class="col-sm-4 control-label" for="cpf">{{ entry_cpf }}</label>
           <div class="col-sm-4">
             <input class="form-control" id="cpf" name="cpf" type="text" value="{{ cpf }}" />
-            <input id="bank-name" name="bank_name" type="hidden" />
           </div>
         </div>
 
@@ -116,10 +119,10 @@
 
       for (let option of Object.values(options)) {
         document
-          .querySelector('#banks')
+          .querySelector('#bank-name')
           .insertAdjacentHTML(
             'beforeEnd',
-            `<button type="button" onClick="chooseBank(this, '${option.name}')"><img src="https://stc.pagseguro.uol.com.br${option.images.MEDIUM.path}" /></button>`
+            `<option value="${option.name}">${option.name.replace(/[^a-z0-9]/ig, ' ')}</option>`
           )
       }
 
@@ -127,18 +130,6 @@
     } else {
       paymentMethodsFailed()
     }
-  }
-
-  /**
-   * Seleciona o banco do usuário
-   */
-  function chooseBank(el, bank_name) {
-    document.querySelectorAll('#banks button')
-      .forEach(el => el.classList.remove('active'))
-
-    el.classList.add('active')
-
-    document.querySelector('#bank-name').value = bank_name
   }
 
   /**
