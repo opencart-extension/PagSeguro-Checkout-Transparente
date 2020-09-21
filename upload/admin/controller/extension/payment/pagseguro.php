@@ -10,6 +10,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
 {
     const EXTENSION_PREFIX = 'payment_pagseguro_';
     const EXTENSION_VERSION = '2.0.0';
+    const PAGSEGURO_LOG = DIR_SYSTEM . '/library/PagSeguro/log';
 
     private $error = [];
 
@@ -147,13 +148,9 @@ class ControllerExtensionPaymentPagseguro extends Controller
      */
     public function log()
     {
-        if (!defined('PAGSEGURO_LOG')) {
-            define('PAGSEGURO_LOG', DIR_SYSTEM . '/library/PagSeguro/log');
-        }
-
         $date = $this->request->get['date'] ?? null;
         $request_method = $this->request->server['REQUEST_METHOD'] ?? 'GET';
-        $file = PAGSEGURO_LOG . "/{$date}.log";
+        $file = self::PAGSEGURO_LOG . "/{$date}.log";
         $isValid = $date && file_exists($file);
 
         if ($request_method == 'GET' && $isValid) {
@@ -678,6 +675,10 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->model_setting_event->addEvent('pagseguro', 'admin/view/sale/order_info/before', 'extension/payment/pagseguro/manager_order');
         $this->model_setting_event->addEvent('pagseguro', 'catalog/view/account/order_info/before', 'extension/payment/pagseguro/boleto2');
+
+        if (!is_dir(self::PAGSEGURO_LOG)) {
+            mkdir(self::PAGSEGURO_LOG, 0777, true);
+        }
     }
 
     /**
