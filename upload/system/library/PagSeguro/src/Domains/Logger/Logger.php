@@ -29,7 +29,6 @@ class Logger
             }
 
             $dateFormat = "Y-m-d\TH:i:s";
-            $output = "%datetime%  ::  %level_name%  ::  %message% %context% %extra%\n";
             $formatter = new PsrFormatter($dateFormat);
 
             $stream = new StreamHandler(PAGSEGURO_LOG . '/' . date('Y-m-d') . '.log');
@@ -49,7 +48,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function log($level, $message, array $context = []): void
+    public static function log($level, $message, array $context = []): void
     {
         if (self::$opts['enabled']) {
             (self::getInstance())->log($level, $message, $context);
@@ -62,7 +61,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function debug($message, array $context = []): void
+    public static function debug($message, array $context = []): void
     {
         self::log(Monolog::DEBUG, $message, $context);
     }
@@ -73,7 +72,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function info($message, array $context = []): void
+    public static function info($message, array $context = []): void
     {
         self::log(Monolog::INFO, $message, $context);
     }
@@ -84,7 +83,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function notice($message, array $context = []): void
+    public static function notice($message, array $context = []): void
     {
         self::log(Monolog::NOTICE, $message, $context);
     }
@@ -95,7 +94,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function warning($message, array $context = []): void
+    public static function warning($message, array $context = []): void
     {
         self::log(Monolog::WARNING, $message, $context);
     }
@@ -106,7 +105,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function error($message, array $context = []): void
+    public static function error($message, array $context = []): void
     {
         self::log(Monolog::ERROR, $message, $context);
     }
@@ -117,7 +116,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function critical($message, array $context = []): void
+    public static function critical($message, array $context = []): void
     {
         self::log(Monolog::CRITICAL, $message, $context);
     }
@@ -128,7 +127,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function alert($message, array $context = []): void
+    public static function alert($message, array $context = []): void
     {
         self::log(Monolog::ALERT, $message, $context);
     }
@@ -139,7 +138,7 @@ class Logger
      * @param string $message The log message
      * @param array  $context The log context
      */
-    public function emergency($message, array $context = []): void
+    public static function emergency($message, array $context = []): void
     {
         self::log(Monolog::EMERGENCY, $message, $context);
     }
