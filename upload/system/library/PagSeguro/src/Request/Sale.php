@@ -6,6 +6,7 @@ use DOMDocument;
 use ValdeirPsr\PagSeguro\Domains\Environment;
 use ValdeirPsr\PagSeguro\Domains\Payment;
 use ValdeirPsr\PagSeguro\Domains\Transaction;
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use ValdeirPsr\PagSeguro\Exception\Auth as AuthException;
 use ValdeirPsr\PagSeguro\Exception\PagSeguroRequest as PagSeguroRequestException;
 
@@ -110,6 +111,7 @@ class Sale
     protected function request($data, string $path = '', string $method = 'POST', $apiVersion = 'v2')
     {
         $url = $this->buildUrl($path, $apiVersion);
+        $uid = time() . ':' . uniqid();
 
         $request = Factory::request($this->env);
 
@@ -123,16 +125,35 @@ class Sale
             $request->post($url, $data);
         } elseif ($method === 'GET') {
             $request->get($url);
+            $data = $path;
         }
 
         $request->close();
 
+        Logger::info('Realiza uma requisição de pagamento', [
+            'uid' => $uid,
+            'e-mail' => $this->env->getEmail(),
+            'token' => $this->env->getToken(),
+            'type' => get_called_class(),
+            'request' => $data
+        ]);
+
         if ($request->isSuccess()) {
-            return $request->getResponse();
+            $response = $request->getResponse();
+
+            Logger::info('Realiza uma requisição de pagamento', [
+                'uid' => $uid,
+                'e-mail' => $this->env->getEmail(),
+                'token' => $this->env->getToken(),
+                'type' => get_called_class(),
+                'response' => $response
+            ]);
+
+            return $response;
         } elseif ($request->getHttpStatus() === 401) {
-            throw new AuthException('Check your credentials', 1000);
+            throw new AuthException($this->env, 'Check your credentials', 1000);
         } else {
-            throw new PagSeguroRequestException($request, $data);
+            throw new PagSeguroRequestException($this->env, $request, $data);
         }
     }
 }

@@ -5,7 +5,9 @@ namespace ValdeirPsr\PagSeguro\Exception;
 use DOMDocument;
 use DOMXPath;
 use Throwable;
+use ValdeirPsr\PagSeguro\Domains\Environment;
 use ValdeirPsr\PagSeguro\Domains\Error;
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use Curl\Curl;
 
 class PagSeguroRequest extends \Exception
@@ -15,6 +17,7 @@ class PagSeguroRequest extends \Exception
     private $errors = [];
 
     public function __construct(
+        Environment $env,
         Curl $curl,
         $requestBody,
         string $message = null,
@@ -25,6 +28,13 @@ class PagSeguroRequest extends \Exception
 
         $this->request = $curl;
         $this->requestBody = $requestBody;
+
+        Logger::warning('Erro ao realizar pagamento', [
+            'e-mail' => $env->getEmail(),
+            'token' => $env->getToken(),
+            'request' => $requestBody,
+            'response' => $this->getResponse()
+        ]);
 
         $this->checkErrors();
     }
