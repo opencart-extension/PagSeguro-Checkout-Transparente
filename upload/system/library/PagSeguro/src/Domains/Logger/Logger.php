@@ -22,7 +22,7 @@ class Logger
         ], $opts);
 
         if (self::$instance === null) {
-            self::path();
+            self::init();
 
             if (!is_dir(PAGSEGURO_LOG)) {
                 mkdir(PAGSEGURO_LOG, 0777, true);

@@ -13,13 +13,13 @@
 
   <div class="panel-body">
     <ul class="nav nav-tabs">
-      <li><a href="#tab-pagseguro-detail" data-toggle="tab">{{ text_pagseguro_details }}</a></li>
+      <li class="active"><a href="#tab-pagseguro-detail" data-toggle="tab">{{ text_pagseguro_details }}</a></li>
       <li><a href="#tab-pagseguro-cancel" data-toggle="tab">{{ text_cancel_text }}</a></li>
-      <li class="active"><a href="#tab-pagseguro-refund" data-toggle="tab">{{ text_refund_text }}</a></li>
+      <li><a href="#tab-pagseguro-refund" data-toggle="tab">{{ text_refund_text }}</a></li>
     </ul>
 
     <div class="tab-content">
-      <div class="tab tab-pane" id="tab-pagseguro-detail">
+      <div class="tab tab-pane active" id="tab-pagseguro-detail">
         <table class="table table-hover">
           <tbody>
             <tr>
@@ -95,7 +95,7 @@
         {% endif %}
       </div>
 
-      <div class="tab tab-pane active" id="tab-pagseguro-refund">
+      <div class="tab tab-pane" id="tab-pagseguro-refund">
         {% if refund.availabled %}
         <button
           type="button"

@@ -1,11 +1,19 @@
 <?php
 
+require_once DIR_SYSTEM . 'library/PagSeguro/vendor/autoload.php';
+
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
+
 class ControllerExtensionPaymentPagSeguro extends Controller
 {
     const EXTENSION_PREFIX = 'payment_pagseguro_';
 
     public function callback()
     {
+        Logger::getInstance([
+            'enabled' => $this->config->get(self::EXTENSION_PREFIX . 'debug')
+        ]);
+
         $this->load->model('extension/payment/pagseguro');
         $this->load->model('checkout/order');
 
@@ -13,7 +21,9 @@ class ControllerExtensionPaymentPagSeguro extends Controller
 
         $transaction = $this->model_extension_payment_pagseguro->checkStatusByNotificationCode($notificationCode);
 
-        // Logger
+        Logger::info('Notificação recebeida', [
+            'code' => $notificationCode
+        ]);
 
         if ($transaction) {
             $status = $transaction['status'];

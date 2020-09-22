@@ -214,6 +214,10 @@ class ControllerExtensionPaymentPagseguro extends Controller
      */
     public function cancel_order()
     {
+        Logger::getInstance([
+            'enabled' => $this->config->get(self::EXTENSION_PREFIX . 'debug')
+        ]);
+
         $this->load->language('extension/payment/pagseguro');
 
         $order_id = $this->request->get['order_id'] ?? 0;
@@ -261,6 +265,10 @@ class ControllerExtensionPaymentPagseguro extends Controller
      */
     public function refund_order()
     {
+        Logger::getInstance([
+            'enabled' => $this->config->get(self::EXTENSION_PREFIX . 'debug')
+        ]);
+
         $this->load->language('extension/payment/pagseguro');
 
         $order_id = $this->request->get['order_id'] ?? 0;
@@ -313,6 +321,10 @@ class ControllerExtensionPaymentPagseguro extends Controller
      */
     private function details($order_id, $order_info)
     {
+        Logger::getInstance([
+            'enabled' => $this->config->get(self::EXTENSION_PREFIX . 'debug')
+        ]);
+
         $transaction_info = $this->model_extension_payment_pagseguro->getTransactionInfo(
             $order_id,
             ['code']
@@ -365,7 +377,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
     }
 
     /**
-     * Captura os dados para cancelamento
+     * Captura uma _view_ com os dados para cancelamento
      *
      * @param int $order_id
      * @param array $order_info
@@ -398,7 +410,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
     }
 
     /**
-     * Captura os dados para reembolso
+     * Captura uma _view_ com os dados para reembolso
      *
      * @param int $order_id
      * @param array $order_info
@@ -511,6 +523,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'email'                         => ['required' => true],
             'token'                         => ['required' => true],
             'sandbox'                       => ['required' => false], // Obrigatório, porém sem necessidade de validação
+            'debug'                         => ['required' => false],
             'customer_notify'               => ['required' => false], // Obrigatório, porém sem necessidade de validação
             'callback_token'                => ['required' => true],
             'telemetry'                     => ['required' => false],
