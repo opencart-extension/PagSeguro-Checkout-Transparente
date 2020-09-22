@@ -62,7 +62,7 @@ class Notification
 
             return $response;
         } elseif ($request->getHttpStatus() === 401) {
-            throw new AuthException('Check your credentials', 1000);
+            throw new AuthException($this->env, 'Check your credentials', 1000);
         } else {
             throw new PagSeguroRequestException($this->env, $request, $path);
         }
