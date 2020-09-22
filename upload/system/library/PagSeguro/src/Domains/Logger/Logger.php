@@ -8,14 +8,19 @@ use Monolog\Handler\StreamHandler;
 class Logger
 {
     private static $instance;
+    private static $opts;
 
     private function __construct()
     {
         /** Previning */
     }
 
-    public static function getInstance(): Monolog
+    public static function getInstance(array $opts = []): Monolog
     {
+        self::$opts = array_merge([
+            'enabled' => true
+        ], $opts);
+
         if (self::$instance === null) {
             self::init();
 
@@ -46,7 +51,9 @@ class Logger
      */
     public function log($level, $message, array $context = []): void
     {
-        (self::getInstance())->log($level, $message, $context);
+        if (self::$opts['enabled']) {
+            (self::getInstance())->log($level, $message, $context);
+        }
     }
 
     /**
