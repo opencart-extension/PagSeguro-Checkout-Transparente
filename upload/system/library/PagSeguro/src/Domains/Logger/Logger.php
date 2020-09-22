@@ -29,7 +29,6 @@ class Logger
             }
 
             $dateFormat = "Y-m-d\TH:i:s";
-            $output = "%datetime%  ::  %level_name%  ::  %message% %context% %extra%\n";
             $formatter = new PsrFormatter($dateFormat);
 
             $stream = new StreamHandler(PAGSEGURO_LOG . '/' . date('Y-m-d') . '.log');
