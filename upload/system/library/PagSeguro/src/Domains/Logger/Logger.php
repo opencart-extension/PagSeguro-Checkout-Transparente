@@ -8,7 +8,9 @@ use Monolog\Handler\StreamHandler;
 class Logger
 {
     private static $instance;
-    private static $opts;
+    private static $opts = [
+        'enabled' => false
+    ];
 
     private function __construct()
     {
