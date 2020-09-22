@@ -7,8 +7,11 @@
 | PHP | >= 7.3 |
 | cURL | >= 7 |
 | ext-json | - |
-| SSL | - |
 | ext-iconv | - |
+| ext-xml | - |
+| SSL | - |
+
+ > É obrigatório o uso da moeda BRL
 
 ## Compatibilidade com navegadores
 
