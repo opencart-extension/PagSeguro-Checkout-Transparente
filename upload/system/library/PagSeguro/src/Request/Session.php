@@ -4,6 +4,7 @@ namespace ValdeirPsr\PagSeguro\Request;
 
 use DOMDocument;
 use ValdeirPsr\PagSeguro\Domains\Environment;
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use ValdeirPsr\PagSeguro\Exception\Auth as AuthException;
 
 class Session
@@ -26,6 +27,11 @@ class Session
     {
         $url = $this->buildUrl();
 
+        Logger::debug('Gerando sessão para o usuário', [
+            'e-mail' => $this->env->getEmail(),
+            'token' => $this->env->getToken()
+        ]);
+
         $request = Factory::request($this->env);
         $request->post($url);
         $request->close();
@@ -38,10 +44,18 @@ class Session
             $session = $dom->getElementsByTagName('id');
 
             if ($session->count() > 0) {
-                return trim($session->item(0)->textContent);
+                $session_id = trim($session->item(0)->textContent);
+
+                Logger::debug('Token gerado', [
+                    'e-mail' => $this->env->getEmail(),
+                    'token' => $this->env->getToken(),
+                    'session' => $session_id
+                ]);
+
+                return $session_id;
             }
         } elseif ($request->getHttpStatus() === 401) {
-            throw new AuthException('Check your credentials', 1000);
+            throw new AuthException($this->env, 'Check your credentials', 1000);
         }
     }
 
