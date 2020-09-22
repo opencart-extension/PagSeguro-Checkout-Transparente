@@ -92,6 +92,10 @@ module.exports = {
       {
         text: 'GitHub',
         link: 'https://github.com/opencart-extension/PagSeguro-Checkout-Transparente'
+      },
+      {
+        text: 'Telemetria',
+        link: '/telemetry/'
       }
     ],
     sidebar: {

@@ -18,13 +18,6 @@ Configure os dados básicos como credenciais e modo de desenvolvimento.
 
 **Token de segurança:** Chave utilizada como parâmetro de URL para evitar DDoS ou *brute force*.
 
-**Telemetria:** Com esta opção ativada, o módulo enviara informações básicas para serem analisadas. Isso poderá nos ajudar a melhorar nossos módulos.
-
- > O que o módulo **não** coleta:
- >  - E-mail
- >  - Token
- >  - Token de segurança
- >  - E-mail para recebimento de atualizações
- >  - Arquivos de *log*
+**Telemetria:** Com esta opção ativada, o módulo enviara informações básicas para serem analisadas. Isso poderá nos ajudar a melhorar nossos módulos. Saiba mais acessando a página [Telemetria](/PagSeguro-Checkout-Transparente/telemetry/)
 
 **Informe seu e-mail para receber atualizações:** Caso queira receber atualizações do módulo, informe um e-mail para contato
