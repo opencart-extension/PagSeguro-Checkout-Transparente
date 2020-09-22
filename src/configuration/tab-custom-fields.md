@@ -6,32 +6,8 @@ Nesta aba, você irá selecionar os campos referente ao CPF, Data de Nascimento 
 
 ## Campos
 
-**CPF:** Campo referente ao CPF
-
-**Número da residência:** Campo referente ao número de residência o cliente (o que paga)
-
-**Data de Nascimento:** Campo referenec à data de nascimento do cliente
-
-## Obrigatoriedade para Boleto
-
-| Campo | Obrigatório |
-| ----- | :---------: |
-| CPF | Não |
-| Data de Nascimento | Não |
-| Número da Residência | Não |
-
-## Obrigatoriedade para Crédito
-
-| Campo | Obrigatório |
-| ----- | :---------: |
-| CPF | Não |
-| Data de Nascimento | Não |
-| Número da Residência | Não |
-
-## Obrigatoriedade para Débito
-
-| Campo | Obrigatório |
-| ----- | :---------: |
-| CPF | Sim |
-| Data de Nascimento | Não |
-| Número da Residência | Sim |
+| Campo | Descrição | Obrigatório |
+| ----- | --------- | :---------: |
+| **CPF** | Campo referente ao CPF | Sim, para cartão de crédito |
+| **Número da residência** | Campo referente ao número de residência do cliente (o que paga) | Sim, para cartão de crédito |
+| **Data de Nascimento** | Campo referente à data de nascimento do cliente | Sim, para cartão de crédito |

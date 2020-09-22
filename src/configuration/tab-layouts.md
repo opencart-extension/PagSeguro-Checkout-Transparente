@@ -6,8 +6,14 @@ Nesta aba, você poderá escolher um *layout* diferenciado para cartão de créd
 
 ## Campos
 
-**Tela para cartão de crédito:** Selecione o *layout* desejado.
+| Campo | Descrição |
+| ----- | --------- |
+| **Tela para cartão de crédito** | Selecione o *layout* desejado. |
 
-Observação: O tema selecionado pode ter diferenciais do tema padrão (compatibilidade com mais navegadores, visual diferente etec.)
+::: tip Observação
+O tema selecionado pode ter diferenciais do tema padrão (compatibilidade com mais navegadores, visual diferente etec.)
+:::
 
- > Em breve novos layouts estão disponíveis, assim como opção para boleto e débito
+::: warning Atenção
+Em breve novos layouts estão disponíveis, assim como opção para boleto e débito
+:::

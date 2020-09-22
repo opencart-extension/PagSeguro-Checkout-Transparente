@@ -6,12 +6,16 @@ Nesta aba, você poderá restringir as formas de pagamento por Estado, País ou 
 
 ## Campos
 
-**Zone Geográfica:** Restrinja as formas de pagamento por Estado ou País.
+| Campo | Descrição |
+| ----- | --------- |
+| **Zone Geográfica** | Restrinja as formas de pagamento por Estado ou País. |
+| **Posição** | Informe a ordem que as formas de pagamento aparecerá (caso possua outras) |
+| **Lojas** | Selecione as lojas que poderão utilizar as formas de pagamento do PagSeguro |
 
- > Para criar zonas geográficas, basta acessar o Menu *Configurações* > *Dados Auxiliares* > *Regiões Geográficas*
+::: tip Dica
+Para criar zonas geográficas, basta acessar o Menu *Configurações* > *Dados Auxiliares* > *Regiões Geográficas*
+:::
 
-**Posição:** Informe a ordem que as formas de pagamento aparecerá (caso possua outras)
-
-**Lojas:** Selecione as lojas que poderão utilizar as formas de pagamento do PagSeguro
-
- > Caso utilize sistema multilojas
+::: tip
+Caso utilize sistema multilojas
+:::
