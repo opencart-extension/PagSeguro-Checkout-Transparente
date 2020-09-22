@@ -12,6 +12,7 @@ use ValdeirPsr\PagSeguro\Domains\Shipping;
 use ValdeirPsr\PagSeguro\Domains\Address;
 use ValdeirPsr\PagSeguro\Domains\Document;
 use ValdeirPsr\PagSeguro\Domains\PaymentMethod\Boleto;
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use ValdeirPsr\PagSeguro\Request\Sale;
 
 class ControllerExtensionPaymentPagSeguroBoleto extends Controller
@@ -24,6 +25,10 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
      */
     public function index()
     {
+        Logger::getInstance([
+            'enabled' => $this->config->get(self::EXTENSION_PREFIX . 'debug')
+        ]);
+
         $data = $this->language->load('extension/payment/pagseguro_boleto');
 
         $this->load->model('extension/payment/pagseguro');
@@ -63,6 +68,10 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
      */
     public function transaction()
     {
+        Logger::getInstance([
+            'enabled' => $this->config->get(self::EXTENSION_PREFIX . 'debug')
+        ]);
+
         $this->response->addHeader('Content-Type: application/json');
 
         $this->load->language('extension/payment/pagseguro_boleto');

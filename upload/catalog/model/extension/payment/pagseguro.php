@@ -6,6 +6,7 @@ use ValdeirPsr\PagSeguro\Domains\Environment;
 use ValdeirPsr\PagSeguro\Domains\Transaction;
 use ValdeirPsr\PagSeguro\Request\Session;
 use ValdeirPsr\PagSeguro\Request\Notification;
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 
 class ModelExtensionPaymentPagSeguro extends Model
 {
@@ -54,7 +55,9 @@ class ModelExtensionPaymentPagSeguro extends Model
             $request = new Notification($env);
             $transaction = $request->capture($notification_code);
         } catch (Exception $e) {
-            // Logger
+            Logger::notice('Erro ao verificar a notificação', [
+                'Code' => $notification_code
+            ]);
             return null;
         }
 
