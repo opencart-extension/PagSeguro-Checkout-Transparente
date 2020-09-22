@@ -19,6 +19,7 @@ $_['entry_status']                      = 'Situação';
 $_['entry_email']                       = 'E-mail';
 $_['entry_token']                       = 'Token';
 $_['entry_sandbox']                     = 'Modo de desenvolvimento';
+$_['entry_debug']                       = 'Modo <i>Debug</i>';
 $_['entry_customer_notify']             = 'Notificar clientes';
 $_['entry_callback_token']              = 'Token de segurança';
 $_['entry_telemetry']                   = 'Telemetria';

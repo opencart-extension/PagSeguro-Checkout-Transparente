@@ -511,6 +511,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'email'                         => ['required' => true],
             'token'                         => ['required' => true],
             'sandbox'                       => ['required' => false], // Obrigatório, porém sem necessidade de validação
+            'debug'                         => ['required' => false],
             'customer_notify'               => ['required' => false], // Obrigatório, porém sem necessidade de validação
             'callback_token'                => ['required' => true],
             'telemetry'                     => ['required' => false],
