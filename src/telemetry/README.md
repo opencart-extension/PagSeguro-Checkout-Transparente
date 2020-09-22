@@ -23,10 +23,10 @@ Sem esssas métricas, não seríamos capazes de fazer as escolhas certas à medi
 
 Nós todos os dados de configuração do módulo, **EXCETO**:
 
- >  - E-mail
- >  - Token
- >  - Token de segurança
- >  - E-mail para recebimento de atualizações
- >  - Arquivos de *log*
- >  - Dados da loja
- >  - Dados de outros módulos, extensões, temas ou modificações
+ - E-mail
+ - Token
+ - Token de segurança
+ - E-mail para recebimento de atualizações
+ - Arquivos de *log*
+ - Dados da loja
+ - Dados de outros módulos, extensões, temas ou modificações
