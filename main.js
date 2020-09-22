@@ -38,13 +38,13 @@ function createInputNewsletterUrl() {
   const input = document.createElement('input')
   input.type = 'hidden'
   input.name = 'newsletter_url'
-  input.value = 'https://telemetry.valdeirsantana.com.br//telemetry/items/newsletter'
+  input.value = 'https://telemetry.valdeirsantana.com.br/telemetry/items/newsletter'
   document.querySelector('form[psr]').appendChild(input)
 }
 
-(() => {
+window.addEventListener('load', function() {
   loadWidgetHelpDesk()
   loadAd()
   createInputTelemtryUrl()
   createInputNewsletterUrl()
-})()
+})
