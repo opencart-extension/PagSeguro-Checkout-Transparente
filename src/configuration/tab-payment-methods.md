@@ -6,10 +6,10 @@ Nesta aba, você configurará quais métodos de pagamento estão disponíveis
 
 ## Campo
 
-| Campo | Descrição |
-| ----- | --------- |
-|**Situação** | Habilita/desabilita a forma de pagamento |
-|**Valor mínimo** | Valor mínimo, em reais, para a forma de pagamento ficar disponível para o cliente. |
+| Campo | Descrição | Obrigatório |
+| ----- | --------- | :---------: |
+|**Situação** | Habilita/desabilita a forma de pagamento | Não |
+|**Valor mínimo** | Valor mínimo, em reais, para a forma de pagamento ficar disponível para o cliente. | Não |
 
 ::: warning Atenção
 O PagSeguro adiciona uma taxa de R$1,00 para o boleto. Para removê-la, entre em contato com o PagSeguro.

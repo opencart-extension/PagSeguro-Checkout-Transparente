@@ -8,21 +8,21 @@ Cadastre nesta aba, descontos ou taxas **em porcentagem** para cada forma de pag
 
 ### Campos
 
-| Campo | Descrição |
-| ----- | --------- |
-| **Desconto no boleto** | Desconto `%` para boleto |
-| **Desconto para cartão de crédito** | Desconto `%` para cartão de crédito |
-| **Desconto para débito** | Desconto `%` para débito |
+| Campo | Descrição | Obrigatório |
+| ----- | --------- | :----------: |
+| **Desconto no boleto** | Desconto `%` para boleto | Não |
+| **Desconto para cartão de crédito** | Desconto `%` para cartão de crédito | Não |
+| **Desconto para débito** | Desconto `%` para débito | Não |
 
 ## Taxas
 
 ### Campos
 
-| Campo | Descrição |
-| ----- | --------- |
-| **Taxa no boleto** | Taxa `%` para boleto |
-| **Taxa para cartão de crédito** |  Taxa `%` para cartão de crédito |
-| **Taxa para débito** |  Taxa `%` para débito |
+| Campo | Descrição | Obrigatório |
+| ----- | --------- | :----------: |
+| **Taxa no boleto** | Taxa `%` para boleto | Não |
+| **Taxa para cartão de crédito** |  Taxa `%` para cartão de crédito | Não |
+| **Taxa para débito** |  Taxa `%` para débito | Não |
 
 ::: tip
 As porcentagem serão calculadas com base no subtotal do pedido.

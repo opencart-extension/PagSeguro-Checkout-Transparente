@@ -6,9 +6,9 @@ Nesta aba, você poderá escolher um *layout* diferenciado para cartão de créd
 
 ## Campos
 
-| Campo | Descrição |
-| ----- | --------- |
-| **Tela para cartão de crédito** | Selecione o *layout* desejado. |
+| Campo | Descrição | Obrigatório |
+| ----- | --------- | :---------: |
+| **Tela para cartão de crédito** | Selecione o *layout* desejado. | Sim |
 
 ::: tip Observação
 O tema selecionado pode ter diferenciais do tema padrão (compatibilidade com mais navegadores, visual diferente etec.)
