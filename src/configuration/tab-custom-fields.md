@@ -1,6 +1,6 @@
 # Aba Campos Personalizados
 
-Nesta aba, você irá selecionar os campos referente ao CPF, Data de Nascimento e Número de residência do cliente.
+Nesta aba, você selecionará os campos referente ao CPF, Data de Nascimento e Número de residência do cliente.
 
 ![Aba Campos Personalizados](/PagSeguro-Checkout-Transparente/assets/tab-custom-fields.png#zoom)
 

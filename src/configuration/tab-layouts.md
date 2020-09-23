@@ -15,5 +15,5 @@ O tema selecionado pode ter diferenciais do tema padrão (compatibilidade com ma
 :::
 
 ::: warning Atenção
-Em breve novos layouts estão disponíveis, assim como opção para boleto e débito
+Em breve, novos *layouts* estarão disponíveis, assim como opção para boleto e débito
 :::

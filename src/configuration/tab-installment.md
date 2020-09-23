@@ -13,5 +13,5 @@ Nesta aba, confirme a quantidade parcelas, juros e valor mínimo para parcela.
 | **Valor mínimo para parcela** | Valor mínimo para parcela (R$) |
 
 ::: warning Observação
-Algumas bandeiras, não aceitam este campo e, por isso, poderá ter um número de parcela menor.
+Algumas bandeiras não aceitam o campo *total de parcelas* e, por isso, poderá ter um número de parcela menor.
 :::

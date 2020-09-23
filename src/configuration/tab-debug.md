@@ -1,6 +1,6 @@
 # Aba Debug
 
-Nesta aba, você poderá filtrar os *logs* por data e *níveis*.
+Nesta aba, você poderá filtrar os *logs* por data e níveis.
 
 ![Aba debug](/PagSeguro-Checkout-Transparente/assets/tab-debug.png#zoom)
 
@@ -8,15 +8,15 @@ Nesta aba, você poderá filtrar os *logs* por data e *níveis*.
 
 ![Botões para gerenciar logs](/PagSeguro-Checkout-Transparente/assets/tab-debug-2.png)
 
-**Limpar *log*:** O botão vermelho é responsável por remover o arquivo de *log*. Esta opção não poderá ser desfeita.
+**Limpar *log*:** O botão vermelho é responsável por remover o arquivo de *log*. Esta ação não poderá ser desfeita.
 
-**Download do *Log*:** O botão verde é responsável por baixar os dados de *log* que aparecem na tela.
+***Download* do *Log*:** O botão verde é responsável por baixar os dados de *log* que aparecem na tela.
 
 # Níveis do *log*
 
-**DEBUG (100):** Informações detalhadas de debug.
+**DEBUG (100):** Informações detalhadas de *debug*.
 
-**INFO (200):** Eventos interessantes. Exemplos: User logs in, SQL logs.
+**INFO (200):** Eventos interessantes. Exemplos: *Logs* de usuário, SQL etc.
 
 **NOTICE (250):** Eventos normais, mas significativos.
 
