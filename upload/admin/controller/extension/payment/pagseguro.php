@@ -530,7 +530,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'newsletter'                    => ['required' => false],
             'custom_fields_cpf'             => ['required' => true],
             'custom_fields_number'          => ['required' => true],
-            'custom_fields_birthday'        => ['required' => false],
+            'custom_fields_birthday'        => ['required' => true],
             'discount_boleto'               => ['required' => false],
             'discount_credit'               => ['required' => false],
             'discount_debit'                => ['required' => false],
