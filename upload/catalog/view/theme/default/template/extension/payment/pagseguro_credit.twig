@@ -97,14 +97,12 @@ label[for="card-number"] + div {
             </div>
           </div>
 
-          {% if birthday != null %}
           <div class="form-group col-sm-12">
             <label class="col-sm-3 control-label" for="birthdate">{{ entry_holder_birthdate }}</label>
             <div class="col-sm-8">
               <input class="form-control" type="date" id="birthdate" name="birthdate" placeholder="Ex: 07/03/1808" value="{{ data_nascimento }}" />
             </div>
           </div>
-          {% endif %}
 
           <div class="form-group col-sm-12">
             <label class="col-sm-3 control-label" for="cpf">{{ entry_holder_cpf }}</label>
@@ -302,6 +300,7 @@ label[for="card-number"] + div {
   function createCardToken() {
     $('#warning').html('').hide()
     $('#info').show()
+    $('#button-confirm').button('loading')
 
     PagSeguroDirectPayment.createCardToken({
       cardNumber: inputCardNumber.value.replace(/\D/g, ''),
@@ -319,6 +318,7 @@ label[for="card-number"] + div {
         })
         $('#warning').html(ul).show()
         $('#info').hide()
+        $('#button-confirm').button('reset')
       }
     })
   }
@@ -347,9 +347,7 @@ label[for="card-number"] + div {
     body.set('card_holder_cpf', inputCpf.value)
     body.set('installment_quantity', inputInstallments.selectedIndex + 1)
     body.set('installment_value', inputInstallments.value)
-    {% if birthday != null %}
     body.set('card_holder_birthdate', inputBirthdate.value)
-    {% endif %}
 
     fetch('{{ action_create_sale }}'.replace(/&amp;/g, '&'), {
       method: 'POST',

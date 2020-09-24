@@ -193,10 +193,8 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
                 Document::cpf($cardHolderCpf)
             );
 
-            $birthdate = $order_info['custom_field'][$custom_field_birthdate_id] ?? null;
-
-            if ($birthdate) {
-                $holder->setBirthdate(DateTime::createFromFormat('Y-m-d', $birthdate));
+            if ($cardHolderBirthdate) {
+                $holder->setBirthdate(DateTime::createFromFormat('Y-m-d', $cardHolderBirthdate));
             }
 
             $installmentFree = $this->config->get(self::EXTENSION_PREFIX . 'installment_free');
