@@ -643,7 +643,27 @@
   </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-doc">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a href="https://opencart-extension.github.io/PagSeguro-Checkout-Transparente/" target="_blank">
+          <img src="./view/image/payment/pagseguro_doc.png" />
+        </a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script>
+  const docCount = localStorage.getItem('docCount') ?? 0
+
+  if (docCount % 3 === 0) {
+    $('#modal-doc').modal()
+  }
+
+  localStorage.setItem('docCount', docCount + 1)
+
   $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
     if (e.target.href.endsWith('#tab-debug')) {
       $('#debug-clear, #debug-download').fadeIn()
@@ -792,6 +812,25 @@ function elementToHtmlText(elements) {
 
 .day:not([disabled]) {
   background: #337ab76b;
+}
+
+#modal-doc .modal-content {
+  box-shadow: none;
+  background: transparent;
+}
+
+#modal-doc .modal-dialog {
+  width: 50%;
+}
+
+#modal-doc .modal-body {
+  border: none;
+  padding: 0;
+}
+
+#modal-doc .modal-body img {
+  border: 15px solid white;
+  width: 100%;
 }
 </style>
 {{ footer }}
