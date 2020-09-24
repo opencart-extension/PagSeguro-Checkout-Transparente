@@ -18,7 +18,6 @@ function loadAd() {
     .then((response) => {
       document.querySelectorAll('div.tab-pane').forEach((item, key) => {
         const keyArr = (key + 1) % response.length
-        console.log(item, response[keyArr])
         
         item.insertAdjacentHTML('beforeEnd', response[keyArr])
       })
