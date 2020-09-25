@@ -23,8 +23,21 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: npm install
 
+      - name: Upload 
+        uses: actions/upload-artifact@v2
+        with:
+          name: files
+          path: .
+
+  test:
+    name: Running tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: files
+
       - name: Test
         run: npm run test
-
-      - name: Running webpack
-        run: npm run build
