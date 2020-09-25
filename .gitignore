@@ -1,5 +1,3 @@
-*
-
-!/ad.json
-!/main.js
-!/.gitignore
+/node_modules
+/upload
+/lib

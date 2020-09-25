@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Verifica se o campo com a URL de newsletter está sendo criado corretamente 1`] = `
+<body>
+  <form
+    psr=""
+  >
+    <input
+      name="newsletter_url"
+      type="hidden"
+      value="https://telemetry.valdeirsantana.com.br/telemetry/items/newsletter"
+    />
+  </form>
+</body>
+`;
+
+exports[`Verifica se o campo com a URL para telemetria está sendo criado corretamente 1`] = `
+<body>
+  <form
+    psr=""
+  >
+    <input
+      name="telemetry_url"
+      type="hidden"
+      value="https://telemetry.valdeirsantana.com.br/telemetry/items/telemetry"
+    />
+  </form>
+</body>
+`;
+

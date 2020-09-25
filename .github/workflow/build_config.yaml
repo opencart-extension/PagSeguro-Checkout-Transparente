@@ -1,0 +1,30 @@
+name: Build Config
+on:
+  push:
+    branches:
+      - config
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Check Cache
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node-modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Test
+        run: npm run test
+
+      - name: Running webpack
+        run: npm run build

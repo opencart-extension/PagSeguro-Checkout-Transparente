@@ -1,0 +1,39 @@
+{
+  "name": "pagseguro-config",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.11.5",
+    "core-js": "^2.5.7"
+  },
+  "devDependencies": {
+    "jest": "^26.4.2",
+    "jest-fetch-mock": "^3.0.3",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/issues"
+  },
+  "homepage": "https://github.com/opencart-extension/PagSeguro-Checkout-Transparente#readme",
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "moduleDirectories": [
+      "node_modules"
+    ]
+  }
+}
