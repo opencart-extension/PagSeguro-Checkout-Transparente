@@ -26,7 +26,7 @@ jobs:
       - name: Upload 
         uses: actions/upload-artifact@v2
         with:
-          name: files
+          name: files.zip
           path: .
 
   test:
@@ -37,7 +37,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          name: files
+          name: files.zip
 
       - name: Test
         run: npm run test
