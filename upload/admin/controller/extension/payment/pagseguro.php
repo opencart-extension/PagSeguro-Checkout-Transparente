@@ -29,7 +29,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js');
         $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js');
-        $this->document->addScript('https://cdn.jsdelivr.net/gh/opencart-extension/PagSeguro-Checkout-Transparente@config/main.js');
+        $this->document->addScript('https://cdn.jsdelivr.net/gh/opencart-extension/PagSeguro-Checkout-Transparente@config/lib/bundle.js');
         $this->document->addStyle('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css');
 
         if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate()) {
@@ -583,7 +583,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
             $fields = [
                 'version' => self::EXTENSION_VERSION,
-                'uuid' => password_hash($this->request->post['email'], PASSWORD_BCRYPT),
+                'uuid' => sha1($this->request->post['email']),
                 'plataform' => 'OpenCart ' . VERSION,
                 'module' => 'pagseguro_checkout_transparente',
                 'data' => $data
