@@ -113,7 +113,7 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
                 $item->setId(sprintf('ID%d_K%d', $product['product_id'], $key));
                 $item->setDescription($product['name'] . '  ::  ' . $product['model']);
                 $item->setQuantity(intval($product['quantity']));
-                $item->setAmount(number_format($product['total'], 2, '.', ''));
+                $item->setAmount(number_format($product['price'], 2, '.', ''));
                 $items[] = $item;
             }
 
