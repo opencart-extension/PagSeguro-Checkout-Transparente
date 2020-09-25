@@ -7,10 +7,12 @@
 * adiciona parametro obrigatorio ao chamar _AuthException_ ([0f23a86](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/0f23a86971cf9ed64131d755afcc7b0dac539637))
 * altera comando para phpcs ([5ab803a](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/5ab803ac76426dd5242b1c79a39a8247413e8ba9))
 * corrge valor na zone geografica geral ([cb38fbe](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/cb38fbe123b565a38c1fb737a05b9c86b90c2630))
+* corrige açao ([2c52c65](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/2c52c65959db3949786060297057a5e00ccbbfb8))
 * corrige actions ([0a615a6](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/0a615a6079cd9810c2d55dacade5339cac154ebc))
 * corrige envio da telemetria e newsletter ([ef42e83](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/ef42e8382f0c198d9ae41bdb622e2a1505954e65))
 * corrige falha na validação de casa decimais ([3addbb5](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/3addbb5fb6363d8d293712cc89858bd9c7b1de0f))
 * corrige nome de metodo em Logger ([f8b8880](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/f8b8880b2f0602b97efabec4c0fe764dbe3ff683))
+* corrige valor total no boleto e debito ([f968a17](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/f968a17e0458b53f06ef8d8249b332c8724d484c))
 * validaçao ([2861133](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/28611339715ad7824120899d2205a2dc79f7368d))
 
 
