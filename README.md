@@ -1,3 +1,8 @@
+![Build Config](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/workflows/Build%20Config/badge.svg)
+![Create Releasea by Tag](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/workflows/Create%20Releasea%20by%20Tag/badge.svg)
+![Generate Doc](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/workflows/Generate%20Doc/badge.svg)
+![Test SDK with PHPUnit](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/workflows/Test%20SDK%20with%20PHPUnit/badge.svg)
+
 # PagSeguro-Checkout-Transparente
 Módulo PagSeguro Checkout Transparente para OpenCart
 
