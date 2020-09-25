@@ -32,6 +32,8 @@ jobs:
 
       - name: Push lib
         run: |
+          git config user.email "octocat@github.com"
+          git config user.name "Github Actions"
           git add .
           git commit -m "ci: build files config"
           git push
