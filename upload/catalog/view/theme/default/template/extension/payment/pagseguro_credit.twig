@@ -1,0 +1,553 @@
+<style>
+#validate {
+  display: flex;
+  gap: 20px;
+}
+
+label[for="card-number"] + div {
+  display: flex;
+}
+
+#card-brand {
+  content: ' ';
+  height: 30px;
+  width: 68px;
+  display: none;
+}
+
+#warning, #info {
+  display: none;
+}
+
+#button-confirm {
+  width: 100%
+}
+
+#brands {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#brands img {
+  opacity: 0.2;
+}
+
+#brands img.active {
+  opacity: 1;
+}
+</style>
+
+<div class="content">
+  <div class="row-fluid">
+    {% if warning %}
+      <div class="alert alert-danger" id="warning" role="alert">{{ warning }}</div>
+    {% else %}
+      <div class="alert alert-danger" id="warning" role="alert"></div>
+
+      <form class="form-horizontal">
+        <div class="form-group">
+          <div id="brands" class="col-sm-12"></div>
+        </div>
+
+        <div id="form" class="col-sm-12">
+          <div class="form-group col-sm-12">
+            <label class="col-sm-3 control-label" for="customer-name">{{ entry_holder_name }}</label>
+            <div class="col-sm-8">
+              <input class="form-control" type="text" id="customer-name" name="customer_name" placeholder="Ex: Valdeir Santana" autocomplete="cc-name" required />
+              <input type="hidden" id="input-brand" name="brand" />
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12">
+            <label class="col-sm-3 control-label" for="card-number">{{ entry_credit_card_number }}</label>
+            <div class="col-sm-8">
+              <input class="form-control" type="text" id="card-number" name="card_number" autocomplete="cc-number" required />
+              <span id="card-brand"></span>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12">
+            <label class="col-sm-3 control-label" for="validate-year">{{ entry_credit_card_expiration }}</label>
+            <div class="col-sm-8" id="validate">
+              <select name="validate_month" class="col-sm-6 form-control" id="validate-month" required>
+                <option value="" disabled selected>{{ text_month }}</option>
+
+                {% for month in validate.month %}
+                <option value="{{ month }}">{{ "%02d"|format(month) }}</option>
+                {% endfor %}
+              </select>
+
+              <select name="validate_year" class="col-sm-6 form-control" id="validate-year">
+                <option value="" disabled selected>{{ text_year }}</option>
+
+                {% for year in validate.year %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12">
+            <label class="col-sm-3 control-label" for="cvv" required pattern="[0-9]+">{{ entry_credit_card_cvv }}</label>
+            <div class="col-sm-8">
+              <input class="form-control" type="text" id="cvv" name="cvv" placeholder="Ex: 123 ou 1234" autocomplete="cc-csc" />
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12">
+            <label class="col-sm-3 control-label" for="birthdate">{{ entry_holder_birthdate }}</label>
+            <div class="col-sm-8">
+              <input class="form-control" type="date" id="birthdate" name="birthdate" placeholder="Ex: 07/03/1808" value="{{ data_nascimento }}" />
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12">
+            <label class="col-sm-3 control-label" for="cpf">{{ entry_holder_cpf }}</label>
+            <div class="col-sm-8">
+              <input class="form-control" type="text" id="cpf" name="cpf" placeholder="Ex: 222.222.222-22" value="{{ cpf }}" required />
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12" style="display: none">
+            <label class="col-sm-3 control-label" for="installments">{{ entry_installments }}</label>
+            <div class="col-sm-8">
+              <select class="form-control" id="installments" name="installments" required></select>
+            </div>
+          </div>
+
+          <div class="form-group col-sm-12" style="display: none">
+            <div class="col-sm-8 col-sm-offset-3">
+              <button type="button" id="button-confirm" class="btn btn-primary" data-loading-text="{{ text_wait }}">
+                <i class="fa fa-credit-card-alt"></i>
+                {{ button_confirm }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+<script type="text/javascript">
+  /**
+   * Código de pagamento
+   * Hash do comprador
+   * Bandeiras disponíveis
+   * Parcelas
+   */
+  let paymentCode;
+  let senderHash;
+  let brands;
+  let installments;
+  let installmentsLoaded = false;
+
+  const inputCustomerName = document.querySelector('#customer-name')
+  const inputCardNumber = document.querySelector('#card-number')
+  const inputCardBrand = document.querySelector('#input-brand')
+  const inputValidateMonth = document.querySelector('#validate-month')
+  const inputValidateYear = document.querySelector('#validate-year')
+  const inputCvv = document.querySelector('#cvv')
+  const inputBirthdate = document.querySelector('#birthdate')
+  const inputCpf = document.querySelector('#cpf')
+  const inputInstallments = document.querySelector('#installments')
+  const buttonConfirm = document.querySelector('#button-confirm')
+  const imageCardBrand = document.querySelector('#card-brand');
+
+  /**
+   * Carrega script do PagSeguro
+   */
+  ((src) => {
+    $('#button-confirm').button('loading');
+
+    const script = document.createElement('script')
+    script.async = true
+    script.src = src
+    script.addEventListener('load', loadedScriptSuccess)
+    script.addEventListener('error', loadedScriptFailed)
+    document.head.appendChild(script)
+  })('{{ javascript_src }}')
+
+  /**
+   * Configuração inicial
+   */
+  function loadedScriptSuccess() {
+    PagSeguroDirectPayment.setSessionId('{{ session }}')
+
+    PagSeguroDirectPayment.getPaymentMethods({
+      success: paymentMethodsSuccess
+    })
+
+    PagSeguroDirectPayment.onSenderHashReady(function(response){
+      if(response.status == 'error') {
+        $('#warning').text(response.message).show();
+        return;
+      }
+
+      senderHash = response.senderHash
+    });
+
+    PagSeguroDirectPayment.getInstallments({
+      amount: parseFloat('{{ amount }}'),
+      {% if maxInstallmentNoInterest %}
+      maxInstallmentNoInterest: parseInt('{{ maxInstallmentNoInterest }}'),
+      {% endif %}
+      success: (response) => {
+        installments = response.installments
+      },
+      error: loadedScriptFailed
+    });
+
+    inputCardNumber.addEventListener('input', detectCardBrand)
+    buttonConfirm.addEventListener('click', createCardToken)
+
+    $('#button-confirm').button('reset')
+  }
+
+  /**
+   * Salva os dados das bandeiras disponíveis
+   */
+  function paymentMethodsSuccess(response) {
+    if (response.paymentMethods) {
+      brands = Object
+        .values(response.paymentMethods.CREDIT_CARD.options)
+        .filter((brand) => brand.status.toUpperCase() === 'AVAILABLE')
+        .map((brand) => {
+          return {
+            name: brand.name,
+            displayName: brand.displayName,
+            image: `https://stc.pagseguro.uol.com.br${brand.images.MEDIUM.path}`
+          }
+        })
+
+      const divBrands = document.querySelector('#brands')
+
+      brands.forEach((item) => {
+        divBrands.insertAdjacentHTML(
+          'beforeEnd',
+          `<img src="${item.image}" data-brand="${item.name.toLowerCase()}" alt="" />`
+        )
+      })
+    }
+  }
+
+  /**
+   * Detecta bandeira do cartão
+   */
+  function detectCardBrand(e) {
+    PagSeguroDirectPayment.getBrand({
+      cardBin: inputCardNumber.value.replace(/\D/g, '').slice(0, 6),
+      success: (response) => {
+        const brand = brands.find((item) => item.name.toLowerCase() === response.brand.name.toLowerCase())
+        inputCardBrand.value = brand.name
+
+        if (brand && installmentsLoaded == false) {
+          imageCardBrand.style.backgroundImage = `url('${brand.image}')`
+          imageCardBrand.style.display = 'block'
+          displayInstallments(brand.name)
+
+          document.querySelectorAll(`[data-brand]`)
+            .forEach((item) => {
+              if (item.dataset.brand == brand.name.toLowerCase()) {
+                item.classList.add('active')
+              } else {
+                item.classList.remove('active')
+              }
+            })
+        }
+      },
+      error: () => {
+        displayInstallments('avista')
+        installmentsLoaded = false
+        imageCardBrand.style.display = 'none'
+        $('#confirm-button').hide()
+        document.querySelectorAll(`[data-brand]`)
+          .forEach((item) => item.classList.remove('active'))
+      }
+    })
+  }
+
+  /**
+   * Exibe as parcelas
+   */
+  function displayInstallments(brand) {
+    brand = brand.toLowerCase()
+    inputInstallments.innerHTML = ''
+
+    for (let installment of installments[brand]) {
+      if (installment.installmentAmount > parseInt('{{ installment_minimum_value }}')) {
+        inputInstallments.insertAdjacentHTML(
+          'beforeEnd',
+          `<option value="${installment.installmentAmount}">
+            ${installment.quantity}x de
+            ${Number(installment.installmentAmount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} -
+            Total ${Number(installment.totalAmount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
+          </option>`
+        )
+      }
+    }
+
+    inputInstallments.closest('.form-group').style.display = 'block'
+    buttonConfirm.closest('.form-group').style.display = 'block'
+  }
+
+  /**
+   * Cria Token do cartão
+   */
+  function createCardToken() {
+    $('#warning').html('').hide()
+    $('#info').show()
+    $('#button-confirm').button('loading')
+
+    PagSeguroDirectPayment.createCardToken({
+      cardNumber: inputCardNumber.value.replace(/\D/g, ''),
+      brand: inputCardBrand.value.toLowerCase(),
+      cvv: inputCvv.value,
+      expirationMonth: inputValidateMonth.value,
+      expirationYear: inputValidateYear.value,
+      success: createSale,
+
+      error: (error) => {
+        console.log(error)
+        const ul = document.createElement('ul')
+        ul.innerHTML = Object.keys(error.errors).map((errorCode) => {
+          return `<li>${error_ptBR[errorCode] ?? error.errors[errorCode]}</li>`
+        })
+        $('#warning').html(ul).show()
+        $('#info').hide()
+        $('#button-confirm').button('reset')
+      }
+    })
+  }
+
+  /**
+   * Cria transação no PagSeguro
+   */
+  function createSale(response) {
+    $('#button-confirm').button('loading')
+    $(inputCustomerName).prop('disabled', true)
+    $(inputCardNumber).prop('disabled', true)
+    $(inputCardBrand).prop('disabled', true)
+    $(inputValidateMonth).prop('disabled', true)
+    $(inputValidateYear).prop('disabled', true)
+    $(inputCvv).prop('disabled', true)
+    $(inputBirthdate).prop('disabled', true)
+    $(inputCpf).prop('disabled', true)
+    $(inputInstallments).prop('disabled', true)
+    $(buttonConfirm).prop('disabled', true)
+    $(imageCardBrand).prop('disabled', true)
+
+    const body = new FormData()
+    body.set('sender_hash', senderHash)
+    body.set('card_token', response.card.token)
+    body.set('card_holder_name', inputCustomerName.value)
+    body.set('card_holder_cpf', inputCpf.value)
+    body.set('installment_quantity', inputInstallments.selectedIndex + 1)
+    body.set('installment_value', inputInstallments.value)
+    body.set('card_holder_birthdate', inputBirthdate.value)
+
+    fetch('{{ action_create_sale }}'.replace(/&amp;/g, '&'), {
+      method: 'POST',
+      body
+    })
+    .then(async (response) => {
+      const responseCloned = response.clone()
+
+      try {
+        return await response.json()
+      } catch (e) {
+        throw new Error(await responseCloned.text())
+      }
+    })
+    .then(requestSuccess)
+    .catch(requestFailed)
+    .then(() => {
+      $(inputCustomerName).prop('disabled', false)
+      $(inputCardNumber).prop('disabled', false)
+      $(inputCardBrand).prop('disabled', false)
+      $(inputValidateMonth).prop('disabled', false)
+      $(inputValidateYear).prop('disabled', false)
+      $(inputCvv).prop('disabled', false)
+      $(inputBirthdate).prop('disabled', false)
+      $(inputCpf).prop('disabled', false)
+      $(inputInstallments).prop('disabled', false)
+      $(buttonConfirm).prop('disabled', false)
+      $(imageCardBrand).prop('disabled', false)
+    })
+  }
+
+  /**
+   * Redireciona o usuário para a página de sucesso
+   * ou trata os erros do formulário
+   */
+  function requestSuccess(response) {
+    if (response.errors) {
+      return requestFailed(response)
+    }
+
+    if (response.success) {
+      location.href = `{{ confirm }}${response.code}`.replace(/&amp;/g, '&')
+    }
+  }
+
+  /**
+   * Exibe mensagem(ns) de erro
+   */
+  function requestFailed(response) {
+    const ul = document.createElement('ul')
+
+    try {
+      const errors = response.errors
+
+      for (let error in errors) {
+        ul.insertAdjacentHTML('beforeEnd', `<li>${errors[error]}</li>`)
+      }
+    } catch (e) {
+      console.log(e)
+      ul.insertAdjacentHTML('beforeEnd', `<li>${response}</li>`)
+    }
+
+    $('#warning').html(ul).show()
+    $('#button-confirm').button('reset')
+  }
+
+  /**
+   * Ação para quando o script não for carregado
+   */
+  function loadedScriptFailed() {
+    alert('Error loaded script')
+  }
+
+  /**
+   * Esconde elementos
+   */
+  function hidden(...els) {
+    els.forEach((el) => {
+      el.style.display = 'block'
+    })
+  }
+</script>
+
+<script>
+  var error_ptBR = {
+    5003:  '{{ error_code_5003 }}',
+    10000: '{{ error_code_10000 }}',
+    10001: '{{ error_code_10001 }}',
+    10002: '{{ error_code_10002 }}',
+    10003: '{{ error_code_10003 }}',
+    10004: '{{ error_code_10004 }}',
+    10006: '{{ error_code_10006 }}',
+    53005: '{{ error_code_53005 }}',
+    53006: '{{ error_code_53006 }}',
+    53007: '{{ error_code_53007 }}',
+    53008: '{{ error_code_53008 }}',
+    53009: '{{ error_code_53009 }}',
+    53010: '{{ error_code_53010 }}',
+    53011: '{{ error_code_53011 }}',
+    53012: '{{ error_code_53012 }}',
+    53013: '{{ error_code_53013 }}',
+    53014: '{{ error_code_53014 }}',
+    53015: '{{ error_code_53015 }}',
+    53017: '{{ error_code_53017 }}',
+    53018: '{{ error_code_53018 }}',
+    53019: '{{ error_code_53019 }}',
+    53020: '{{ error_code_53020 }}',
+    53021: '{{ error_code_53021 }}',
+    53022: '{{ error_code_53022 }}',
+    53023: '{{ error_code_53023 }}',
+    53024: '{{ error_code_53024 }}',
+    53025: '{{ error_code_53025 }}',
+    53026: '{{ error_code_53026 }}',
+    53027: '{{ error_code_53027 }}',
+    53028: '{{ error_code_53028 }}',
+    53029: '{{ error_code_53029 }}',
+    53030: '{{ error_code_53030 }}',
+    53031: '{{ error_code_53031 }}',
+    53032: '{{ error_code_53032 }}',
+    53033: '{{ error_code_53033 }}',
+    53034: '{{ error_code_53034 }}',
+    53035: '{{ error_code_53035 }}',
+    53036: '{{ error_code_53036 }}',
+    53037: '{{ error_code_53037 }}',
+    53038: '{{ error_code_53038 }}',
+    53039: '{{ error_code_53039 }}',
+    53040: '{{ error_code_53040 }}',
+    53041: '{{ error_code_53041 }}',
+    53042: '{{ error_code_53042 }}',
+    53043: '{{ error_code_53043 }}',
+    53044: '{{ error_code_53044 }}',
+    53045: '{{ error_code_53045 }}',
+    53046: '{{ error_code_53046 }}',
+    53047: '{{ error_code_53047 }}',
+    53048: '{{ error_code_53048 }}',
+    53049: '{{ error_code_53049 }}',
+    53050: '{{ error_code_53050 }}',
+    53051: '{{ error_code_53051 }}',
+    53052: '{{ error_code_53052 }}',
+    53053: '{{ error_code_53053 }}',
+    53054: '{{ error_code_53054 }}',
+    53055: '{{ error_code_53055 }}',
+    53056: '{{ error_code_53056 }}',
+    53057: '{{ error_code_53057 }}',
+    53058: '{{ error_code_53058 }}',
+    53059: '{{ error_code_53059 }}',
+    53060: '{{ error_code_53060 }}',
+    53061: '{{ error_code_53061 }}',
+    53062: '{{ error_code_53062 }}',
+    53063: '{{ error_code_53063 }}',
+    53064: '{{ error_code_53064 }}',
+    53065: '{{ error_code_53065 }}',
+    53066: '{{ error_code_53066 }}',
+    53067: '{{ error_code_53067 }}',
+    53068: '{{ error_code_53068 }}',
+    53069: '{{ error_code_53069 }}',
+    53070: '{{ error_code_53070 }}',
+    53071: '{{ error_code_53071 }}',
+    53072: '{{ error_code_53072 }}',
+    53073: '{{ error_code_53073 }}',
+    53074: '{{ error_code_53074 }}',
+    53075: '{{ error_code_53075 }}',
+    53076: '{{ error_code_53076 }}',
+    53077: '{{ error_code_53077 }}',
+    53078: '{{ error_code_53078 }}',
+    53079: '{{ error_code_53079 }}',
+    53081: '{{ error_code_53081 }}',
+    53084: '{{ error_code_53084 }}',
+    53085: '{{ error_code_53085 }}',
+    53086: '{{ error_code_53086 }}',
+    53087: '{{ error_code_53087 }}',
+    53091: '{{ error_code_53091 }}',
+    53092: '{{ error_code_53092 }}',
+    53095: '{{ error_code_53095 }}',
+    53096: '{{ error_code_53096 }}',
+    53097: '{{ error_code_53097 }}',
+    53098: '{{ error_code_53098 }}',
+    53099: '{{ error_code_53099 }}',
+    53101: '{{ error_code_53101 }}',
+    53102: '{{ error_code_53102 }}',
+    53104: '{{ error_code_53104 }}',
+    53105: '{{ error_code_53105 }}',
+    53106: '{{ error_code_53106 }}',
+    53109: '{{ error_code_53109 }}',
+    53110: '{{ error_code_53110 }}',
+    53111: '{{ error_code_53111 }}',
+    53115: '{{ error_code_53115 }}',
+    53117: '{{ error_code_53117 }}',
+    53118: '{{ error_code_53118 }}',
+    53122: '{{ error_code_53122 }}',
+    53140: '{{ error_code_53140 }}',
+    53141: '{{ error_code_53141 }}',
+    53142: '{{ error_code_53142 }}',
+  }
+
+  function getError(key, def) {
+    if (typeof(error_ptBR[key]) != "undefined") {
+      return error_ptBR[key];
+    } else {
+      return def;
+    }
+  }
+</script>

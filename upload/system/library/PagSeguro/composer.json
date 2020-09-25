@@ -1,0 +1,29 @@
+{
+    "name": "valdeir/pagseguro",
+    "description": "Codigo criado para integraçao com o OpenCart",
+    "require": {
+        "php": "^7.3",
+        "curl/curl": "^2.3",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "monolog/monolog": "^2.1"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5"
+    },
+    "authors": [
+        {
+            "name": "Valdeir S.",
+            "email": "valdeir.naval@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+          "ValdeirPsr\\PagSeguro\\": "src/",
+          "ValdeirPsr\\PagSeguro\\Test\\": "tests/vendor/"
+        }
+    },
+    "scripts": {
+      "phpcs": "vendor/bin/phpcs --colors -s --bootstrap=vendor/autoload.php --standard=PSR1,PSR12 -p --report=full src/"
+    }
+}

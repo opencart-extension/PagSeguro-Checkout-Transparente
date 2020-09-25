@@ -1,0 +1,8 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Os arquivos de JS, Css, PHP e Twig devem usar a quebra de linha LF
+*.js eol=lf
+*.css eol=lf
+*.php eol=lf
+*.twig eol=lf

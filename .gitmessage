@@ -1,0 +1,92 @@
+<type>: <summary>
+
+<Descreva a motivação para esta alteração, explique o porquê. A linha deve ter até 100 caracteres.>
+
+Fixes #<issue number>
+
+# ────────────────────────────────────────── 100 chars ────────────────────────────────────────────┤
+
+
+# Exemplo de mensagem de commit
+# =======================
+
+
+# ─── Exemplo: Refatoração simples ────────────────────────────────────────────────────────────────┤
+# refactor: renomeia refreshDynamicEmbeddedViews para refreshEmbeddedViews
+#
+# Melhora a legibilidade do código. O nome original não corresponde mais ao modo como a função é
+# usada.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────┤
+
+
+# ─── Exemplo: Alteraçõeso simples na documentação ────────────────────────────────────────────────┤
+# docs: esclareçe a limitação do serviço no guia provider.md
+#
+# Fixes #36332
+# ─────────────────────────────────────────────────────────────────────────────────────────────────┤
+
+
+# ─── Exemplo: Correção de bug ────────────────────────────────────────────────────────────────────┤
+# fix: corrige nome do campo _status_ na página de configuração
+#
+# Anteriormente, o campo _status_ estava como _stats_, desse modo, o OpenCart não reconhecia o
+# quando ele estava ativo.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────┤
+
+
+# Commit Message Format
+# =============================
+#
+# A seguir está um trecho da especificação com as informações mais comumente necessárias.
+#
+# Cada mensagem de commit consiste em um *header*, *body* e *footer*.
+#
+# <header>
+# <LINHA EM BRANCO>
+# <body>
+# <LINHA EM BRANCO>
+# <footer>
+#
+# O _header_ é obrigatório.
+#
+# O _body_ é obrigatório para todos os commits, exceto para aqueles de escopo "docs". Quando o corpo
+# é necessário, ele deve ter pelo menos 20 caracteres.
+#
+# O footer é opcional.
+#
+# Qualquer linha da mensagem de confirmação não pode ter mais de 100 caracteres.
+#
+#
+# Commit Message Header
+# ---------------------
+#
+# <type>: <short summary>
+#   │             │
+#   │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
+#   │
+#   │
+#   │
+#   │
+#   │
+#   │
+#   │
+#   │
+#   └─⫸ Tipo de commit: build|ci|docs|feat|fix|perf|refactor|style|test|chore
+#
+#
+# Mensagem do _body_ do commit
+# ---------------------
+#
+# Assim como no resumo, use o tempo presente imperativo: "fix" e não "fixed" ou "fixes"
+#
+# Explique a motivação para a mudança no body de confirmação. Esta mensagem de confirmação deve
+# explique POR QUE você está fazendo a mudança. Você pode incluir uma comparação do comportamento
+# anterior com o novo comportamento para ilustrar o impacto da mudança.
+#
+#
+# Mensagem do _footer_ do commit
+# ---------------------
+#
+# O footer pode conter informações sobre alterações importantes e também é o local para referência
+# de issues do GitHub, tickets do Jira, e outros PRs que este commit fecha ou está relacionado.
+#

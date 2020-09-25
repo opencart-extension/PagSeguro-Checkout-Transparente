@@ -1,0 +1,836 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+
+      <div class="pull-right">
+        <div class="btn-group">
+          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-question"></i>
+            {{ text_question }}
+          </button>
+
+          <ul class="dropdown-menu">
+            <li><a href="https://github.com/opencart-extension/PagSeguro-Checkout-Transparente" target="_blank">GitHub</a></li>
+            <li><a href="https://opencart-extension.github.io/PagSeguro-Checkout-Transparente" target="_blank">Documentação</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="https://www.valdeirsantana.com.br" target="_blank">Portfolio</a></li>
+          </ul>
+        </div>
+
+        <button class="btn btn-danger" id="debug-clear" data-toggle="tooltip" title="{{ text_debug_clear }}"><i class="fa fa-trash"></i></button>
+        <button class="btn btn-success" id="debug-download" data-toggle="tooltip" title="{{ text_debug_download }}"><i class="fa fa-download"></i></button>
+        <button type="submit" form="form-payment" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <i class="fa fa-pencil"></i>
+          {{ heading_title }}
+        </h3>
+      </div>
+
+      <div class="panel-body">
+        <!-- ---- -->
+        <!-- Tabs -->
+        <!-- ---- -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="active"><a href="#tab-home" data-toggle="tab">{{ tab_home }}</a></li>
+          <li><a href="#tab-custom-fields" data-toggle="tab">{{ tab_custom_fields }}</a></li>
+          <li><a href="#tab-discount" data-toggle="tab">{{ tab_discount }}</a></li>
+          <li><a href="#tab-order-status" data-toggle="tab">{{ tab_order_status }}</a></li>
+          <li><a href="#tab-geo" data-toggle="tab">{{ tab_geo }}</a></li>
+          <li><a href="#tab-installment" data-toggle="tab">{{ tab_installment }}</a></li>
+          <li><a href="#tab-methods" data-toggle="tab">{{ tab_methods }}</a></li>
+          <li><a href="#tab-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+          <li><a href="#tab-debug" data-toggle="tab">{{ tab_debug }}</a></li>
+        </ul>
+
+        <form action="{{ action }}" class="form form-horizontal tab-content" id="form-payment" method="POST" psr>
+          <!-- -------- -->
+          <!-- Tab Home -->
+          <!-- -------- -->
+          <div class="tab-pane active" id="tab-home">
+            <div class="form-group required">
+              <label for="input-status" class="control-label col-sm-2">{{ entry_status }}</label>
+              <div class="col-sm-10">
+                <select name="status" id="input-status" class="form-control">
+                  <option value="1" {{ status ?? 'selected' }}>{{ text_enabled }}</option>
+                  <option value="0" {{ status ?: 'selected' }}>{{ text_disabled }}</option>
+                </select>
+                {% if error_field_status %}
+                <span class="text-danger">{{ error_field_status }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-email" class="control-label col-sm-2">{{ entry_email }}</label>
+              <div class="col-sm-10">
+                <input type="email" name="email" id="input-email" value="{{ email }}" placeholder="{{ entry_email }}" class="form-control" required />
+                {% if error_field_email is defined %}
+                <span class="text-danger">{{ error_field_email }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-token" class="control-label col-sm-2">{{ entry_token }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="token" id="input-token" value="{{ token }}" placeholder="{{ entry_token }}" class="form-control" required />
+                {% if error_field_token %}
+                <span class="text-danger">{{ error_field_token }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-sandbox" class="control-label col-sm-2">{{ entry_sandbox }}</label>
+              <div class="col-sm-10">
+                <select name="sandbox" id="input-sandbox" class="form-control">
+                  <option value="1" {{ sandbox ?? 'selected' }}>{{ text_enabled }}</option>
+                  <option value="0" {{ sandbox ?: 'selected' }}>{{ text_disabled }}</option>
+                </select>
+                {% if error_field_sandbox %}
+                <span class="text-danger">{{ error_field_sandbox }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-debug" class="control-label col-sm-2">{{ entry_debug }}</label>
+              <div class="col-sm-10">
+                <select name="debug" id="input-debug" class="form-control">
+                  <option value="1" {{ debug ?? 'selected' }}>{{ text_enabled }}</option>
+                  <option value="0" {{ debug ?: 'selected' }}>{{ text_disabled }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-customer-notify" class="control-label col-sm-2">{{ entry_customer_notify }}</label>
+              <div class="col-sm-10">
+                <select name="customer_notify" id="input-customer-notify" class="form-control">
+                  <option value="1" {{ customer_notify ?? 'selected' }}>{{ text_enabled }}</option>
+                  <option value="0" {{ customer_notify ?: 'selected' }}>{{ text_disabled }}</option>
+                </select>
+                {% if error_field_notify %}
+                <span class="text-danger">{{ error_field_notify }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-customer-notify" class="control-label col-sm-2">{{ entry_callback_token }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="callback_token" value="{{ callback_token }}" class="form-control">
+                {% if error_field_callback_token %}
+                <span class="text-danger">{{ error_field_callback_token }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-telemetry" class="control-label col-sm-2">{{ entry_telemetry }}</label>
+              <div class="col-sm-10">
+                <select name="telemetry" id="input-telemetry" class="form-control">
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-newsletter" class="control-label col-sm-2">{{ entry_newsletter }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="newsletter" id="input-newsletter" class="form-control" />
+              </div>
+            </div>
+          </div>
+
+          <!-- ----------------- -->
+          <!-- Tab Custom Fields -->
+          <!-- ----------------- -->
+          <div class="tab-pane" id="tab-custom-fields">
+            <div class="form-group required">
+              <label for="input-custom-fields-cpf" class="control-label col-sm-2">{{ entry_custom_field_cpf }}</label>
+              <div class="col-sm-10">
+                <select name="custom_fields_cpf" id="input-custom-fields-cpf" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for custom_field in custom_fields %}
+                    {% if custom_field.custom_field_id == custom_fields_cpf %}
+                    <option value="{{ custom_field.custom_field_id }}" selected>{{ custom_field.name }}</option>
+                    {% else %}
+                    <option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                {% if error_field_custom_fields_cpf %}
+                <span class="text-danger">{{ error_field_custom_fields_cpf }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-custom-fields-number" class="control-label col-sm-2">{{ entry_custom_field_address_number }}</label>
+              <div class="col-sm-10">
+                <select name="custom_fields_number" id="input-custom-fields-number" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for custom_field in custom_fields %}
+                    {% if custom_field.custom_field_id == custom_fields_number %}
+                    <option value="{{ custom_field.custom_field_id }}" selected>{{ custom_field.name }}</option>
+                    {% else %}
+                    <option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                {% if error_field_custom_fields_number %}
+                <span class="text-danger">{{ error_field_custom_fields_number }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-custom-fields-birthday" class="control-label col-sm-2">{{ entry_custom_field_birthdate }}</label>
+              <div class="col-sm-10">
+                <select name="custom_fields_birthday" id="input-custom-fields-birthday" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for custom_field in custom_fields %}
+                    {% if custom_field.custom_field_id == custom_fields_birthday %}
+                    <option value="{{ custom_field.custom_field_id }}" selected>{{ custom_field.name }}</option>
+                    {% else %}
+                    <option value="{{ custom_field.custom_field_id }}">{{ custom_field.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                {% if error_field_custom_fields_birthday %}
+                <span class="text-danger">{{ error_field_custom_fields_birthday }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------ -->
+          <!-- Tab Discount -->
+          <!-- ------------ -->
+          <div class="tab-pane" id="tab-discount">
+            <fieldset>
+              <legend>{{ text_discount }}</legend>
+
+              <div class="form-group">
+                <label for="input-discount-boleto" class="control-label col-sm-2">{{ entry_discount_boleto }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="discount_boleto" value="{{ discount_boleto }}" id="input-discount-boleto" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-discount-credit" class="control-label col-sm-2">{{ entry_discount_credit }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="discount_credit" value="{{ discount_credit }}" id="input-discount-credit" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-discount-debit" class="control-label col-sm-2">{{ entry_discount_debit }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="discount_debit" value="{{ discount_debit }}" id="input-discount-debit" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>{{ text_fee }}</legend>
+
+              <div class="form-group">
+                <label for="input-fee-boleto" class="control-label col-sm-2">{{ entry_fee_boleto }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="fee_boleto" value="{{ fee_boleto }}" id="input-fee-boleto" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-fee-credit" class="control-label col-sm-2">{{ entry_fee_credit }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="fee_credit" value="{{ fee_credit }}" id="input-fee-credit" class="form-control" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-fee-debit" class="control-label col-sm-2">{{ entry_fee_debit }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="fee_debit" value="{{ fee_debit }}" id="input-fee-debit" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- ---------------- -->
+          <!-- Tab Order Status -->
+          <!-- ---------------- -->
+          <div class="tab-pane" id="tab-order-status">
+            <div class="form-group required">
+              <label for="input-order-status-pending" class="control-label col-sm-2">{{ entry_order_status_pending }}</label>
+              <div class="col-sm-10">
+                <select name="order_status_pending" id="input-order-status-pending" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for status in statuses %}
+                    {% if status.order_status_id == order_status_pending %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+
+                {% if error_field_order_status_pending %}
+                <span class="text-danger">{{ error_field_order_status_pending }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-order-status-analysing" class="control-label col-sm-2">{{ entry_order_status_analysing }}</label>
+              <div class="col-sm-10">
+                <select name="order_status_analysing" id="input-order-status-analysing" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for status in statuses %}
+                    {% if status.order_status_id == order_status_analysing %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+
+                {% if error_field_order_status_analysing %}
+                <span class="text-danger">{{ error_field_order_status_analysing }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-order-status-paid" class="control-label col-sm-2">{{ entry_order_status_paid }}</label>
+              <div class="col-sm-10">
+                <select name="order_status_paid" id="input-order-status-paid" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for status in statuses %}
+                    {% if status.order_status_id == order_status_paid %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+
+                {% if error_field_order_status_paid %}
+                <span class="text-danger">{{ error_field_order_status_paid }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-order-status-available" class="control-label col-sm-2">{{ entry_order_status_available }}</label>
+              <div class="col-sm-10">
+                <select name="order_status_available" id="input-order-status-available" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for status in statuses %}
+                    {% if status.order_status_id == order_status_available %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+
+                {% if error_field_order_status_available %}
+                <span class="text-danger">{{ error_field_order_status_available }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-order-status-disputed" class="control-label col-sm-2">{{ entry_order_status_disputed }}</label>
+              <div class="col-sm-10">
+                <select name="order_status_disputed" id="input-order-status-disputed" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for status in statuses %}
+                    {% if status.order_status_id == order_status_disputed %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+
+                {% if error_field_order_status_disputed %}
+                <span class="text-danger">{{ error_field_order_status_disputed }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-order-status-returned" class="control-label col-sm-2">{{ entry_order_status_returned }}</label>
+              <div class="col-sm-10">
+                <select name="order_status_returned" id="input-order-status-returned" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for status in statuses %}
+                    {% if status.order_status_id == order_status_returned %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+
+                {% if error_field_order_status_returned %}
+                <span class="text-danger">{{ error_field_order_status_returned }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-order-status-cancelled" class="control-label col-sm-2">{{ entry_order_status_cancelled }}</label>
+              <div class="col-sm-10">
+                <select name="order_status_cancelled" id="input-order-status-cancelled" class="form-control">
+                  <option value="">{{ text_none }}</option>
+
+                  {% for status in statuses %}
+                    {% if status.order_status_id == order_status_cancelled %}
+                    <option value="{{ status.order_status_id }}" selected>{{ status.name }}</option>
+                    {% else %}
+                    <option value="{{ status.order_status_id }}">{{ status.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+
+                {% if error_field_order_status_cancelled %}
+                <span class="text-danger">{{ error_field_order_status_cancelled }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- ------- -->
+          <!-- Tab Geo -->
+          <!-- ------- -->
+          <div class="tab-pane" id="tab-geo">
+            <div class="form-group">
+              <label for="input-geo-zone-id" class="control-label col-sm-2">{{ entry_geo_zone_id }}</label>
+              <div class="col-sm-10">
+                <select name="geo_zone_id" id="input-geo-zone-id" class="form-control">
+                  <option value="0">All</option>
+
+                  {% for zone in geo_zones %}
+                    {% if zone.geo_zone_id == geo_zone_id %}
+                    <option value="{{ zone.geo_zone_id }}" selected>{{ zone.name }}</option>
+                    {% else %}
+                    <option value="{{ zone.geo_zone_id }}">{{ zone.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-geo-sort-order" class="control-label col-sm-2">{{ entry_geo_sort_order }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="geo_sort_order" value="{{ geo_sort_order }}" id="input-geo-sort-order" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-geo-stores" class="control-label col-sm-2">{{ entry_geo_stores }}</label>
+              <div class="col-sm-10">
+                <select name="geo_stores" id="input-geo-stores" multiple class="form-control">
+                  {% for store in stores %}
+                    {% if store.store_id == geo_stores %}
+                    <option value="{{ store.store_id }}" selected>{{ store.name }}</option>
+                    {% else %}
+                    <option value="{{ store.store_id }}">{{ store.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- --------------- -->
+          <!-- Tab Installment -->
+          <!-- --------------- -->
+          <div class="tab-pane" id="tab-installment">
+            <div class="form-group required">
+              <label for="input-installment-total" class="control-label col-sm-2">{{ entry_installment_total }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="installment_total" value="{{ installment_total }}" id="input-installment-total" class="form-control" required />
+                {% if error_field_installment_total %}
+                <span class="text-danger">{{ error_field_installment_total }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input-installment-free" class="control-label col-sm-2">{{ entry_installment_free }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="installment_free" value="{{ installment_free }}" id="input-installment-free" class="form-control" required />
+                {% if error_field_installment_free %}
+                <span class="text-danger">{{ error_field_installment_free }}</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group required">
+              <label for="input-installment-minimum-value" class="control-label col-sm-2">{{ entry_installment_minimum_value }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="installment_minimum_value" value="{{ installment_minimum_value }}" id="input-installment-minimum-value" class="form-control" required />
+                {% if error_field_installment_minimum_value %}
+                <span class="text-danger">{{ error_field_installment_minimum_value }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- ------------------- -->
+          <!-- Tab Payment Methods -->
+          <!-- ------------------- -->
+          <div class="tab-pane" id="tab-methods">
+            <fieldset>
+              <legend>{{ text_boleto }}</legend>
+
+              <div class="form-group">
+                <label for="input-methods-boleto-status" class="control-label col-sm-2">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="methods_boleto_status" id="input-methods-boleto-status" class="form-control">
+                    <option value="1" {{ methods_boleto_status ?? 'selected' }}>{{ text_enabled }}</option>
+                    <option value="0" {{ methods_boleto_status ?: 'selected' }}>{{ text_disabled }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-methods-boleto-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="methods_boleto_minimum_amount" value="{{ methods_boleto_minimum_amount }}" id="input-methods-boleto-minimum-amount" class="form-control" />
+
+                  <div class="bg-info" style="padding: 15px">{{ text_boleto_fee }}</div>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>{{ text_credit }}</legend>
+
+              <div class="form-group">
+                <label for="input-methods-credit-status" class="control-label col-sm-2">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="methods_credit_status" id="input-methods-credit-status" class="form-control">
+                    <option value="1" {{ methods_credit_status ?? 'selected' }}>{{ text_enabled }}</option>
+                    <option value="0" {{ methods_credit_status ?: 'selected' }}>{{ text_disabled }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-methods-credit-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="methods_credit_minimum_amount" value="{{ methods_credit_minimum_amount }}" id="input-methods-credit-minimum-amount" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>{{ text_debit }}</legend>
+
+              <div class="form-group">
+                <label for="input-methods-debit-status" class="control-label col-sm-2">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="methods_debit_status" id="input-methods-debit-status" class="form-control">
+                    <option value="1" {{ methods_debit_status ?? 'selected' }}>{{ text_enabled }}</option>
+                    <option value="0" {{ methods_debit_status ?: 'selected' }}>{{ text_disabled }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="input-methods-debit-minimum-amount" class="control-label col-sm-2">{{ entry_minimum_amount }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="methods_debit_minimum_amount" value="{{ methods_debit_minimum_amount }}" id="input-methods-debit-minimum-amount" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- ---------- -->
+          <!-- Tab Layout -->
+          <!-- ---------- -->
+          <div class="tab-pane" id="tab-layout">
+            <div class="form group required">
+              <label for="input-layout" class="control-label col-sm-2">{{ entry_layout_credit }}</label>
+              <div class="col-sm-10">
+                <select name="layout" id="input-layout" class="form-control">
+                  <option value="default">{{ text_default }}</option>
+                </select>
+
+                {% if error_field_layout %}
+                <span class="text-danger">{{ error_field_layout }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- --------- -->
+          <!-- Tab Debug -->
+          <!-- --------- -->
+          <div class="tab-pane" id="tab-debug">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="col-sm-3">
+                    <fieldset>
+                      <caption>Filtrar por data</caption>
+                      <input type="text" id="filter-log-date" class="form-control" />
+                    </fieldset>
+                </div>
+
+                <div class="col-sm-3">
+                  <fieldset>
+                    <caption>Filtrar por nível</caption>
+                    <select id="filter-log-level" class="form-control">
+                      <option value="0">{{ text_select_all }}</option>
+                      <option value="100">Debug</option>
+                      <option value="200">Info</option>
+                      <option value="250">Notice</option>
+                      <option value="300">Warning</option>
+                      <option value="400">Error</option>
+                      <option value="500">Critical</option>
+                      <option value="550">Alert</option>
+                      <option value="600">Emergency</option>
+                    </select>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+
+            <div class="clearfix">&nbsp;</div>
+
+            <pre class="pre-scrollable" style="min-height: 400px">
+              <code></code>
+            </pre>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-doc">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <a href="https://opencart-extension.github.io/PagSeguro-Checkout-Transparente/" target="_blank">
+          <img src="./view/image/payment/pagseguro_doc.png" />
+        </a>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+  const docCount = localStorage.getItem('docCount') ?? 0
+
+  if (docCount % 3 === 0) {
+    $('#modal-doc').modal()
+  }
+
+  localStorage.setItem('docCount', docCount + 1)
+
+  $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+    if (e.target.href.endsWith('#tab-debug')) {
+      $('#debug-clear, #debug-download').fadeIn()
+    } else {
+      $('#debug-clear, #debug-download').fadeOut()
+    }
+  })
+
+  $(function() {
+    $('#input-geo-sort-order, #input-installment-total').mask("#0", {reverse: true});
+
+    const floats = [
+      '#input-discount-boleto',
+      '#input-discount-credit',
+      '#input-discount-debit',
+      '#input-fee-boleto',
+      '#input-fee-credit',
+      '#input-fee-debit',
+      '#input-installment-free',
+      '#input-installment-minimum-value',
+      '#input-methods-boleto-minimum-amount',
+      '#methods_boleto_minimum_amount',
+      '#methods_credit_minimum_amount',
+      '#methods_debit_minimum_amount',
+    ];
+
+    $(floats.join(',')).mask("#.00", {reverse: true});
+  })
+
+  $(function() {
+    $('#filter-log-date').datetimepicker({
+      format: 'YYYY-MM-DD',
+      date: '{{ logs_date|last }}',
+      enabledDates: JSON.parse('{{ logs_date|json_encode }}'),
+      icons: {
+        previous: 'fa fa-arrow-left',
+        next: 'fa fa-arrow-right',
+      }
+    })
+    .on('dp.change', function(newDate, oldDate) {
+      loadLog(newDate.currentTarget.value)
+    })
+
+    loadLog('{{ logs_date|last }}')
+  })
+</script>
+
+<script>
+/**
+ * Filtra log por nível
+ */
+ const inputFilterLogLevel = document.querySelector('#filter-log-level')
+ inputFilterLogLevel.addEventListener('change', filterLogByLevel)
+
+ function filterLogByLevel(e) {
+   document.querySelectorAll('#tab-debug pre > code > div[data-level]')
+    .forEach((item) => {
+      let display = 'none'
+
+      if ([0, parseInt(item.dataset.level)].includes(parseInt(e.target.value))) {
+        display = 'block'
+      }
+
+      item.style.display = display
+    })
+ }
+
+/**
+ * Realiza limpeza do log
+ */
+ const inputFilterLogDate = document.querySelector('#filter-log-date')
+
+document.querySelector('#debug-clear')
+  .addEventListener('click', clearLog)
+
+function clearLog() {
+  const date = inputFilterLogDate.value
+  fetch(`/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`, {
+    method: 'DELETE'
+  })
+}
+
+/**
+ * Realiza o download do log
+ */
+document.querySelector('#debug-download')
+  .addEventListener('click', downloadLog)
+
+function downloadLog() {
+  const logs = querySelectorLog()
+  const logsHtml = elementToHtmlText(logs)
+
+  const content = new Blob(logsHtml, { mime: 'text/html' })
+
+  const anchor = document.createElement('a')
+  anchor.href = URL.createObjectURL(content)
+  anchor.download = `log_pagseguro_${inputFilterLogDate.value}_${inputFilterLogLevel.value}_psr.html`
+  anchor.click()
+  anchor.remove()
+}
+
+/**
+ * Captura todos os logs ativos
+ *
+ * @returns Node[]
+ */
+function querySelectorLog() {
+  const logs = document.querySelectorAll('#tab-debug > pre > code > div')
+
+  return Array.from(logs).filter((item) => {
+    return item.getBoundingClientRect().x !== 0
+  })
+}
+
+/**
+ * Converte um elemento HTML para texto
+ *
+ * @params {HTMLElement} elements
+ *
+ * @returns string[]
+ */
+function elementToHtmlText(elements) {
+  return elements.map((el) => {
+    return el.outerHTML
+  })
+}
+
+/**
+ * Carrega log
+ */
+ function loadLog(date) {
+  fetch(`/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`)
+    .then(response => response.text())
+    .then(response => {
+      const code = document.querySelector('#tab-debug pre > code')
+      code.innerHTML = '';
+      code.insertAdjacentHTML('beforeEnd', response)
+    })
+}
+</script>
+
+<style>
+#debug-clear, #debug-download {
+  display: none
+}
+
+.day:not([disabled]) {
+  background: #337ab76b;
+}
+
+#modal-doc .modal-content {
+  box-shadow: none;
+  background: transparent;
+}
+
+#modal-doc .modal-dialog {
+  width: 50%;
+}
+
+#modal-doc .modal-body {
+  border: none;
+  padding: 0;
+}
+
+#modal-doc .modal-body img {
+  border: 15px solid white;
+  width: 100%;
+}
+</style>
+{{ footer }}

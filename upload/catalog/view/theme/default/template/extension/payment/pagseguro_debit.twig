@@ -1,0 +1,226 @@
+<style type="text/css">
+  #pagseguro #banks > button {
+    background-color: transparent;
+    border: none;
+    opacity: 0.2;
+    outline: none;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+  }
+
+  #pagseguro #banks > button:hover,
+  #pagseguro #banks > button.active  {
+    opacity: 1
+  }
+
+  #pagseguro #warning, #info, #button-continue {
+    display: none
+  }
+
+  #button-confirm {
+    width: 100%;
+  }
+</style>
+
+<div class="content" id="pagseguro">
+  <div class="row-fluid">
+
+    <div class="alert alert-danger col-sm-12" id="warning" role="alert"></div>
+
+    {% if warning %}
+      <div class="alert alert-danger col-sm-12" id="warning" role="alert">{{ warning }}</div>
+    {% else %}
+      <div class="alert alert-info col-sm-12" id="info" role="alert">{{ text_wait }}</div>
+
+      <div class="form-horizontal">
+        <div class="form-group">
+          <label class="col-sm-4 control-label">{{ entry_choose_bank }}</label>
+          <div class="col-sm-4">
+            <select id="bank-name" name="bank_name" class="form-control">
+              <option value="">{{ entry_choose_bank }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label" for="cpf">{{ entry_cpf }}</label>
+          <div class="col-sm-4">
+            <input class="form-control" id="cpf" name="cpf" type="text" value="{{ cpf }}" />
+          </div>
+        </div>
+
+        <div class="form-group" id="button">
+          <div class="col-sm-4 col-sm-offset-4">
+            <button type="button" id="button-confirm" class="btn btn-primary" data-loading-text="{{ text_wait }}">{{ button_confirm }}</button>
+            <button type="button" id="button-continue" class="btn btn-success col-sm-12" data-loading-text="{{ text_wait }}">{{ button_continue }}</button>
+            </div>
+        </div>
+      </div>
+    {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  /**
+   * Código de pagamento
+   * Hash do comprador
+   * Link de pagamento
+   */
+  let paymentCode;
+  let senderHash;
+  let paymentLink;
+
+  /**
+    * Carrega script do PagSeguro
+    */
+  ((src) => {
+    $('#button-confirm').button('loading');
+
+    const script = document.createElement('script')
+    script.async = true
+    script.src = src
+    script.addEventListener('load', loadedScriptSuccess)
+    script.addEventListener('error', loadedScriptFailed)
+    document.head.appendChild(script)
+  })('{{ javascript_src }}')
+
+  /**
+    * Configuração inicial
+    */
+  function loadedScriptSuccess() {
+    PagSeguroDirectPayment.setSessionId('{{ session }}')
+
+    PagSeguroDirectPayment.getPaymentMethods({
+      success: paymentMethodsSuccess,
+      error: paymentMethodsFailed
+    })
+
+    PagSeguroDirectPayment.onSenderHashReady(function(response){
+      if(response.status == 'error') {
+        $('#warning').text(response.message);
+        return;
+      }
+
+      senderHash = response.senderHash
+    });
+
+    document.querySelector('#button-confirm').addEventListener('click', createSale)
+    document.querySelector('#button-continue').addEventListener('click', confirmTransaction)
+  }
+
+  /**
+   * Exibe os bancos disponíveis para o usuário
+   */
+  function paymentMethodsSuccess(data) {
+    if (data.paymentMethods.ONLINE_DEBIT.options) {
+      const options = data.paymentMethods.ONLINE_DEBIT.options
+
+      for (let option of Object.values(options)) {
+        document
+          .querySelector('#bank-name')
+          .insertAdjacentHTML(
+            'beforeEnd',
+            `<option value="${option.name}">${option.name.replace(/[^a-z0-9]/ig, ' ')}</option>`
+          )
+      }
+
+      $('#button-confirm').button('reset');
+    } else {
+      paymentMethodsFailed()
+    }
+  }
+
+  /**
+   * Cria a transação no PagSeguro
+   */
+  function createSale() {
+    $('#button-confirm').button('loading')
+    $('#warning').html('').hide()
+
+    const cpf = document.querySelector('#cpf').value
+    const bank = document.querySelector('#bank-name').value
+
+    const body = new FormData()
+    body.set('senderHash', senderHash)
+    body.set('cpf', cpf)
+    body.set('bank', bank)
+
+    const url = '{{ action_create_sale }}'.replace(/&amp;/g, '&')
+
+    fetch(url, {
+      method: 'POST',
+      body
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.payment_link) {
+          return requestSuccess(response)
+        }
+
+        requestFailed(response)
+      })
+      .catch(requestFailed)
+      .then(() => {
+        $('#button-confirm').button('reset');
+      })
+  }
+
+  /**
+   * Redireciona o usuário para a página de pagamento
+   */
+  async function confirmTransaction() {
+    $('#button-continue').button('loading')
+    const url = `{{ confirm }}${paymentCode}`.replace(/&amp;/g, '&')
+    location.href = url
+  }
+
+  /**
+   * Trata a resposta da requisição
+   */
+  function requestSuccess(response) {
+    if (response.errors) {
+      return requestFailed(response)
+    }
+
+    $('#button-confirm, #pagseguro .form-horizontal .form-group:not(#button)').hide()
+    $('#button-continue').show()
+    paymentCode = response.code
+    paymentLink = response.payment_link
+  }
+
+  /**
+   * Exibe mensagem(ns) de erro
+   */
+  function requestFailed(response) {
+    const ul = document.createElement('ul')
+
+    try {
+      const errors = response.errors
+
+      for (let error in errors) {
+        ul.insertAdjacentHTML('beforeEnd', `<li>${errors[error]}</li>`)
+      }
+    } catch (e) {
+      console.log(e)
+      ul.insertAdjacentHTML('beforeEnd', `<li>${response}</li>`)
+    }
+
+    $('#warning').html(ul).show()
+  }
+
+  /**
+    * Ação para quando o script não for carregado
+    */
+  function loadedScriptFailed() {
+    alert('Error loaded script')
+  }
+
+  /**
+   * Exibe erro caso as bandeiras dos bancos não sejam exibidas
+   */
+  function paymentMethodsFailed(data) {
+    document.querySelector('#warning').textContent = '{{ error_payment_methods_failed }}'
+  }
+</script>

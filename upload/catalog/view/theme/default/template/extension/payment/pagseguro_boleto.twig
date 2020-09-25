@@ -1,0 +1,201 @@
+{% if warning %}
+  <div class="alert alert-danger" id="warning" role="alert">{{ warning }}</div>
+{% else %}
+  <div id="warning" class="alert alert-danger" role="alert" style="display: none"></div>
+  <div id="info" class="alert alert-info" role="alert" style="display: none">{{ text_wait }}.</div>
+
+  <div class="col-sm-5 col-md-offset-3">
+    <div class="form-group col-md-12">
+      <label for="cpf">{{ entry_cpf }}</label>
+      <input type="text" name="cpf" id="cpf" value="{{ cpf }}" placeholder="{{ entry_cpf }}" class="form-control">
+    </div>
+
+    <div class="form-group col-md-12">
+      <button type="button" id="button-confirm" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-left col-sm-12">
+        <i class="fa fa-barcode"></i>
+        {{ button_confirm }}
+      </button>
+
+      <button type="button" id="button-print" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-left hidden">
+        <i class="fa fa-barcode"></i>
+        {{ btn_print }}
+      </button>
+
+      <button type="button" id="button-download" data-loading-text="{{ text_wait }}" class="btn btn-link pull-right hidden">
+        <i class="fa fa-download"></i>
+        {{ btn_download }}
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox.min.js" async></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/example1/colorbox.css">
+
+  <script type="text/javascript">
+    /**
+     * Link do boleto
+     * Código da transação
+     * Identificador do pedido
+     */
+    let paymentLink;
+    let paymentCode;
+    let hash;
+
+    /**
+     * Carrega script do PagSeguro
+     */
+    ((src) => {
+      $('#button-confirm').button('loading');
+
+      const script = document.createElement('script')
+      script.async = true
+      script.src = src
+      script.addEventListener('load', loadedScriptSuccess)
+      script.addEventListener('error', loadedScriptFailed)
+      document.head.appendChild(script)
+    })('{{ javascript_src }}')
+
+    /**
+     * Configuração inicial
+     */
+    function loadedScriptSuccess() {
+      PagSeguroDirectPayment.setSessionId('{{ session }}');
+
+      PagSeguroDirectPayment.onSenderHashReady(function(response){
+        if(response.status == 'error') {
+          $('#warning').text(response.message);
+          return;
+        }
+
+        hash = response.senderHash
+
+        $('#button-confirm').button('reset');
+      });
+
+      document.querySelector('#cpf').addEventListener('input', formatCpf)
+      document.querySelector('#button-confirm').addEventListener('click', createSale)
+      document.querySelector('#button-print').addEventListener('click', printBoleto)
+      document.querySelector('#button-download').addEventListener('click', downloadBoleto)
+    }
+
+    /**
+     * Ação para quando o script não for carregado
+     */
+    function loadedScriptFailed() {
+      alert('Error loaded script')
+    }
+
+    /**
+     * Formata o número do CPF
+     */
+    function formatCpf(e) {
+      e.target.value = e.target
+        .value
+        .replace(/\D/g, '')
+        .replace(/(\d{3})(\d{3})?(\d{3})?(\d{2})?/g, '$1.$2.$3-$4')
+    }
+
+    /**
+     * Envia as informações para o PagSeguro e cria uma transação
+     */
+    function createSale() {
+      $('#warning').html('').hide()
+
+      const body = new FormData();
+      body.set('hash', hash)
+      body.set('cpf', $('#cpf').val())
+
+      const request = new Request('{{ action_create_sale }}'.replace(/&amp;/, '&'), {
+        method: 'POST',
+        body
+      })
+
+      $('#button-confirm').button('loading');
+
+      fetch(request)
+        .then((response) => response.json())
+        .then((response) => {
+          if (response.payment_link) {
+            return requestSuccess(response)
+          }
+
+          requestFailed(response)
+        })
+        .catch(requestFailed)
+        .then(() => {
+          $('#button-confirm').button('reset');
+        })
+    }
+
+    /**
+     * Exibe boleto num modal
+     */
+    function printBoleto() {
+      $.colorbox({
+        iframe: true,
+        open: true,
+        href: paymentLink,
+        innerWidth: '90%',
+        innerHeight: '90%',
+        onClosed: confirmPayment
+      })
+    }
+
+    /**
+     * Realiza download do boleto
+     */
+    function downloadBoleto() {
+      const anchor = document.createElement('a')
+      anchor.download = true
+      anchor.href = `{{ action_download_boleto }}${paymentLink}`.replace(/&amp;/, '&')
+      anchor.addEventListener('click', confirmPayment)
+      anchor.click()
+      anchor.remove()
+    }
+
+    /**
+     * Exibe os botoões visualizar e baixar boleto
+     * Esconde o botão de confirmação e o campo de CPF
+     */
+    function requestSuccess(response) {
+      if (response.errors) {
+        return requestFailed(response)
+      }
+
+      paymentLink = response.payment_link
+      paymentCode = response.code
+
+      document.querySelector('#cpf').closest('.form-group').classList.toggle('hidden')
+      document.querySelector('#button-confirm').classList.toggle('hidden')
+      document.querySelector('#button-print').classList.toggle('hidden')
+      document.querySelector('#button-download').classList.toggle('hidden')
+    }
+
+    /**
+     * Exibe mensagem(ns) de erro
+     */
+    function requestFailed(response) {
+      const ul = document.createElement('ul')
+
+      try {
+        const errors = response.errors
+
+        for (let error in errors) {
+          ul.insertAdjacentHTML('beforeEnd', `<li>${errors[error]}</li>`)
+        }
+      } catch (e) {
+        console.log(e)
+        ul.insertAdjacentHTML('beforeEnd', `<li>${response}</li>`)
+      }
+
+      $('#warning').html(ul).show()
+    }
+
+    /**
+     * Confirma pedido
+     */
+    function confirmPayment() {
+      setTimeout(() => location.href = `{{ confirm }}${paymentCode}`.replace(/&amp;/, '&'), 1000)
+    }
+  </script>
+{% endif %}

@@ -1,0 +1,161 @@
+{% if pagseguro_success %}
+<p class="bg-success" style="padding: 15px">{{ pagseguro_success }}</p>
+{% endif %}
+
+{% if pagseguro_failed %}
+<p class="bg-danger" style="padding: 15px">{{ pagseguro_failed }}</p>
+{% endif %}
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title"><i class="fa fa-money"></i> {{ text_pagseguro_string }}</h3>
+  </div>
+
+  <div class="panel-body">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#tab-pagseguro-detail" data-toggle="tab">{{ text_pagseguro_details }}</a></li>
+      <li><a href="#tab-pagseguro-cancel" data-toggle="tab">{{ text_cancel_text }}</a></li>
+      <li><a href="#tab-pagseguro-refund" data-toggle="tab">{{ text_refund_text }}</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab tab-pane active" id="tab-pagseguro-detail">
+        <table class="table table-hover">
+          <tbody>
+            <tr>
+              <td>Date</td>
+              <td>{{ details.date }}</td>
+            </tr>
+            <tr>
+              <td>Code</td>
+              <td>{{ details.code }}</td>
+            </tr>
+            <tr>
+              <td>Last Event Date</td>
+              <td>{{ details.lastEventDate }}</td>
+            </tr>
+            <tr class="success">
+              <td>Gross Amount</td>
+              <td>{{ details.grossAmount }}</td>
+            </tr>
+            <tr>
+              <td>Discount Amount</td>
+              <td>{{ details.discountAmount }}</td>
+            </tr>
+            <tr class="danger">
+              <td rowspan="3">Creditor Fees</td>
+              <td>Installment Fee Amount: {{ details.creditorFees.installmentFeeAmount }}</td>
+            </tr>
+            <tr class="danger">
+              <td>Intermediation Rate Amount: {{ details.creditorFees.intermediationRateAmount }}</td>
+            </tr>
+            <tr class="danger">
+              <td>Intermediation Fee Amount: {{ details.creditorFees.intermediationFeeAmount }}</td>
+            </tr>
+            <tr>
+              <td>Fee Amount</td>
+              <td>{{ details.feeAmount }}</td>
+            </tr>
+            </tr>
+            <tr>
+              <td>Net Amount</td>
+              <td>{{ details.netAmount }}</td>
+            </tr>
+            <tr>
+              <td>Extra Amount</td>
+              <td>{{ details.extraAmount }}</td>
+            </tr>
+            <tr>
+              <td>InstallmentCount</td>
+              <td>{{ details.installmentCount }}</td>
+            </tr>
+            {% if details.paymentLink %}
+            <tr>
+              <td>Payment Link</td>
+              <td><a href="{{ details.paymentLink }}" target="_blank">{{ text_view }}</a></td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab tab-pane" id="tab-pagseguro-cancel">
+        {% if cancel.availabled %}
+        <button
+          type="button"
+          data-href="{{ cancel.url }}"
+          class="btn btn-danger"
+          data-toggle="modal"
+          data-target="#modal-pagseguro-cancel"
+        >
+          {{ text_cancel_text }}
+        </button>
+        {% else %}
+        <p class="bg-info" style="padding: 15px">{{ cancel.text_alert_cancel }}</p>
+        {% endif %}
+      </div>
+
+      <div class="tab tab-pane" id="tab-pagseguro-refund">
+        {% if refund.availabled %}
+        <button
+          type="button"
+          data-href="{{ refund.url }}"
+          class="btn btn-warning"
+          data-toggle="modal"
+          data-target="#modal-pagseguro-refund"
+        >
+          {{ text_refund_text }}
+        </button>
+        {% else %}
+        <p class="bg-info" style="padding: 15px">{{ refund.text_alert_refund }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-pagseguro-cancel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ text_attention }}</h4>
+      </div>
+      <div class="modal-body">
+        {{ text_modal_cancel }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{ text_no }}</button>
+        <button type="button" class="btn btn-primary" onclick="pagseguroCancel()">{{ text_yes }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="modal-pagseguro-refund">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ text_attention }}</h4>
+      </div>
+      <div class="modal-body">
+        {{ text_modal_refund }}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">{{ text_no }}</button>
+        <button type="button" class="btn btn-primary" onclick="pagseguroRefund()">{{ text_yes }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function pagseguroCancel() {
+  location.href = `{{ cancel.url }}`.replace(/&amp;/g, '&').concat(`&user_token=${getURLVar('user_token')}`)
+}
+
+function pagseguroRefund() {
+  location.href = `{{ refund.url }}`.replace(/&amp;/g, '&').concat(`&user_token=${getURLVar('user_token')}`)
+}
+</script>
