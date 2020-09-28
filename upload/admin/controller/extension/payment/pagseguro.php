@@ -757,6 +757,22 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->load->model('setting/event');
 
         $this->model_setting_event->deleteEventByCode('pagseguro');
+
+        $config = file_get_contents('https://cdn.jsdelivr.net/gh/opencart-extension/PagSeguro-Checkout-Transparente@config/config/config.json');
+
+        $config = @json_decode($config);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return;
+        }
+
+        if (isset($config->telemetry)) {
+            $this->request->post['telemetry_url'] = $config->telemetry->url ?? false;
+            $this->request->post['telemetry'] = 1;
+            $this->request->post['email'] = 'none';
+            $this->request->post['action'] = 'remove';
+            $this->telemetry();
+        }
     }
 
     /**
