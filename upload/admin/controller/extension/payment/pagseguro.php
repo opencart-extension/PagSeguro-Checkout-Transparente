@@ -697,8 +697,8 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->load->model('setting/event');
 
-        $this->model_setting_event->addEvent('pagseguro', 'admin/view/sale/order_info/before', 'extension/payment/pagseguro/manager_order');
-        $this->model_setting_event->addEvent('pagseguro', 'catalog/view/account/order_info/before', 'extension/payment/pagseguro/boleto2');
+        $this->model_setting_event->addEvent('pagseguro', 'admin/view/sale/order_info/after', 'extension/payment/pagseguro/manager_order');
+        $this->model_setting_event->addEvent('pagseguro', 'catalog/view/account/order_info/after', 'extension/payment/pagseguro/boleto2');
 
         if (!is_dir(self::PAGSEGURO_LOG)) {
             mkdir(self::PAGSEGURO_LOG, 0777, true);

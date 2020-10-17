@@ -33,4 +33,25 @@
       </add>
     </operation>
   </file>
+
+  <file path="system/library/template/twig.php">
+	  <operation>
+      <search>
+        <![CDATA[$file = DIR_TEMPLATE . $filename . '.twig';]]>
+      </search>
+      <add position="after">
+        <![CDATA[
+          $file_ocmod = DIR_MODIFICATION . $filename . '.twig';
+
+          $application_folder = basename(DIR_APPLICATION);
+          $folder_ocmod_template = str_replace(DIR_APPLICATION, $application_folder . '/', DIR_TEMPLATE);
+          $file_ocmod = DIR_MODIFICATION . $folder_ocmod_template . $filename . '.twig';
+
+          if (is_file($file_ocmod)) {
+            $file = $file_ocmod;
+          }
+        ]]>
+      </add>
+    </operation>
+  </file>
 </modification>
