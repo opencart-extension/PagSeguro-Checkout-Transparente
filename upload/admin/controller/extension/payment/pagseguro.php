@@ -132,6 +132,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
         }
 
         $data['action'] = $this->buildUrl('extension/payment/pagseguro');
+        $data['create_custom_field_link'] = $this->buildUrl('customer/custom_field');
         $data['cancel'] = $this->buildUrl('marketplace/extension', [
             'type' => 'payment'
         ]);
