@@ -41,14 +41,16 @@
       </search>
       <add position="after">
         <![CDATA[
-          $file_ocmod = DIR_MODIFICATION . $filename . '.twig';
+          if (version_compare(VERSION, '3.0.3.6', '==')) {
+            $file_ocmod = DIR_MODIFICATION . $filename . '.twig';
 
-          $application_folder = basename(DIR_APPLICATION);
-          $folder_ocmod_template = str_replace(DIR_APPLICATION, $application_folder . '/', DIR_TEMPLATE);
-          $file_ocmod = DIR_MODIFICATION . $folder_ocmod_template . $filename . '.twig';
+            $application_folder = basename(DIR_APPLICATION);
+            $folder_ocmod_template = str_replace(DIR_APPLICATION, $application_folder . '/', DIR_TEMPLATE);
+            $file_ocmod = DIR_MODIFICATION . $folder_ocmod_template . $filename . '.twig';
 
-          if (is_file($file_ocmod)) {
-            $file = $file_ocmod;
+            if (is_file($file_ocmod)) {
+              $file = $file_ocmod;
+            }
           }
         ]]>
       </add>
