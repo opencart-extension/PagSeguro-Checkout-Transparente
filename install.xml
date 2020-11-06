@@ -6,7 +6,7 @@
   <author>Valdeir S.</author>
   <link>https://valdeir.dev</link>
 
-  <file path="catalog/view/theme/default/template/account/order_info.twig">
+  <file path="catalog/view/theme/*/template/account/order_info.twig">
     <operation>
       <search>
         <![CDATA[{{ continue }}]]>
