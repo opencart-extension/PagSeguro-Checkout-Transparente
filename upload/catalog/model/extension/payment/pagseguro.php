@@ -199,7 +199,7 @@ class ModelExtensionPaymentPagSeguro extends Model
             'discount_amount',
             'fee_amount',
             'net_amount',
-            'extra_amount',
+            'extra_amount'
         ];
 
         if ($columns === null && $includeRaw === true) {

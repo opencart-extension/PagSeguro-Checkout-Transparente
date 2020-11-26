@@ -349,7 +349,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             $creditor_fees_data = [
                 'installmentFeeAmount' => $this->currency->format($creditor_fees->getInstallmentFeeAmount(), 'BRL'),
                 'intermediationRateAmount' => $this->currency->format($creditor_fees->getIntermediationRateAmount(), 'BRL'),
-                'intermediationFeeAmount' => $this->currency->format($creditor_fees->getIntermediationFeeAmount(), 'BRL'),
+                'intermediationFeeAmount' => $this->currency->format($creditor_fees->getIntermediationFeeAmount(), 'BRL')
             ];
         }
 
@@ -484,7 +484,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
         if (!filter_var($this->request->post['installment_total'], FILTER_VALIDATE_INT, [
             'options' => [
                 'min_range' => 1,
-                'max_range' => 18,
+                'max_range' => 18
             ]
         ])) {
             $this->error['installment_total'] = $this->language->get('error_installment_total');
@@ -559,7 +559,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'methods_credit_minimum_amount' => ['required' => false],
             'methods_debit_status'          => ['required' => false],
             'methods_debit_minimum_amount'  => ['required' => false],
-            'layout'                        => ['required' => true],
+            'layout'                        => ['required' => true]
         ];
     }
 
