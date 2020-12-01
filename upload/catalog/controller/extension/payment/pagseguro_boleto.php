@@ -208,6 +208,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
         if ($order_id) {
             if (isset($this->request->get['url'])) {
                 $url = base64_decode($this->request->get['url']);
+                if (substr($url, 0,4)!=='http') $url = $this->request->get['url'];
             } elseif (isset($this->request->get['transaction_id'])) {
                 $this->load->model('extension/payment/pagseguro');
                 $env = $this->model_extension_payment_pagseguro->factoryEnvironment();
