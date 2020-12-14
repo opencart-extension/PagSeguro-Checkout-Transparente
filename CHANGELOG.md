@@ -1,3 +1,16 @@
+# [](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/compare/v2.0.0...v) (2020-12-14)
+
+
+### Bug Fixes
+
+* o botão de 2 via aparecia somente no tema padrão ([823a70c](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/823a70c44823d5dbaa1b463a87722da67af1acaf))
+* **ocmod:** limita correção do bug do twig na versão OC 3.0.3.6 ([6472ba0](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/6472ba0e590d0e6e6c1d4a85dd819629963b03d1))
+* **view:** corrige falha na exibiçao dos detalhes de pagamento ([cf61a38](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/cf61a38eb4d6ec2b2bd599792933e3d0f7d90cd5)), closes [#38](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/issues/38)
+* verifica se a url no download veio mesmo base64 encodada ([3864a74](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/3864a74c26c05c6686add2c4e83777c2f3e50958))
+* Remove trailing comma para maior suporte de versões do PHP ([6d76945](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/6d76945f601864e74b1cd07e442524aefbcbc864))
+
+
+
 #  (2020-09-25)
 
 
