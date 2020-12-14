@@ -142,7 +142,7 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
                 $item->setId(sprintf('ID%d_K%d', $product['product_id'], $key));
                 $item->setDescription($product['name'] . '  ::  ' . $product['model']);
                 $item->setQuantity(intval($product['quantity']));
-                $item->setAmount(number_format($product['price'], 1, '.', ''));
+                $item->setAmount(number_format($product['price'], 2, '.', ''));
                 $items[] = $item;
             }
 
@@ -223,7 +223,7 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
                     $order_info['shipping_city'],
                     $order_info['shipping_zone_code'],
                     preg_replace('/\D/', '', $order_info['shipping_postcode']),
-                    $order_info['shipping_company'],
+                    $order_info['shipping_company']
                 );
 
                 $shipping_cost = $this->model_extension_payment_pagseguro->getShippingCost($order_totals);

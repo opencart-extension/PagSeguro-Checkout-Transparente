@@ -2,11 +2,11 @@
 <modification>
   <name>PagSeguro Checkout Transparente</name>
   <code>valdeir_pagseguro_checkout_transparente</code>
-  <version>2.0</version>
+  <version>2.0.1</version>
   <author>Valdeir S.</author>
   <link>https://valdeir.dev</link>
 
-  <file path="catalog/view/theme/default/template/account/order_info.twig">
+  <file path="catalog/view/theme/*/template/account/order_info.twig">
     <operation>
       <search>
         <![CDATA[{{ continue }}]]>
@@ -29,6 +29,29 @@
       <add position="before" offset="2">
         <![CDATA[
         {{ pagseguro }}
+        ]]>
+      </add>
+    </operation>
+  </file>
+
+  <file path="system/library/template/twig.php">
+	  <operation>
+      <search>
+        <![CDATA[$file = DIR_TEMPLATE . $filename . '.twig';]]>
+      </search>
+      <add position="after">
+        <![CDATA[
+          if (version_compare(VERSION, '3.0.3.6', '==')) {
+            $file_ocmod = DIR_MODIFICATION . $filename . '.twig';
+
+            $application_folder = basename(DIR_APPLICATION);
+            $folder_ocmod_template = str_replace(DIR_APPLICATION, $application_folder . '/', DIR_TEMPLATE);
+            $file_ocmod = DIR_MODIFICATION . $folder_ocmod_template . $filename . '.twig';
+
+            if (is_file($file_ocmod)) {
+              $file = $file_ocmod;
+            }
+          }
         ]]>
       </add>
     </operation>

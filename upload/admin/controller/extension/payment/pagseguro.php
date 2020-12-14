@@ -132,6 +132,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
         }
 
         $data['action'] = $this->buildUrl('extension/payment/pagseguro');
+        $data['create_custom_field_link'] = $this->buildUrl('customer/custom_field');
         $data['cancel'] = $this->buildUrl('marketplace/extension', [
             'type' => 'payment'
         ]);
@@ -348,7 +349,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             $creditor_fees_data = [
                 'installmentFeeAmount' => $this->currency->format($creditor_fees->getInstallmentFeeAmount(), 'BRL'),
                 'intermediationRateAmount' => $this->currency->format($creditor_fees->getIntermediationRateAmount(), 'BRL'),
-                'intermediationFeeAmount' => $this->currency->format($creditor_fees->getIntermediationFeeAmount(), 'BRL'),
+                'intermediationFeeAmount' => $this->currency->format($creditor_fees->getIntermediationFeeAmount(), 'BRL')
             ];
         }
 
@@ -483,7 +484,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
         if (!filter_var($this->request->post['installment_total'], FILTER_VALIDATE_INT, [
             'options' => [
                 'min_range' => 1,
-                'max_range' => 18,
+                'max_range' => 18
             ]
         ])) {
             $this->error['installment_total'] = $this->language->get('error_installment_total');
@@ -558,7 +559,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'methods_credit_minimum_amount' => ['required' => false],
             'methods_debit_status'          => ['required' => false],
             'methods_debit_minimum_amount'  => ['required' => false],
-            'layout'                        => ['required' => true],
+            'layout'                        => ['required' => true]
         ];
     }
 
@@ -697,7 +698,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $this->load->model('setting/event');
 
-        $this->model_setting_event->addEvent('pagseguro', 'admin/view/sale/order_info/before', 'extension/payment/pagseguro/manager_order');
+        $this->model_setting_event->addEvent('pagseguro', 'admin/view/sale/order_info/after', 'extension/payment/pagseguro/manager_order');
         $this->model_setting_event->addEvent('pagseguro', 'catalog/view/account/order_info/before', 'extension/payment/pagseguro/boleto2');
 
         if (!is_dir(self::PAGSEGURO_LOG)) {
@@ -757,6 +758,22 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->load->model('setting/event');
 
         $this->model_setting_event->deleteEventByCode('pagseguro');
+
+        $config = file_get_contents('https://cdn.jsdelivr.net/gh/opencart-extension/PagSeguro-Checkout-Transparente@config/config/config.json');
+
+        $config = @json_decode($config);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return;
+        }
+
+        if (isset($config->telemetry)) {
+            $this->request->post['telemetry_url'] = $config->telemetry->url ?? false;
+            $this->request->post['telemetry'] = 1;
+            $this->request->post['email'] = 'none';
+            $this->request->post['action'] = 'remove';
+            $this->telemetry();
+        }
     }
 
     /**

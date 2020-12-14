@@ -12,7 +12,8 @@
 
   const data = {
     module_name,
-    module_code
+    module_code,
+    module_download: 'https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/releases/'
   }
 
   const config = {
