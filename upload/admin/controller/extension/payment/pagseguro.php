@@ -9,7 +9,7 @@ use ValdeirPsr\PagSeguro\Domains\Environment;
 class ControllerExtensionPaymentPagseguro extends Controller
 {
     const EXTENSION_PREFIX = 'payment_pagseguro_';
-    const EXTENSION_VERSION = '2.0.0';
+    const EXTENSION_VERSION = '2.1.0';
     const PAGSEGURO_LOG = DIR_SYSTEM . '/library/PagSeguro/log';
 
     private $error = [];
