@@ -20,6 +20,7 @@
 
 !/upload/system/library/PagSeguro.php
 !/upload/system/library/PagSeguro/**
+!/upload/system/library/Spatie/**
 
 !/.github/**
 !/.editorconfig
@@ -38,7 +39,6 @@
 /upload/system/library/PagSeguro/vendor
 /upload/system/library/PagSeguro/*.cache
 /upload/system/library/PagSeguro/log
-/upload/system/library/Spatie
 /node_modules
 /src/.vuepress/dist
 /upload/system/library/PagSeguro/tests

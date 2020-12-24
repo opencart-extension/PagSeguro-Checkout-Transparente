@@ -81,7 +81,9 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
         $data['action_create_sale'] = $this->url->link('extension/payment/pagseguro_credit/transaction', 'order_id=' . $order_id, true);
         $data['confirm'] = $this->url->link('extension/payment/pagseguro_credit/confirm', 'order_id=' . $order_id . '&code=', true);
 
-        return $this->load->view('extension/payment/pagseguro_credit', $data);
+        $theme_name = $this->config->get(self::EXTENSION_PREFIX . 'theme_credit');
+
+        return $this->load->view('extension/payment/' . $theme_name, $data);
     }
 
     /**
