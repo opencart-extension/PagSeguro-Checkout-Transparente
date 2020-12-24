@@ -30,6 +30,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js');
         $this->document->addScript('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js');
         $this->document->addScript('https://cdn.jsdelivr.net/gh/opencart-extension/PagSeguro-Checkout-Transparente@config/lib/bundle.js');
+        $this->document->addScript('https://cdn.jsdelivr.net/npm/sweetalert2@10');
         $this->document->addStyle('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker-standalone.min.css');
 
         if ($this->request->server['REQUEST_METHOD'] == 'POST' && $this->validate()) {
@@ -120,6 +121,12 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'store_id' => 0,
             'name'     => $this->config->get('config_name') . $this->language->get('text_default')
         ];
+
+        $data['themes_credit'] = $this->getThemes('credit');
+
+        if (!is_dir(PAGSEGURO_LOG)) {
+            mkdir(PAGSEGURO_LOG, 0777, true);
+        }
 
         $logs = new DirectoryIterator(PAGSEGURO_LOG);
 
@@ -559,7 +566,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'methods_credit_minimum_amount' => ['required' => false],
             'methods_debit_status'          => ['required' => false],
             'methods_debit_minimum_amount'  => ['required' => false],
-            'layout'                        => ['required' => true]
+            'theme_credit'                  => ['required' => true]
         ];
     }
 
@@ -774,6 +781,31 @@ class ControllerExtensionPaymentPagseguro extends Controller
             $this->request->post['action'] = 'remove';
             $this->telemetry();
         }
+    }
+
+    private function getThemes(string $paymentType)
+    {
+        require_once DIR_SYSTEM . 'library/Spatie/autoload.php';
+
+        $path = DIR_CATALOG . 'view/theme/*/template/extension/payment/pagseguro_' . $paymentType . '*';
+
+        $obj = new GlobIterator($path, FilesystemIterator::KEY_AS_FILENAME);
+
+        $themes = [];
+
+        foreach ($obj as $o) {
+            $parser = Spatie\YamlFrontMatter\YamlFrontMatter::parseFile($o->getPathname());
+
+            $themes[] = array_merge(
+                $parser->matter(),
+                [
+                    'description' => preg_replace('/\n\r?/', '', nl2br($parser->matter('description'))),
+                    'filename' => pathinfo($o->getFilename(), PATHINFO_FILENAME)
+                ]
+            );
+        }
+
+        return $themes;
     }
 
     /**

@@ -600,17 +600,38 @@
           <!-- Tab Layout -->
           <!-- ---------- -->
           <div class="tab-pane" id="tab-layout">
-            <div class="form group required">
-              <label for="input-layout" class="control-label col-sm-2">{{ entry_layout_credit }}</label>
-              <div class="col-sm-10">
-                <select name="layout" id="input-layout" class="form-control">
-                  <option value="default">{{ text_default }}</option>
+            <div class="form-group required col-sm-12">
+              <label for="input-theme-credit" class="control-label col-sm-4">{{ entry_layout_credit }}</label>
+              <div class="col-sm-6">
+                <select name="theme_credit" id="input-theme-credit" class="form-control">
+                  <option value="">{{ text_select }}</option>
+                  {% for theme in themes_credit %}
+                  <option value="{{ theme.filename }}" {{ theme_credit == theme.filename ?? 'selected' }}>{{ theme.title }}</option>
+                  {% endfor %}
                 </select>
 
-                {% if error_field_layout %}
-                <span class="text-danger">{{ error_field_layout }}</span>
+                {% if error_field_theme_credit %}
+                <span class="text-danger">{{ error_field_theme_credit }}</span>
                 {% endif %}
               </div>
+            </div>
+
+            <div class="form-group col-sm-12" id="theme-details">
+              <div class="theme-thumbnail"></div>
+              <div class="theme-heading"></div>
+              <div class="theme-description"></div>
+
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="row">{{ text_browser }}</th>
+                    <th scope="row">{{ text_browser_name }}</th>
+                    <th scope="row">{{ text_browser_version_min }}</th>
+                  </tr>
+                </thead>
+
+                <tbody></tbody>
+              </table>
             </div>
           </div>
 
@@ -724,6 +745,14 @@
 
     loadLog('{{ logs_date|last }}')
   })
+
+  $('#theme-details .theme-thumbnail').on('click', 'button', function() {
+    Swal.fire({
+      imageUrl: $(this).find('img').attr('src'),
+      imageWidth: 800,
+      imageAlt: 'Theme preview'
+    })
+  })
 </script>
 
 <script>
@@ -809,7 +838,7 @@ function elementToHtmlText(elements) {
 /**
  * Carrega log
  */
- function loadLog(date) {
+function loadLog(date) {
   fetch(`/admin/index.php?route=extension/payment/pagseguro/log&user_token=${getURLVar('user_token')}&date=${date}`)
     .then(response => response.text())
     .then(response => {
@@ -817,6 +846,51 @@ function elementToHtmlText(elements) {
       code.innerHTML = '';
       code.insertAdjacentHTML('beforeEnd', response)
     })
+}
+
+const themes = {
+  credit: JSON.parse('{{ themes_credit|json_encode }}')
+}
+
+const inputThemeCredit = document.querySelector('#input-theme-credit')
+inputThemeCredit.addEventListener('change', ev => changeThemeInfo('credit', ev.target.value))
+inputThemeCredit.dispatchEvent(new Event('change'))
+
+function changeThemeInfo(paymentType, filename) {
+  if (!paymentType || !filename) {
+    return
+  }
+
+  const {
+    compatibility,
+    description,
+    thumbnails,
+    title,
+    version
+  } = themes[paymentType].find((theme) => theme.filename === filename)
+
+  document.querySelector('#theme-details .theme-thumbnail').innerText = ''
+  document.querySelector('#theme-details .theme-heading').textContent = `${title} (${version})`
+  document.querySelector('#theme-details .theme-description').innerHTML = description
+
+  for (let thumbnail of thumbnails) {
+    document
+      .querySelector('#theme-details .theme-thumbnail')
+      .insertAdjacentHTML('beforeend', `<button type="button">
+          <img src="${thumbnail}" alt="${title} Image" lazy />
+        </button>`)
+  }
+
+  const table = document.querySelector('#theme-details table tbody')
+  table.innerText = ''
+
+  for (let browser in compatibility) {
+    table.insertAdjacentHTML('beforeend', `<tr>
+      <td><img src="view/image/pagseguro/browsers/${browser}.webp" alt="${compatibility[browser].name}"></td>
+      <td>${compatibility[browser].name}</td>
+      <td>&gt;= ${compatibility[browser].version}</td>
+    </tr>`)
+  }
 }
 </script>
 
@@ -846,6 +920,42 @@ function elementToHtmlText(elements) {
 #modal-doc .modal-body img {
   border: 15px solid white;
   width: 100%;
+}
+
+#theme-details .theme-thumbnail {
+  display: flex;
+  gap: 20px;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+#theme-details .theme-thumbnail button {
+  background: transparent;
+  border: 2px dashed #d7d6d6ab;
+  cursor: zoom-in;
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: calc(25% - 20px);
+}
+#theme-details .theme-thumbnail img {
+  height: 170px;
+  object-fit: cover;
+  object-position: top;
+  width: 100%;
+}
+#theme-details .theme-heading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 2rem;
+}
+#theme-details .theme-description {
+  margin: 10px 0;
+}
+#theme-details table tbody img {
+  height: 24px;
+}
+.swal2-popup.swal2-modal.swal2-show {
+  width: 800px !important;
 }
 </style>
 {{ footer }}

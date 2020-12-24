@@ -5,6 +5,7 @@
 !/upload/admin/model/extension/**/pagseguro*
 !/upload/admin/language/en-gb/extension/payment/pagseguro*
 !/upload/admin/language/en-gb/extension/total/pagseguro*
+!/upload/admin/view/image/pagseguro/**
 !/upload/admin/view/image/payment/pagseguro*
 !/upload/admin/view/template/**/pagseguro*
 
@@ -37,6 +38,7 @@
 /upload/system/library/PagSeguro/vendor
 /upload/system/library/PagSeguro/*.cache
 /upload/system/library/PagSeguro/log
+/upload/system/library/Spatie
 /node_modules
 /src/.vuepress/dist
 /upload/system/library/PagSeguro/tests
