@@ -19,6 +19,11 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v1
 
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: '7.3'
+
             - name: Install Composer
               run: |
                 wget -qO- composer-setup.php https://getcomposer.org/installer | php -- composer-setup.php
