@@ -47,6 +47,7 @@ $_['entry_installment_total']           = 'Total de parcelas';
 $_['entry_installment_free']            = 'Parcelas sem juros';
 $_['entry_installment_minimum_value']   = 'Valor mínimo para parcela';
 $_['entry_minimum_amount']              = 'Valor mínimo';
+$_['entry_layout']                      = 'Tema';
 $_['entry_layout_credit']               = 'Tela para cartão de crédito';
 
 // Text

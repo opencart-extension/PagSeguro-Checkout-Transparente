@@ -600,38 +600,56 @@
           <!-- Tab Layout -->
           <!-- ---------- -->
           <div class="tab-pane" id="tab-layout">
-            <div class="form-group required col-sm-12">
-              <label for="input-theme-credit" class="control-label col-sm-4">{{ entry_layout_credit }}</label>
-              <div class="col-sm-6">
-                <select name="theme_credit" id="input-theme-credit" class="form-control">
-                  <option value="">{{ text_select }}</option>
-                  {% for theme in themes_credit %}
-                  <option value="{{ theme.filename }}" {{ theme_credit == theme.filename ?? 'selected' }}>{{ theme.title }}</option>
-                  {% endfor %}
-                </select>
+            <div class="row">
+              <div class="col-sm-12 col-md-3">
+                <ul class="nav nav-pills nav-stacked" role="tablist">
+                  <li class="active"><a href="#tab-layout-credit" data-toggle="tab">{{ entry_layout_credit }}</a></li>
+                </ul>
+              </div>
 
-                {% if error_field_theme_credit %}
-                <span class="text-danger">{{ error_field_theme_credit }}</span>
-                {% endif %}
+              <div class="col-sm-8">
+                <div class="tab-content">
+                  <div id="tab-layout-credit" class="active" style="display: none">
+                    <div class="form-group required col-sm-12">
+                      <label for="input-theme-credit" class="control-label col-sm-2">{{ entry_layout }}</label>
+                      <div class="col-md-10">
+                        <select name="theme_credit" id="input-theme-credit" class="form-control">
+                          <option value="">{{ text_select }}</option>
+                          {% for theme in themes_credit %}
+                          <option value="{{ theme.filename }}" {{ theme_credit == theme.filename ?? 'selected' }}>{{ theme.title }}</option>
+                          {% endfor %}
+                        </select>
+
+                        {% if error_field_theme_credit %}
+                        <span class="text-danger">{{ error_field_theme_credit }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="form-group col-sm-12" id="theme-details">
-              <div class="theme-thumbnail"></div>
-              <div class="theme-heading"></div>
-              <div class="theme-description"></div>
+            <div class="row">
+              <div class="col-sm-8 pull-right">
+                <div class="form-group col-sm-12" id="theme-details">
+                  <div class="theme-thumbnail"></div>
+                  <div class="theme-heading"></div>
+                  <div class="theme-description"></div>
 
-              <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="row">{{ text_browser }}</th>
-                    <th scope="row">{{ text_browser_name }}</th>
-                    <th scope="row">{{ text_browser_version_min }}</th>
-                  </tr>
-                </thead>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="row">{{ text_browser }}</th>
+                        <th scope="row">{{ text_browser_name }}</th>
+                        <th scope="row">{{ text_browser_version_min }}</th>
+                      </tr>
+                    </thead>
 
-                <tbody></tbody>
-              </table>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -956,6 +974,9 @@ function changeThemeInfo(paymentType, filename) {
 }
 .swal2-popup.swal2-modal.swal2-show {
   width: 800px !important;
+}
+.tab-content > .active {
+  display: block !important;
 }
 </style>
 {{ footer }}
