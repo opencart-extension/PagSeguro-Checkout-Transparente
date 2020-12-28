@@ -11,3 +11,7 @@ Nesta aba, você selecionará os campos referente ao CPF, Data de Nascimento e N
 | **CPF** | Campo referente ao CPF | Sim, para cartão de crédito |
 | **Número da residência** | Campo referente ao número de residência do cliente (o que paga) | Sim, para cartão de crédito |
 | **Data de Nascimento** | Campo referente à data de nascimento do cliente | Sim, para cartão de crédito |
+
+::: tip Dica
+Ao clicar no botão "Criar campo", você será redirecionado para a página de gerenciamento de campos.
+:::
