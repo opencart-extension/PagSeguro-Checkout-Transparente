@@ -533,6 +533,16 @@
             <fieldset>
               <legend>{{ text_boleto }}</legend>
 
+              <div class="form-group required">
+                <label for="input-methods-boleto-title" class="control-label col-sm-2">{{ entry_payment_title }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="methods_boleto_title" id="input-methods-boleto-title" class="form-control" value="{{ methods_boleto_title ?? text_boleto_title_default }}" />
+                  {% if error_field_methods_boleto_title %}
+                  <span class="text-danger">{{ error_field_methods_boleto_title }}</span>
+                  {% endif %}
+                </div>
+              </div>
+
               <div class="form-group">
                 <label for="input-methods-boleto-status" class="control-label col-sm-2">{{ entry_status }}</label>
                 <div class="col-sm-10">
@@ -556,6 +566,16 @@
             <fieldset>
               <legend>{{ text_credit }}</legend>
 
+              <div class="form-group required">
+                <label for="input-methods-credit-title" class="control-label col-sm-2">{{ entry_payment_title }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="methods_credit_title" id="input-methods-credit-title" class="form-control" value="{{ methods_credit_title ?? text_credit_title_default }}" />
+                  {% if error_field_methods_credit_title %}
+                  <span class="text-danger">{{ error_field_methods_credit_title }}</span>
+                  {% endif %}
+                </div>
+              </div>
+
               <div class="form-group">
                 <label for="input-methods-credit-status" class="control-label col-sm-2">{{ entry_status }}</label>
                 <div class="col-sm-10">
@@ -576,6 +596,16 @@
 
             <fieldset>
               <legend>{{ text_debit }}</legend>
+
+              <div class="form-group required">
+                <label for="input-methods-debit-title" class="control-label col-sm-2">{{ entry_payment_title }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="methods_debit_title" id="input-methods-debit-title" class="form-control" value="{{ methods_debit_title ?? text_debit_title_default }}" />
+                  {% if error_field_methods_debit_title %}
+                  <span class="text-danger">{{ error_field_methods_debit_title }}</span>
+                  {% endif %}
+                </div>
+              </div>
 
               <div class="form-group">
                 <label for="input-methods-debit-status" class="control-label col-sm-2">{{ entry_status }}</label>

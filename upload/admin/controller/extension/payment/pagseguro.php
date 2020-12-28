@@ -371,10 +371,13 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'installment_total'             => ['required' => true],
             'installment_free'              => ['required' => false],
             'installment_minimum_value'     => ['required' => true],
+            'methods_boleto_title'          => ['required' => true],
             'methods_boleto_status'         => ['required' => false],
             'methods_boleto_minimum_amount' => ['required' => false],
+            'methods_credit_title'          => ['required' => true],
             'methods_credit_status'         => ['required' => false],
             'methods_credit_minimum_amount' => ['required' => false],
+            'methods_debit_title'           => ['required' => true],
             'methods_debit_status'          => ['required' => false],
             'methods_debit_minimum_amount'  => ['required' => false],
             'layout'                        => ['required' => true]
