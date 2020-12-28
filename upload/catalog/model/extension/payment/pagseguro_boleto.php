@@ -36,7 +36,7 @@ class ModelExtensionPaymentPagSeguroBoleto extends Model
 		if ($status) {
 			$method_data = array(
 				'code'       => 'pagseguro_boleto',
-				'title'      => $this->language->get('heading_title'),
+				'title'      => $this->config->get(self::EXTENSION_PREFIX . 'methods_boleto_title'),
 				'terms'      => '',
 				'sort_order' => $this->config->get(self::EXTENSION_PREFIX . 'geo_sort_order')
 			);
