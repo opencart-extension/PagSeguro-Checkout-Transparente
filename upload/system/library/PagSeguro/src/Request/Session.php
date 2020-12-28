@@ -6,6 +6,7 @@ use DOMDocument;
 use ValdeirPsr\PagSeguro\Domains\Environment;
 use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use ValdeirPsr\PagSeguro\Exception\Auth as AuthException;
+use ValdeirPsr\PagSeguro\Exception\PagSeguroRequest as PagSeguroRequestException;
 
 class Session
 {
@@ -20,6 +21,7 @@ class Session
      * Gera uma sessão
      *
      * @throws AuthException Caso as credenciais sejam inválidas
+     * @throws PagSeguroException Caso o servidor não resposta
      *
      * @return string
      */
@@ -56,6 +58,9 @@ class Session
             }
         } elseif ($request->getHttpStatus() === 401) {
             throw new AuthException($this->env, 'Check your credentials', 1000);
+        } else {
+            var_dump( $request->getHttpStatus() );
+            throw new PagSeguroRequestException($this->env, $request, [], 'Server not responding', 1050);
         }
     }
 
