@@ -8,6 +8,7 @@ Nesta aba, você configurará quais métodos de pagamento estão disponíveis
 
 | Campo | Descrição | Obrigatório |
 | ----- | --------- | :---------: |
+|**Identificação** | Nome que aparecerá para o cliente selecionar, durante a compra | Sim |
 |**Situação** | Habilita/desabilita a forma de pagamento | Não |
 |**Valor mínimo** | Valor mínimo, em reais, para a forma de pagamento ficar disponível para o cliente. | Não |
 
