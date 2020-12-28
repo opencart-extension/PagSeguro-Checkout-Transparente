@@ -3,8 +3,12 @@ on: [push, pull_request]
 
 jobs:
     build:
-        name: Test SDK
-        runs-on: ubuntu-latest
+        name: Test SDK | PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+        runs-on: ${{ matrix.operating-system }}
+        strategy:
+          matrix:
+            operating-system: [ubuntu-latest]
+            php-versions: ['7.3']
         steps:
             - name: Checkout
               uses: actions/checkout@v1
