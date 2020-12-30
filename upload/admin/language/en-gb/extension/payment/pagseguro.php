@@ -48,7 +48,9 @@ $_['entry_installment_free']            = 'Parcelas sem juros';
 $_['entry_installment_minimum_value']   = 'Valor mínimo para parcela';
 $_['entry_minimum_amount']              = 'Valor mínimo';
 $_['entry_layout']                      = 'Tema';
-$_['entry_layout_credit']               = 'Tela para cartão de crédito';
+$_['entry_layout_boleto']               = 'Tema para Boleto';
+$_['entry_layout_credit']               = 'Tema para Cartão de Crédito';
+$_['entry_layout_debit']                = 'Tema para Débito';
 
 // Text
 $_['text_pagseguro']           = '<a href="https://valdeir.dev"><img src="/admin/view/image/payment/pagseguro.png" /></a>';

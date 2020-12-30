@@ -122,7 +122,9 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'name'     => $this->config->get('config_name') . $this->language->get('text_default')
         ];
 
+        $data['themes_boleto'] = $this->getThemes('boleto');
         $data['themes_credit'] = $this->getThemes('credit');
+        $data['themes_debit'] = $this->getThemes('debit');
 
         if (!is_dir(PAGSEGURO_LOG)) {
             mkdir(PAGSEGURO_LOG, 0777, true);
@@ -566,7 +568,9 @@ class ControllerExtensionPaymentPagseguro extends Controller
             'methods_credit_minimum_amount' => ['required' => false],
             'methods_debit_status'          => ['required' => false],
             'methods_debit_minimum_amount'  => ['required' => false],
-            'theme_credit'                  => ['required' => true]
+            'theme_boleto'                  => ['required' => true],
+            'theme_credit'                  => ['required' => true],
+            'theme_debit'                   => ['required' => true]
         ];
     }
 
@@ -783,6 +787,13 @@ class ControllerExtensionPaymentPagseguro extends Controller
         }
     }
 
+    /**
+     * Captura os temas das formas de pagamento
+     *
+     * @param string $paymentType boleto, credit ou debit
+     *
+     * @return []
+     */
     private function getThemes(string $paymentType)
     {
         require_once DIR_SYSTEM . 'library/Spatie/autoload.php';

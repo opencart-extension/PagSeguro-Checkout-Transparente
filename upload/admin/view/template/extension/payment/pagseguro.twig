@@ -604,6 +604,8 @@
               <div class="col-sm-12 col-md-3">
                 <ul class="nav nav-pills nav-stacked" role="tablist">
                   <li class="active"><a href="#tab-layout-credit" data-toggle="tab">{{ entry_layout_credit }}</a></li>
+                  <li><a href="#tab-layout-boleto" data-toggle="tab">{{ entry_layout_boleto }}</a></li>
+                  <li><a href="#tab-layout-debit" data-toggle="tab">{{ entry_layout_debit }}</a></li>
                 </ul>
               </div>
 
@@ -614,7 +616,6 @@
                       <label for="input-theme-credit" class="control-label col-sm-2">{{ entry_layout }}</label>
                       <div class="col-md-10">
                         <select name="theme_credit" id="input-theme-credit" class="form-control">
-                          <option value="">{{ text_select }}</option>
                           {% for theme in themes_credit %}
                           <option value="{{ theme.filename }}" {{ theme_credit == theme.filename ?? 'selected' }}>{{ theme.title }}</option>
                           {% endfor %}
@@ -622,6 +623,40 @@
 
                         {% if error_field_theme_credit %}
                         <span class="text-danger">{{ error_field_theme_credit }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="tab-layout-boleto" style="display: none">
+                    <div class="form-group required col-sm-12">
+                      <label for="input-theme-boleto" class="control-label col-sm-2">{{ entry_layout }}</label>
+                      <div class="col-md-10">
+                        <select name="theme_boleto" id="input-theme-boleto" class="form-control">
+                          {% for theme in themes_boleto %}
+                          <option value="{{ theme.filename }}" {{ theme_boleto == theme.filename ? 'selected' : '' }}>{{ theme.title }}</option>
+                          {% endfor %}
+                        </select>
+
+                        {% if error_field_theme_boleto %}
+                        <span class="text-danger">{{ error_field_theme_boleto }}</span>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="tab-layout-debit" style="display: none">
+                    <div class="form-group required col-sm-12">
+                      <label for="input-theme-debit" class="control-label col-sm-2">{{ entry_layout }}</label>
+                      <div class="col-md-10">
+                        <select name="theme_debit" id="input-theme-debit" class="form-control">
+                          {% for theme in themes_debit %}
+                          <option value="{{ theme.filename }}" {{ theme_debit == theme.filename ? 'selected' : '' }}>{{ theme.title }}</option>
+                          {% endfor %}
+                        </select>
+
+                        {% if error_field_theme_debit %}
+                        <span class="text-danger">{{ error_field_theme_debit }}</span>
                         {% endif %}
                       </div>
                     </div>
@@ -867,12 +902,33 @@ function loadLog(date) {
 }
 
 const themes = {
-  credit: JSON.parse('{{ themes_credit|json_encode }}')
+  boleto: JSON.parse('{{ themes_boleto|json_encode }}'),
+  credit: JSON.parse('{{ themes_credit|json_encode }}'),
+  debit: JSON.parse('{{ themes_debit|json_encode }}')
 }
 
 const inputThemeCredit = document.querySelector('#input-theme-credit')
 inputThemeCredit.addEventListener('change', ev => changeThemeInfo('credit', ev.target.value))
 inputThemeCredit.dispatchEvent(new Event('change'))
+
+document
+  .querySelector('#input-theme-boleto')
+  .addEventListener('change', ev => changeThemeInfo('boleto', ev.target.value))
+
+document
+  .querySelector('#input-theme-debit')
+  .addEventListener('change', ev => changeThemeInfo('debit', ev.target.value))
+
+document
+  .querySelectorAll('#tab-layout ul.nav a')
+  .forEach((anchor) =>
+    anchor.addEventListener('click', () => {
+      document
+        .querySelector(new URL(anchor.href).hash)
+        .querySelector('[id^="input-theme-"]')
+        .dispatchEvent(new Event('change'))
+    })
+  )
 
 function changeThemeInfo(paymentType, filename) {
   if (!paymentType || !filename) {
