@@ -48,6 +48,9 @@ jobs:
                 composer install
                 composer require phpunit/phpunit
 
+            - name: Build Docker Server
+              run: docker-compose -f upload/system/library/PagSeguro/tests/server/docker-compose.yaml up -d
+
             - name: Run Tests
               run: |
                 cd upload/system/library/PagSeguro

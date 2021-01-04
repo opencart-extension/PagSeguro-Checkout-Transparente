@@ -42,7 +42,7 @@ class SessionTest extends TestCase
 
         $stub->expects($this->any())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/sessions/valid');
+            ->willReturn(getenv('SERVER_URL') . 'v2/sessions/valid');
 
         $result = $stub->generate();
         $this->assertNotNull($result);
@@ -64,7 +64,7 @@ class SessionTest extends TestCase
 
         $stub->expects($this->any())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/sessions/invalid');
+            ->willReturn(getenv('SERVER_URL') . 'v2/sessions/invalid');
 
         $stub->generate();
     }
@@ -85,7 +85,7 @@ class SessionTest extends TestCase
 
         $stub->expects($this->any())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/sessions/invalid-2');
+            ->willReturn(getenv('SERVER_URL') . 'v2/sessions/invalid-2');
 
         $stub->generate();
     }
