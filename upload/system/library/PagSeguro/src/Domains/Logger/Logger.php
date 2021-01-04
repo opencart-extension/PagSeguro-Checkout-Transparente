@@ -9,7 +9,7 @@ class Logger
 {
     private static $instance;
     private static $opts = [
-        'enabled' => false
+        'enabled' => true
     ];
 
     private function __construct()
