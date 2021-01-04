@@ -1,0 +1,10 @@
+{
+    "response": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\"?><errors><error><code>53078</code><message>item amount invalid pattern: 15.600. Must fit the patern: \\d+.\\d{2}</message></error><error><code>53078</code><message>item amount invalid pattern: 2780. Must fit the patern: \\d+.\\d{2}</message></error><error><code>53012</code><message>sender email invalid value: fulano.silva.sandbox.pagseguro.com.br</message></error><error><code>53095</code><message>shipping type invalid pattern: 30</message></error><error><code>53033</code><message>shipping address state is required.</message></error><error><code>53035</code><message>shipping address country is required.</message></error><error><code>53022</code><message>shipping address postal code is required.</message></error><error><code>53031</code><message>shipping address city is required.</message></error><error><code>53024</code><message>shipping address street is required.</message></error><error><code>53026</code><message>shipping address number is required.</message></error><error><code>53029</code><message>shipping address district is required.</message></error><error><code>53057</code><message>billing address number is required.</message></error><error><code>53046</code><message>credit card holder cpf invalid value: 221119445785</message></error><error><code>53048</code><message>credit card holder birthdate invalid value: 20/10/20</message></error></errors>",
+    "status": 400,
+    "headers": [
+        {
+            "name": "Content-Type",
+            "value": "application/xml;charset=ISO-8859-1"
+        }
+    ]
+}
