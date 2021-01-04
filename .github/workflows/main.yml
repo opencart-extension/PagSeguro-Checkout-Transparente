@@ -40,7 +40,6 @@ jobs:
               run: |
                 cd upload/system/library/PagSeguro
                 composer install --ignore-platform-req php
-                composer require phpunit/phpunit
 
             - name: Build Docker Server
               run: docker-compose -f upload/system/library/PagSeguro/tests/server/docker-compose.yaml up -d
@@ -48,7 +47,7 @@ jobs:
             - name: Run Tests
               run: |
                 cd upload/system/library/PagSeguro
-                php vendor/bin/phpunit
+                composer tdd
 
             - name: PHPCS
               run: |
