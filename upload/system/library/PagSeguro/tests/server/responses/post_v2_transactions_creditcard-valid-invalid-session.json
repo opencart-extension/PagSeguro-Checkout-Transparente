@@ -1,0 +1,10 @@
+{
+    "response": "Unauthorized",
+    "status": 401,
+    "headers": [
+        {
+            "name": "Content-Type",
+            "value": "text/plain"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+    "response": "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"yes\"?><transaction><date>2020-08-22T22:14:17.000-03:00</date><code>4A6AFCE4-6D16-4029-A74E-8EA53A5A62A0</code><reference>R123456</reference><recoveryCode>7df5a68dd88c50bb4aa1816d94739d33e54f1f0081f5a09d</recoveryCode><type>1</type><status>1</status><lastEventDate>2020-08-22T22:14:18.000-03:00</lastEventDate><paymentMethod><type>3</type><code>304</code></paymentMethod><paymentLink>https://sandbox.pagseguro.uol.com.br/checkout/payment/eft/print.jhtml?c=54b6d6de188519a3dd2039a108ba309f1b763534b631d039cf2f8709864ce0ce3d8ca39945197dfd</paymentLink><grossAmount>43.40</grossAmount><discountAmount>0.00</discountAmount><feeAmount>2.57</feeAmount><netAmount>40.83</netAmount><extraAmount>0.00</extraAmount><installmentCount>1</installmentCount><itemCount>2</itemCount><items><item><id>1</id><description>Antologia poetica de Florbela Espanca</description><quantity>1</quantity><amount>27.80</amount></item><item><id>2</id><description>Poesia de Florbela Espanca</description><quantity>1</quantity><amount>15.60</amount></item></items><sender><name>Florbela Espanca</name><email>fulano.silva@sandbox.pagseguro.com.br</email><phone><areaCode>11</areaCode><number>30380000</number></phone><documents><document><type>CPF</type><value>72962940005</value></document></documents></sender><shipping><address><street>Av. Brigadeiro Faria Lima</street><number>1384</number><complement>1 andar</complement><district>Jardim Paulistano</district><city>Sao Paulo</city><state>SP</state><country>BRA</country><postalCode>01452002</postalCode></address><type>3</type><cost>0.00</cost></shipping></transaction>",
+    "status": 200,
+    "headers": [
+        {
+            "name": "Content-Type",
+            "value": "application/xml;charset=ISO-8859-1"
+        }
+    ]
+}
