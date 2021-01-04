@@ -7,6 +7,7 @@ use ValdeirPsr\PagSeguro\Domains\Payment;
 use ValdeirPsr\PagSeguro\Domains\Error;
 use \ValdeirPsr\PagSeguro\Domains\Document;
 use \ValdeirPsr\PagSeguro\Domains\Address;
+use \ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use ValdeirPsr\PagSeguro\Domains\PaymentMethod\CreditCard;
 use ValdeirPsr\PagSeguro\Domains\User\Holder;
 use ValdeirPsr\PagSeguro\Request\Factory;
@@ -16,6 +17,13 @@ use ValdeirPsr\PagSeguro\Exception\PagSeguroRequest as PagSeguroRequestException
 
 class SaleTest extends TestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        Logger::getInstance([
+            'enabled' => false
+        ]);
+    }
+
     /**
      * @test
      */
@@ -45,7 +53,7 @@ class SaleTest extends TestCase
 
         $stub->expects($this->any())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/boleto-valid');
+            ->willReturn(getenv('SERVER_URL') . 'v2/transactions/boleto-valid');
 
         $newPayment = $stub->create($payment);
 
@@ -74,7 +82,7 @@ class SaleTest extends TestCase
 
         $stub->expects($this->any())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/eft-valid');
+            ->willReturn(getenv('SERVER_URL') . 'v2/transactions/eft-valid');
 
         $newPayment = $stub->create($payment);
 
@@ -102,7 +110,7 @@ class SaleTest extends TestCase
 
         $stub->expects($this->any())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/creditcard-valid');
+            ->willReturn(getenv('SERVER_URL') . 'v2/transactions/creditcard-valid');
 
         $newPayment = $stub->create($payment);
 
@@ -158,7 +166,7 @@ class SaleTest extends TestCase
 
             $stub->expects($this->any())
                 ->method('buildUrl')
-                ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/creditcard-invalid');
+                ->willReturn(getenv('SERVER_URL') . 'v2/transactions/creditcard-invalid');
 
             $newPayment = $stub->create($payment);
         } catch (PagSeguroRequestException $request) {
@@ -210,7 +218,7 @@ class SaleTest extends TestCase
 
         $stub->expects($this->any())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/creditcard-valid-invalid-session');
+            ->willReturn(getenv('SERVER_URL') . 'v2/transactions/creditcard-valid-invalid-session');
 
         $newPayment = $stub->create($payment);
     }
@@ -229,7 +237,7 @@ class SaleTest extends TestCase
 
         $stub->expects($this->once())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/cancel-sale-valid-data');
+            ->willReturn(getenv('SERVER_URL') . 'v2/transactions/cancel-sale-valid-data');
 
         $result = $stub->void('abc123');
         $this->assertTrue($result);
@@ -249,7 +257,7 @@ class SaleTest extends TestCase
 
         $stub->expects($this->once())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/refund-sale-valid-data');
+            ->willReturn(getenv('SERVER_URL') . 'v2/transactions/refund-sale-valid-data');
 
         $result = $stub->refund('abc123');
         $this->assertTrue($result);
@@ -269,7 +277,7 @@ class SaleTest extends TestCase
 
         $stub->expects($this->once())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v2/transactions/info-sale-valid-data');
+            ->willReturn(getenv('SERVER_URL') . 'v2/transactions/info-sale-valid-data');
 
         $transaction = $stub->info('C9133EB990AE44E5963F027E6B908B41');
 

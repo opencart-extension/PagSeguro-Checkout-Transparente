@@ -33,7 +33,7 @@ class NotificationTest extends TestCase
 
         $stub->expects($this->once())
             ->method('buildUrl')
-            ->willReturn('https://f3528d51-6219-4b80-8bd3-3ab112b8094f.mock.pstmn.io/v3/transactions/notifications-valid-request');
+            ->willReturn(getenv('SERVER_URL') . 'v3/transactions/notifications-valid-request');
 
         $notificationId = 'abc123';
 
