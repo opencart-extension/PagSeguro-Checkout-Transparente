@@ -1,0 +1,29 @@
+{
+  "name": "pagseguro-test-server",
+  "version": "1.0.0",
+  "description": "Servidor para teste do SDK nao oficial do PagSeguro",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "nodemonConfig": {
+    "ignore": ["node_modules/*"]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valdeir/pagseguro-sdk.git"
+  },
+  "author": "Valdeir S.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/valdeir/pagseguro-sdk/issues"
+  },
+  "homepage": "https://github.com/valdeir/pagseguro-sdk#readme"
+}

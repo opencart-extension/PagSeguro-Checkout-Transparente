@@ -15,6 +15,10 @@
   convertNoticesToExceptions="false"
   convertWarningsToExceptions="false"
 >
+  <php>
+    <env name="SERVER_URL" value="http://localhost:3000/"/>
+  </php>
+
   <testsuites>
     <testsuite name="all">
       <directory>tests/unit/</directory>

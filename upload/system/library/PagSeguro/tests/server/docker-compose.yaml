@@ -1,0 +1,8 @@
+version: '3.1'
+
+services:
+  server:
+    container_name: pagseguro_server_test
+    build: .
+    ports:
+      - 3000:3000

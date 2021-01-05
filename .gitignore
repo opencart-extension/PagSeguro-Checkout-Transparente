@@ -40,3 +40,5 @@
 /node_modules
 /src/.vuepress/dist
 /upload/system/library/PagSeguro/tests
+upload/system/library/PagSeguro/tests/server/package-lock.json
+upload/system/library/PagSeguro/tests/server/node_modules

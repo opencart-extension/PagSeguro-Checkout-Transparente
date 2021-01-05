@@ -14,7 +14,7 @@ jobs:
         strategy:
           matrix:
             operating-system: [ubuntu-latest]
-            php-versions: ['7.3']
+            php-versions: ['7.3', '8.0']
         steps:
             - name: Checkout
               uses: actions/checkout@v1
@@ -22,7 +22,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                php-version: '7.3'
+                php-version: ${{ matrix.php-versions }}
 
             - name: Install Composer
               run: |
@@ -45,13 +45,15 @@ jobs:
             - name: Install PHPUnit e Dependencies
               run: |
                 cd upload/system/library/PagSeguro
-                composer install
-                composer require phpunit/phpunit
+                composer install --ignore-platform-req php
+
+            - name: Build Docker Server
+              run: docker-compose -f upload/system/library/PagSeguro/tests/server/docker-compose.yaml up -d
 
             - name: Run Tests
               run: |
                 cd upload/system/library/PagSeguro
-                php vendor/bin/phpunit
+                composer tdd
 
             - name: PHPCS
               run: |
