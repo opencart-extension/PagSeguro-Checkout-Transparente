@@ -178,6 +178,20 @@ label[for="card-number"] + div {
 </div>
 
 <script type="text/javascript">
+  if (window.Element && !Element.prototype.closest) {
+    Element.prototype.closest = function(s) {
+      var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+          i,
+          el = this;
+      do {
+        i = matches.length;
+        while (--i >= 0 && matches.item(i) !== el) {};
+      } while ((i < 0) && (el = el.parentElement));
+      return el;
+    };
+  }
+
+
   /**
    * Código de pagamento
    * Hash do comprador
@@ -258,7 +272,8 @@ label[for="card-number"] + div {
   function paymentMethodsSuccess(response) {
     if (response.paymentMethods) {
       brands = Object
-        .values(response.paymentMethods.CREDIT_CARD.options)
+        .keys(response.paymentMethods.CREDIT_CARD.options)
+        .map((idx) => response.paymentMethods.CREDIT_CARD.options[idx])
         .filter((brand) => brand.status.toUpperCase() === 'AVAILABLE')
         .map((brand) => {
           return {
@@ -270,12 +285,12 @@ label[for="card-number"] + div {
 
       const divBrands = document.querySelector('#brands')
 
-      brands.forEach((item) => {
+      for (var i = 0; i < brands.length; i++) {
         divBrands.insertAdjacentHTML(
           'beforeEnd',
-          `<img src="${item.image}" data-brand="${item.name.toLowerCase()}" alt="" />`
+          `<img src="${brands[i].image}" data-brand="${brands[i].name.toLowerCase()}" alt="" />`
         )
-      })
+      }
     }
   }
 
@@ -309,8 +324,12 @@ label[for="card-number"] + div {
         installmentsLoaded = false
         imageCardBrand.style.display = 'none'
         $('#confirm-button').hide()
-        document.querySelectorAll(`[data-brand]`)
-          .forEach((item) => item.classList.remove('active'))
+
+        const dataBrand = document.querySelectorAll(`[data-brand]`)
+
+        for (let idx in dataBrand) {
+          dataBrand[idx].classList.remove('active')
+        }
       }
     })
   }
@@ -328,8 +347,8 @@ label[for="card-number"] + div {
           'beforeEnd',
           `<option value="${installment.installmentAmount}">
             ${installment.quantity}x de
-            ${Number(installment.installmentAmount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} -
-            Total ${Number(installment.totalAmount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
+            ${parseFloat(installment.installmentAmount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} -
+            Total ${parseFloat(installment.totalAmount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
           </option>`
         )
       }
@@ -356,7 +375,6 @@ label[for="card-number"] + div {
       success: createSale,
 
       error: (error) => {
-        console.log(error)
         const ul = document.createElement('ul')
         ul.innerHTML = Object.keys(error.errors).map((errorCode) => {
           return `<li>${error_ptBR[errorCode] ?? error.errors[errorCode]}</li>`
@@ -447,11 +465,10 @@ label[for="card-number"] + div {
     try {
       const errors = response.errors
 
-      for (let error in errors) {
+      for (var error in errors) {
         ul.insertAdjacentHTML('beforeEnd', `<li>${errors[error]}</li>`)
       }
     } catch (e) {
-      console.log(e)
       ul.insertAdjacentHTML('beforeEnd', `<li>${response}</li>`)
     }
 
@@ -470,9 +487,9 @@ label[for="card-number"] + div {
    * Esconde elementos
    */
   function hidden(...els) {
-    els.forEach((el) => {
-      el.style.display = 'block'
-    })
+    for (var i = 0; i < els.length; i++) {
+      els[i].style.display = 'block'
+    }
   }
 </script>
 
