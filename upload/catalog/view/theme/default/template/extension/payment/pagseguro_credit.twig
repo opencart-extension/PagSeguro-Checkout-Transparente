@@ -403,31 +403,20 @@ label[for="card-number"] + div {
     $(buttonConfirm).prop('disabled', true)
     $(imageCardBrand).prop('disabled', true)
 
-    const body = new FormData()
-    body.set('sender_hash', senderHash)
-    body.set('card_token', response.card.token)
-    body.set('card_holder_name', inputCustomerName.value)
-    body.set('card_holder_cpf', inputCpf.value)
-    body.set('installment_quantity', inputInstallments.selectedIndex + 1)
-    body.set('installment_value', inputInstallments.value)
-    body.set('card_holder_birthdate', inputBirthdate.value)
-
-    fetch('{{ action_create_sale }}'.replace(/&amp;/g, '&'), {
-      method: 'POST',
-      body
-    })
-    .then(async (response) => {
-      const responseCloned = response.clone()
-
-      try {
-        return await response.json()
-      } catch (e) {
-        throw new Error(await responseCloned.text())
-      }
-    })
-    .then(requestSuccess)
-    .catch(requestFailed)
-    .then(() => {
+    $.post(
+      '{{ action_create_sale }}'.replace(/&amp;/g, '&'),
+      {
+        sender_hash: senderHash,
+        card_token: response.card.token,
+        card_holder_name: inputCustomerName.value,
+        card_holder_cpf: inputCpf.value,
+        installment_quantity: inputInstallments.selectedIndex + 1,
+        installment_value: inputInstallments.value,
+        card_holder_birthdate: inputBirthdate.value,
+      },
+      requestSuccess,
+      'json'
+    ).done(function() {
       $(inputCustomerName).prop('disabled', false)
       $(inputCardNumber).prop('disabled', false)
       $(inputCardBrand).prop('disabled', false)
