@@ -177,7 +177,8 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
 
             $this->setOutputJson([
                 'payment_link' => $response->getPayment()->getPaymentLink(),
-                'code' => $response->getCode()
+                'code' => $response->getCode(),
+                'allowDownload' => (class_exists('Imagick'))?1:0
             ]);
         } catch (AuthException $e) {
             $this->setOutputJson(['errors' => [
@@ -219,18 +220,18 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
                 die('PSR');
             }
 
-            $url = str_replace('print.jhtml', 'print_pdf.jhtml', $url);
+            $urljpg = str_replace('print.jhtml', 'print_image.jhtml', $url);
+            $boleto = file_get_contents($urljpg);
 
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename=psr_pedido_' . $order_id . '.pdf');
-            header('Content-Transfer-Encoding: binary');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            ob_clean();
-            flush();
-            echo file_get_contents($url);
+            $pdf = new Imagick();
+            $pdf->readImageBlob($boleto);
+            $pdf->setBackgroundColor(new ImagickPixel('white'));
+            $pdf->setGravity ( Imagick::GRAVITY_CENTER );
+            $pdf->setImagePage ( 595 , 842 , 0 , 0 );
+            $pdf->setImageFormat('pdf');
+            header('Content-Type: image/'.$pdf->getImageFormat());
+            header('Content-Disposition: attachment; filename=boleto_pedido_' . $order_id . '.pdf');
+            echo $pdf;
             exit;
         }
     }
