@@ -92,6 +92,7 @@ compatibility:
     let paymentLink;
     let paymentCode;
     let hash;
+    let allowDownload;
 
     /**
      * Carrega script do PagSeguro
@@ -199,7 +200,7 @@ compatibility:
     function downloadBoleto() {
       const anchor = document.createElement('a')
       anchor.download = true
-      anchor.href = `{{ action_download_boleto }}${paymentLink}`.replace(/&amp;/, '&')
+      anchor.href = `{{ action_download_boleto }}${encodeURI(paymentLink)}`.replace(/&amp;/, '&')
       anchor.addEventListener('click', confirmPayment)
       anchor.click()
       anchor.remove()
@@ -216,11 +217,12 @@ compatibility:
 
       paymentLink = response.payment_link
       paymentCode = response.code
+      allowDownload = response.allowDownload
 
       document.querySelector('#cpf').closest('.form-group').classList.toggle('hidden')
       document.querySelector('#button-confirm').classList.toggle('hidden')
       document.querySelector('#button-print').classList.toggle('hidden')
-      document.querySelector('#button-download').classList.toggle('hidden')
+      if (allowDownload) document.querySelector('#button-download').classList.toggle('hidden')
     }
 
     /**
