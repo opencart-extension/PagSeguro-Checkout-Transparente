@@ -82,7 +82,7 @@ class Sender extends AbstractUser implements Xml, IArray
         if ($phoneAreaCode->count() > 0 && $phoneNumber->count() > 0) {
             $instance->setPhone(
                 $phoneAreaCode->item(0)->textContent,
-                $phoneNumber->item(0)->textContent,
+                $phoneNumber->item(0)->textContent
             );
         }
 
