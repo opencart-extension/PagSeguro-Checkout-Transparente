@@ -55,27 +55,28 @@ compatibility:
   <div id="warning" class="alert alert-danger" role="alert" style="display: none"></div>
   <div id="info" class="alert alert-info" role="alert" style="display: none">{{ text_wait }}.</div>
 
-  <div class="col-sm-5 col-md-offset-3">
-    <div class="form-group col-md-12">
-      <label for="cpf">{{ entry_cpf }}</label>
-      <input type="text" name="cpf" id="cpf" value="{{ cpf }}" placeholder="{{ entry_cpf }}" class="form-control">
-    </div>
+  <div class="col-sm-12">
+      <div class="form-group col-sm-12 col-sm-offset-0 col-md-offset-4 col-md-4 col-lg-2 col-lg-offset-5">
+        <label for="cpf">{{ entry_cpf }}</label>
+        <input type="text" name="cpf" id="cpf" value="{{ cpf }}" placeholder="{{ entry_cpf }}" class="form-control">
+      </div>
 
-    <div class="form-group col-md-12">
-      <button type="button" id="button-confirm" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-left col-sm-12">
-        <i class="fa fa-barcode"></i>
-        {{ button_confirm }}
-      </button>
+      <div class="form-group col-md-12">
+        <button type="button" id="button-confirm" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-left col-sm-12"  style="float: none !important;margin: 0 auto;display: block;width:176px;">
+          <i class="fa fa-barcode"></i>
+          {{ button_confirm }}
+        </button>
 
-      <button type="button" id="button-print" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-left hidden">
-        <i class="fa fa-barcode"></i>
-        {{ btn_print }}
-      </button>
+        <button type="button" id="button-print" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-right hidden" style="">
+          <i class="fa fa-barcode"></i>
+          {{ btn_print }}
+        </button>
 
-      <button type="button" id="button-download" data-loading-text="{{ text_wait }}" class="btn btn-link pull-right hidden">
-        <i class="fa fa-download"></i>
-        {{ btn_download }}
-      </button>
+        <button type="button" id="button-download" data-loading-text="{{ text_wait }}" class="btn btn-link pull-right hidden">
+          <i class="fa fa-download"></i>
+          {{ btn_download }}
+        </button>
+      </div>
     </div>
   </div>
 
