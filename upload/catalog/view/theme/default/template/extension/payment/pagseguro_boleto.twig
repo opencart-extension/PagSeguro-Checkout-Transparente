@@ -80,9 +80,6 @@ compatibility:
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/jquery.colorbox.min.js" async></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-colorbox@1.6.4/example1/colorbox.css">
-
   <script type="text/javascript">
     /**
      * Link do boleto
@@ -127,7 +124,7 @@ compatibility:
 
       document.querySelector('#cpf').addEventListener('input', formatCpf)
       document.querySelector('#button-confirm').addEventListener('click', createSale)
-      document.querySelector('#button-print').addEventListener('click', printBoleto)
+      document.querySelector('#button-print').addEventListener('click', (e) => printBoleto(e))
       document.querySelector('#button-download').addEventListener('click', downloadBoleto)
     }
 
@@ -183,15 +180,13 @@ compatibility:
     /**
      * Exibe boleto num modal
      */
-    function printBoleto() {
-      $.colorbox({
-        iframe: true,
-        open: true,
-        href: paymentLink,
-        innerWidth: '90%',
-        innerHeight: '90%',
-        onClosed: confirmPayment
-      })
+    function printBoleto(ev) {
+      $(ev.target).button('loading')
+
+      fetch(`{{ confirm }}${paymentCode}`.replace(/&amp;/, '&'))
+        .then(() => {
+          location.href = `{{ action_print_boleto }}${encodeURI(paymentLink)}`.replace(/&amp;/, '&')
+        })
     }
 
     /**

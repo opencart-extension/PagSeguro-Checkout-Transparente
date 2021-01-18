@@ -58,6 +58,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
 
         $data['action_create_sale'] = $this->url->link('extension/payment/pagseguro_boleto/transaction', 'order_id=' . $this->session->data['order_id'], true);
         $data['action_download_boleto'] = $this->url->link('extension/payment/pagseguro_boleto/download', 'url=', true);
+        $data['action_success'] = $this->url->link('checkout/success', '', true);
         $data['confirm'] = $this->url->link('extension/payment/pagseguro_boleto/confirm', 'code=', true);
 
         $theme_name = $this->config->get(self::EXTENSION_PREFIX . 'theme_boleto');
