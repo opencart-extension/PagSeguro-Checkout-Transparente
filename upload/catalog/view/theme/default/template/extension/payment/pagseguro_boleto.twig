@@ -217,7 +217,9 @@ compatibility:
       document.querySelector('#cpf').closest('.form-group').classList.toggle('hidden')
       document.querySelector('#button-confirm').classList.toggle('hidden')
       document.querySelector('#button-print').classList.toggle('hidden')
-      if (allowDownload) document.querySelector('#button-download').classList.toggle('hidden')
+      if (allowDownload) {
+        document.querySelector('#button-download').classList.toggle('hidden')
+      }
     }
 
     /**

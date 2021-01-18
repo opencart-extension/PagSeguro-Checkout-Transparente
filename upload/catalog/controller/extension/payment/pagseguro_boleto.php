@@ -181,7 +181,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
             $this->setOutputJson([
                 'payment_link' => $response->getPayment()->getPaymentLink(),
                 'code' => $response->getCode(),
-                'allowDownload' => (class_exists('Imagick'))?1:0
+                'allowDownload' => class_exists('Imagick') ? 1 : 0
             ]);
         } catch (AuthException $e) {
             $this->setOutputJson(['errors' => [
