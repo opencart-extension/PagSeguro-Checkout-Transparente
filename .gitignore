@@ -41,9 +41,6 @@
 /upload/system/library/PagSeguro/log
 /node_modules
 /src/.vuepress/dist
-<<<<<<< HEAD
 /upload/system/library/PagSeguro/tests
-=======
 upload/system/library/PagSeguro/tests/server/package-lock.json
 upload/system/library/PagSeguro/tests/server/node_modules
->>>>>>> test(actions): adiciona build do docker
