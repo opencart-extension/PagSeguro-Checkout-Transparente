@@ -93,7 +93,7 @@ class Factory
         if ($phone) {
             $user->setPhone(
                 substr($phone, 0, 2),
-                substr($phone, 2),
+                substr($phone, 2)
             );
         }
 
