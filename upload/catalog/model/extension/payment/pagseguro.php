@@ -1,6 +1,6 @@
 <?php
 
-require_once DIR_SYSTEM . 'library/PagSeguro/vendor/autoload.php';
+require_once DIR_SYSTEM . 'library/PagSeguro/autoload.php';
 
 use ValdeirPsr\PagSeguro\Domains\Environment;
 use ValdeirPsr\PagSeguro\Domains\Transaction;

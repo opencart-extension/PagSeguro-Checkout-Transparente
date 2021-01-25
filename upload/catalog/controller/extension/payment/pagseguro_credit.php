@@ -1,6 +1,6 @@
 <?php
 
-require_once DIR_SYSTEM . 'library/PagSeguro/vendor/autoload.php';
+require_once DIR_SYSTEM . 'library/PagSeguro/autoload.php';
 
 use ValdeirPsr\PagSeguro\Exception\Auth as AuthException;
 use ValdeirPsr\PagSeguro\Exception\PagSeguroRequest as PagSeguroRequestException;

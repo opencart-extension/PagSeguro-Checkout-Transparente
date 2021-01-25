@@ -1,6 +1,6 @@
 <?php
 
-require_once DIR_SYSTEM . 'library/PagSeguro/vendor/autoload.php';
+require_once DIR_SYSTEM . 'library/PagSeguro/autoload.php';
 
 use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
 use ValdeirPsr\PagSeguro\Request\Sale;
@@ -616,8 +616,6 @@ class ControllerExtensionPaymentPagseguro extends Controller
      */
     private function getThemes(string $paymentType)
     {
-        require_once DIR_SYSTEM . 'library/Spatie/autoload.php';
-
         $path = DIR_CATALOG . 'view/theme/*/template/extension/payment/pagseguro_' . $paymentType . '*';
 
         $obj = new GlobIterator($path, FilesystemIterator::KEY_AS_FILENAME);
