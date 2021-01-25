@@ -184,14 +184,9 @@ compatibility:
       $(ev.target).button('loading')
 
       fetch(`{{ confirm }}${paymentCode}`.replace(/&amp;/, '&'))
+        .then((res) => fetch(res.url))
         .then(() => {
-          const url = `{{ action_print_boleto }}${encodeURI(paymentLink)}`.replace(/&amp;/, '&')
-          const anchor = document.createElement('a')
-          anchor.target = '_blank'
-          anchor.href = url
-          anchor.click()
-          anchor.remove()
-          location.href = url
+          location.href = `{{ action_print_boleto }}${encodeURI(paymentLink)}`.replace(/&amp;/, '&')
         })
     }
 
