@@ -14,7 +14,6 @@ jobs:
 
       - name: Running Composer
         run: |
-          cd upload/system/library/PagSeguro
           wget -qO- https://getcomposer.org/installer | php
           php composer.phar install --no-dev
           rm composer.phar
