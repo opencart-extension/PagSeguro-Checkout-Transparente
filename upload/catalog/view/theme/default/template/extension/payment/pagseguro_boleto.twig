@@ -47,6 +47,12 @@ compatibility:
   .hidden {
     display: none;
   }
+  #button-confirm {
+    float: none !important;
+    margin: 0 auto;
+    display: block;
+    width: 176px;
+  }
 </style>
 
 {% if warning %}
@@ -62,12 +68,12 @@ compatibility:
       </div>
 
       <div class="form-group col-md-12">
-        <button type="button" id="button-confirm" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-left col-sm-12"  style="float: none !important;margin: 0 auto;display: block;width:176px;">
+        <button type="button" id="button-confirm" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-left col-sm-12">
           <i class="fa fa-barcode"></i>
           {{ button_confirm }}
         </button>
 
-        <button type="button" id="button-print" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-right hidden" style="">
+        <button type="button" id="button-print" data-loading-text="{{ text_wait }}" class="btn btn-primary pull-right hidden">
           <i class="fa fa-barcode"></i>
           {{ btn_print }}
         </button>
@@ -89,7 +95,6 @@ compatibility:
     let paymentLink;
     let paymentCode;
     let hash;
-    let allowDownload;
 
     /**
      * Carrega script do PagSeguro
@@ -213,14 +218,11 @@ compatibility:
 
       paymentLink = response.payment_link
       paymentCode = response.code
-      allowDownload = response.allowDownload
 
       document.querySelector('#cpf').closest('.form-group').classList.toggle('hidden')
       document.querySelector('#button-confirm').classList.toggle('hidden')
       document.querySelector('#button-print').classList.toggle('hidden')
-      if (allowDownload) {
-        document.querySelector('#button-download').classList.toggle('hidden')
-      }
+      document.querySelector('#button-download').classList.toggle('hidden')
     }
 
     /**

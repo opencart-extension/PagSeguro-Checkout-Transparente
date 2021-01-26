@@ -180,8 +180,7 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
 
             $this->setOutputJson([
                 'payment_link' => $response->getPayment()->getPaymentLink(),
-                'code' => $response->getCode(),
-                'allowDownload' => class_exists('Imagick') ? 1 : 0
+                'code' => $response->getCode()
             ]);
         } catch (AuthException $e) {
             $this->setOutputJson(['errors' => [
@@ -207,35 +206,45 @@ class ControllerExtensionPaymentPagSeguroBoleto extends Controller
      */
     public function download()
     {
+        $url = null;
         $order_id = $this->session->data['order_id'] ?? $this->request->get['order_id'] ?? null;
 
         if ($order_id) {
             if (isset($this->request->get['url'])) {
-                $url = base64_decode($this->request->get['url']);
-                if (substr($url, 0,4)!=='http') $url = $this->request->get['url'];
-            } elseif (isset($this->request->get['transaction_id'])) {
+                if (substr($url, 0,4) !== 'http') {
+                    $url = $this->request->get['url'];
+                } else {
+                    $url = base64_decode($this->request->get['url']);
+                }
+            }
+
+            if (!$url && isset($this->request->get['transaction_id'])) {
                 $this->load->model('extension/payment/pagseguro');
                 $env = $this->model_extension_payment_pagseguro->factoryEnvironment();
                 $sale = new Sale($env);
                 $transaction = $sale->info($this->request->get['transaction_id']);
                 $url = $transaction->getPayment()->getPaymentLink();
-            } else {
-                die('PSR');
             }
 
-            $urljpg = str_replace('print.jhtml', 'print_image.jhtml', $url);
-            $boleto = file_get_contents($urljpg);
+            if (!$url) {
+                die('Falha ao baixar o boleto. Entre em contato com a loja.');
+            }
 
-            $pdf = new Imagick();
-            $pdf->readImageBlob($boleto);
-            $pdf->setBackgroundColor(new ImagickPixel('white'));
-            $pdf->setGravity ( Imagick::GRAVITY_CENTER );
-            $pdf->setImagePage ( 595 , 842 , 0 , 0 );
-            $pdf->setImageFormat('pdf');
-            header('Content-Type: image/'.$pdf->getImageFormat());
-            header('Content-Disposition: attachment; filename=boleto_pedido_' . $order_id . '.pdf');
-            echo $pdf;
-            exit;
+            $urlpdf = str_replace('print.jhtml', 'print_pdf.jhtml', $url);
+            $boleto = file_get_contents($urlpdf);
+
+            $handler = fopen($urlpdf, 'r');
+            $headers = stream_get_meta_data($handler);
+
+            $search = ['Content-Disposition: inline;'];
+            $replace = ['Content-Disposition: attachment;'];
+
+            foreach ($headers['wrapper_data'] as $header) {
+                header(str_replace($search, $replace, $header));
+            }
+
+            fpassthru($handler);
+            fclose($handler);
         }
     }
 
