@@ -145,10 +145,15 @@
             <div class="form-group required">
               <label for="input-telemetry" class="control-label col-sm-2">{{ entry_telemetry }}</label>
               <div class="col-sm-10">
-                <select name="telemetry" id="input-telemetry" class="form-control">
-                  <option value="1">{{ text_enabled }}</option>
-                  <option value="0">{{ text_disabled }}</option>
-                </select>
+                <div class="alert alert-info">
+                  <span>Ao escolher "sim", você estará concordando que deseja enviar informações que nos ajudarão a tornar o módulo melhor</span>
+                  <select name="telemetry" id="input-telemetry" class="form-control">
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                  </select>
+                  <span>
+                    Saiba mais acessando a <a href="https://opencart-extension.github.io/PagSeguro-Checkout-Transparente/telemetry/" target="_blank">documentação</a></span>
+                </div>
               </div>
             </div>
 
