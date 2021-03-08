@@ -142,7 +142,7 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
             foreach ($products as $key => $product) {
                 $item = new CartItem();
                 $item->setId(sprintf('ID%d_K%d', $product['product_id'], $key));
-                $item->setDescription($product['name'] . '  ::  ' . $product['model']);
+                $item->setDescription(substr($product['name'] . '  ::  ' . $product['model'], 0, 80));
                 $item->setQuantity(intval($product['quantity']));
                 $item->setAmount(number_format($product['price'], 2, '.', ''));
                 $items[] = $item;
