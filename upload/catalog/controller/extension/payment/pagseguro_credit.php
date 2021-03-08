@@ -130,7 +130,7 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
             $sender = FactoryUser::sender(
                 sprintf('%s %s', $order_info['firstname'], $order_info['lastname']),
                 $order_info['email'],
-                $order_info['telephone'],
+                preg_replace('/\D/', '', $order_info['telephone']),
                 $customer_document,
                 $senderHash
             );
@@ -191,7 +191,7 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
             $holder = FactoryUser::holder(
                 $cardHolderName,
                 $order_info['email'],
-                $order_info['telephone'],
+                preg_replace('/\D/', '', $order_info['telephone']),
                 Document::cpf($cardHolderCpf)
             );
 

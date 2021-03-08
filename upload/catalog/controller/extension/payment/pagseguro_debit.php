@@ -101,7 +101,7 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
             $sender = FactoryUser::sender(
                 sprintf('%s %s', $order_info['firstname'], $order_info['lastname']),
                 $order_info['email'],
-                $order_info['telephone'],
+                preg_replace('/\D/', '', $order_info['telephone']),
                 $customer_document,
                 $hash
             );
