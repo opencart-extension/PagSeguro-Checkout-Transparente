@@ -24,7 +24,7 @@ class ModelExtensionPaymentPagSeguro extends Model
      */
     public function getCustomFieldValues(int $order_id)
     {
-        $query = $this->db->query('SELECT custom_field FROM ' . DB_PREFIX . 'order WHERE order_id = ' . $order_id);
+        $query = $this->db->query('SELECT custom_field FROM `' . DB_PREFIX . 'order` WHERE order_id = ' . $order_id);
 
         return json_decode($query->row['custom_field'], true);
     }
@@ -64,7 +64,7 @@ class ModelExtensionPaymentPagSeguro extends Model
         $order = $this->db->query('
         SELECT
             order_id
-        FROM ' . DB_PREFIX . 'pagseguro_orders
+        FROM `' . DB_PREFIX . 'pagseguro_orders`
         WHERE `code` = "' . $this->db->escape($transaction->getCode()) . '"
         ');
 
@@ -107,7 +107,7 @@ class ModelExtensionPaymentPagSeguro extends Model
         $raw = $this->db->escape(serialize($transaction));
 
         $this->db->query('
-            INSERT INTO ' . DB_PREFIX . 'pagseguro_orders
+            INSERT INTO `' . DB_PREFIX . 'pagseguro_orders`
             VALUES (
                 "' . $code . '",
                 "' . $order_id . '",
@@ -218,8 +218,8 @@ class ModelExtensionPaymentPagSeguro extends Model
 
         $query = $this->db->query('
             SELECT ' . implode(',', $columns) . '
-            FROM ' . DB_PREFIX . 'pagseguro_orders po
-            LEFT JOIN ' . DB_PREFIX . 'order o
+            FROM `' . DB_PREFIX . 'pagseguro_orders` po
+            LEFT JOIN `' . DB_PREFIX . 'order` o
                 on (o.order_id = po.order_id)
             WHERE
                 po.`code` = "' . $id . '"

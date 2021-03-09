@@ -10,7 +10,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
 {
     const EXTENSION_PREFIX = 'payment_pagseguro_';
     const EXTENSION_VERSION = '2.1.0';
-    const PAGSEGURO_LOG = DIR_SYSTEM . '/library/PagSeguro/log';
+    const PAGSEGURO_LOG = DIR_SYSTEM . 'library/PagSeguro/valdeirpsr/pagseguro/log';
 
     private $error = [];
 
@@ -20,7 +20,7 @@ class ControllerExtensionPaymentPagseguro extends Controller
     public function index()
     {
         if (!defined('PAGSEGURO_LOG')) {
-            define('PAGSEGURO_LOG', DIR_SYSTEM . 'library/PagSeguro/log');
+            define('PAGSEGURO_LOG', DIR_SYSTEM . 'library/PagSeguro/valdeirpsr/pagseguro/log');
         }
 
         $data = $this->load->language('extension/payment/pagseguro');

@@ -1,15 +1,30 @@
 <?php
 
+require_once DIR_SYSTEM . 'library/PagSeguro/autoload.php';
+
+use ValdeirPsr\PagSeguro\Domains\Logger\Logger;
+
 class ModelExtensionPaymentPagSeguroCredit extends Model
 {
     const EXTENSION_PREFIX = 'payment_pagseguro_';
 
     public function getMethod($address, $total)
     {
+        Logger::getInstance([
+            'enabled' => $this->config->get(self::EXTENSION_PREFIX . 'debug')
+        ]);
+
+        $currencies_allowed = ['BRL'];
+
+        if (!in_array(strtoupper($this->session->data['currency']), $currencies_allowed)) {
+            Logger::debug('A moeda ' . $this->session->data['currency'] . ' não é permitida. Usar BRL');
+            return [];
+        }
+
         $this->load->language('extension/payment/pagseguro_credit');
 
         $query = $this->db->query("
-            SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone
+            SELECT * FROM `" . DB_PREFIX . "zone_to_geo_zone`
             WHERE
                 geo_zone_id = '" . (int)$this->config->get(self::EXTENSION_PREFIX . 'geo_zone_id') . "'
                 AND country_id = '" . (int)$address['country_id'] . "'
