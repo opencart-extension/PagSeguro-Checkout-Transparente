@@ -251,7 +251,7 @@ label[for="card-number"] + div {
 
     PagSeguroDirectPayment.getInstallments({
       amount: parseFloat('{{ amount }}'),
-      {% if maxInstallmentNoInterest %}
+      {% if maxInstallmentNoInterest > 1 %}
       maxInstallmentNoInterest: parseInt('{{ maxInstallmentNoInterest }}'),
       {% endif %}
       success: (response) => {

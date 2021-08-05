@@ -220,7 +220,7 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
             $creditCard->setBillingAddress($billingAddress);
             $creditCard->setHolder($holder);
 
-            if ($installmentFree) {
+            if ($installmentFree > 1) {
                 $creditCard->setNoInterestInstallmentQuantity(intval($installmentFree));
             }
 
