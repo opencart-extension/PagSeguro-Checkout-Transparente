@@ -57,7 +57,7 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
 
         $data['cpf'] = $order_info['custom_field'][$custom_field_cpf_id] ?? '';
         $data['maxInstallmentNoInterest'] = $this->config->get(self::EXTENSION_PREFIX . 'installment_free');
-        $data['amount'] = $order_info['total'];
+        $data['amount'] = $this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false);
 
         if ($custom_field_birthday_id) {
             $data['birthday'] = $order_info['custom_field'][$custom_field_birthday_id] ?? '';
@@ -143,23 +143,29 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
             $items = [];
 
             foreach ($products as $key => $product) {
+                $product_price = $this->currency->format($product['price'], $order_info['currency_code'], $order_info['currency_value'], false);
+
                 $item = new CartItem();
                 $item->setId(sprintf('ID%d_K%d', $product['product_id'], $key));
                 $item->setDescription(substr($product['name'] . '  ::  ' . $product['model'], 0, 80));
                 $item->setQuantity(intval($product['quantity']));
-                $item->setAmount(number_format($product['price'], 2, '.', ''));
+                $item->setAmount(number_format($product_price, 2, '.', ''));
                 $items[] = $item;
+                unset($product_price);
             }
 
             $vouchers = $this->session->data['vouchers'] ?? [];
 
             foreach ($vouchers as $key => $voucher) {
+                $voucher_amount = $this->currency->format($voucher['amount'], $order_info['currency_code'], $order_info['currency_value'], false);
+
                 $item = new CartItem();
                 $item->setId(sprintf('Voucher_%s', $key));
                 $item->setDescription($voucher['description']);
                 $item->setQuantity(1);
-                $item->setAmount(number_format($voucher['amount'], 2, '.', ''));
+                $item->setAmount(number_format($voucher_amount, 2, '.', ''));
                 $items[] = $item;
+                unset($voucher_amount);
             }
 
             $order_totals = $this->model_checkout_order->getOrderTotals($order_id);
@@ -235,6 +241,7 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
                 );
 
                 $shipping_cost = $this->model_extension_payment_pagseguro->getShippingCost($order_totals);
+                $shipping_cost = $this->currency->format($shipping_cost, $order_info['currency_code'], $order_info['currency_value'], false);
 
                 $shipping->setType(ShippingTypes::UNKNOWN);
                 $shipping->setCost(number_format($shipping_cost, 2, '.', ''));
