@@ -34,6 +34,10 @@
   </div>
 
   <div class="container-fluid">
+    {% if warning %}
+    <div class="alert alert-danger">{{ warning }}</div>
+    {% endif %}
+
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">

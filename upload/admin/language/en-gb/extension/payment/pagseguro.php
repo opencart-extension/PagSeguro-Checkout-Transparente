@@ -95,6 +95,7 @@ $_['text_debit_title_default']  = 'PagSeguro Débito';
 
 // Error
 $_['error_permission']        = 'Atenção! vocẽ não tem permissão para modificar o módulo';
+$_['error_permission_dir']    = '<b>Atenção!</b> Crie e dê permissão de escrita e leitura para a pasta <b>%s</b>';
 $_['error_required']          = 'Campo obrigatório';
 $_['error_email']             = 'E-mail inválido';
 $_['error_installment_total'] = 'Valor inválido. O campo deve ter um inteiro de 1 a 18';

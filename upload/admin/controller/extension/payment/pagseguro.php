@@ -126,18 +126,20 @@ class ControllerExtensionPaymentPagseguro extends Controller
         $data['themes_credit'] = $this->getThemes('credit');
         $data['themes_debit'] = $this->getThemes('debit');
 
-        if (!is_dir(PAGSEGURO_LOG)) {
-            mkdir(PAGSEGURO_LOG, 0777, true);
-        }
-
-        $logs = new DirectoryIterator(PAGSEGURO_LOG);
-
         $data['logs_date'] = [];
 
-        foreach ($logs as $log) {
-            if ($log->isFile()) {
-                $data['logs_date'][] = preg_replace('/^(\d{4}-\d{2}-\d{2}).+/', '$1', $log->getFilename());
+        if (!is_dir(PAGSEGURO_LOG) && is_writable(PAGSEGURO_LOG)) {
+            mkdir(PAGSEGURO_LOG, 0777, true);
+
+            $logs = new DirectoryIterator(PAGSEGURO_LOG);
+
+            foreach ($logs as $log) {
+                if ($log->isFile()) {
+                    $data['logs_date'][] = preg_replace('/^(\d{4}-\d{2}-\d{2}).+/', '$1', $log->getFilename());
+                }
             }
+        } else {
+            $data['warning'] = sprintf($this->language->get('error_permission_dir'), PAGSEGURO_LOG);
         }
 
         $data['action'] = $this->buildUrl('extension/payment/pagseguro');
