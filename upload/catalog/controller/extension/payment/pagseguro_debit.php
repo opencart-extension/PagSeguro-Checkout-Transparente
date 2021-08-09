@@ -98,10 +98,13 @@ class ControllerExtensionPaymentPagSeguroDebit extends Controller
         try {
             $customer_document = Document::cpf(preg_replace('/\D/', '', $cpf));
 
+            $telephone = preg_replace('/\D/', '', $order_info['telephone']);
+            $telephone = (strlen($telephone) > 11) ? substr($telephone, -11, 9) : $telephone;
+
             $sender = FactoryUser::sender(
                 sprintf('%s %s', $order_info['firstname'], $order_info['lastname']),
                 $order_info['email'],
-                preg_replace('/\D/', '', $order_info['telephone']),
+                preg_replace('/\D/', '', $telephone),
                 $customer_document,
                 $hash
             );
