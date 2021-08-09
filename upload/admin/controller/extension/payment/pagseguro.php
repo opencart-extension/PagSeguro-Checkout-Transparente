@@ -128,9 +128,11 @@ class ControllerExtensionPaymentPagseguro extends Controller
 
         $data['logs_date'] = [];
 
-        if (!is_dir(PAGSEGURO_LOG) && is_writable(PAGSEGURO_LOG)) {
+        if (!is_dir(PAGSEGURO_LOG)) {
             mkdir(PAGSEGURO_LOG, 0777, true);
+        }
 
+        if (is_dir(PAGSEGURO_LOG) && is_readable(PAGSEGURO_LOG)) {
             $logs = new DirectoryIterator(PAGSEGURO_LOG);
 
             foreach ($logs as $log) {
