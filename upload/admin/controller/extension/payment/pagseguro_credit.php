@@ -33,19 +33,19 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
 
             try {
                 $this->load->model('localisation/order_status');
-    
+
     		    $data['order_statuses'] = $this->model_localisation_order_status->getOrderStatuses();
-    
+
                 $new_data['details'] = $this->details($order_id, $order_info);
                 $new_data['cancel'] = $this->cancel($order_id, $order_info, $data);
                 $new_data['refund'] = $this->refund($order_id, $order_info, $data);
                 $new_data['pagseguro_success'] = $this->session->data['pagseguro_success'] ?? false;
                 $new_data['pagseguro_failed'] = $this->session->data['pagseguro_failed'] ?? false;
-    
+
                 if (isset($this->session->data['pagseguro_success'])) {
                     unset($this->session->data['pagseguro_success']);
                 }
-    
+
                 if (isset($this->session->data['pagseguro_failed'])) {
                     unset($this->session->data['pagseguro_failed']);
                 }
