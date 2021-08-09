@@ -94,9 +94,9 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
 
         if ($creditor_fees) {
             $creditor_fees_data = [
-                'installmentFeeAmount' => $this->currency->format($creditor_fees->getInstallmentFeeAmount(), 'BRL'),
-                'intermediationRateAmount' => $this->currency->format($creditor_fees->getIntermediationRateAmount(), 'BRL'),
-                'intermediationFeeAmount' => $this->currency->format($creditor_fees->getIntermediationFeeAmount(), 'BRL')
+                'installmentFeeAmount' => $this->currency->format($creditor_fees->getInstallmentFeeAmount(), 'BRL', 1),
+                'intermediationRateAmount' => $this->currency->format($creditor_fees->getIntermediationRateAmount(), 'BRL', 1),
+                'intermediationFeeAmount' => $this->currency->format($creditor_fees->getIntermediationFeeAmount(), 'BRL', 1)
             ];
         }
 
@@ -113,11 +113,11 @@ class ControllerExtensionPaymentPagSeguroCredit extends Controller
             'date' => $result->getDate()->format('F j, Y, H:i:s'),
             'code' => $result->getCode(),
             'lastEventDate' => $result->getLastEventDate()->format('F j, Y, H:i:s'),
-            'grossAmount' => $this->currency->format($result->getGrossAmount(), 'BRL'),
-            'discountAmount' => $this->currency->format($result->getDiscountAmount(), 'BRL'),
-            'feeAmount' => $this->currency->format($result->getFeeAmount(), 'BRL'),
-            'netAmount' => $this->currency->format($result->getNetAmount(), 'BRL'),
-            'extraAmount' => $this->currency->format($result->getExtraAmount(), 'BRL'),
+            'grossAmount' => $this->currency->format($result->getGrossAmount(), 'BRL', 1),
+            'discountAmount' => $this->currency->format($result->getDiscountAmount(), 'BRL', 1),
+            'feeAmount' => $this->currency->format($result->getFeeAmount(), 'BRL', 1),
+            'netAmount' => $this->currency->format($result->getNetAmount(), 'BRL', 1),
+            'extraAmount' => $this->currency->format($result->getExtraAmount(), 'BRL', 1),
             'installmentCount' => $result->getInstallmentCount(),
             'paymentLink' => $payment_link,
             'creditorFees' => $creditor_fees_data
