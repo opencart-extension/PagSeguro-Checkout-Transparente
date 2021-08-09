@@ -38,6 +38,22 @@
     <div class="alert alert-danger">{{ warning }}</div>
     {% endif %}
 
+    {% if error_currency_code %}
+    <div class="alert alert-danger">{{ error_currency_code }}</div>
+    {% endif %}
+
+    {% if error_php_version %}
+    <div class="alert alert-danger">{{ error_php_version }}</div>
+    {% endif %}
+
+    {% if error_php_curl %}
+    <div class="alert alert-danger">{{ error_php_curl }}</div>
+    {% endif %}
+
+    {% if error_php_json %}
+    <div class="alert alert-danger">{{ error_php_json }}</div>
+    {% endif %}
+
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">

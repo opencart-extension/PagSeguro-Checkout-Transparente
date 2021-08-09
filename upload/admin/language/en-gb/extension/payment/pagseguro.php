@@ -100,3 +100,7 @@ $_['error_required']          = 'Campo obrigatório';
 $_['error_email']             = 'E-mail inválido';
 $_['error_installment_total'] = 'Valor inválido. O campo deve ter um inteiro de 1 a 18';
 $_['error_installment_free']  = 'Valor inválido. O campo deve ter um inteiro de 1 a 18';
+$_['error_currency_code'] = 'É necessário cadastrar a moeda BRL';
+$_['error_php_version'] = 'É necessário utilizar o PHP 7.3 ou superior. Você está utilizando a versão %s.';
+$_['error_php_curl'] = 'A extensão PHP <i>CURL</i> deve estar habilitada. Acesse https://php.net/manual/pt_BR/curl.installation.php para saber mais';
+$_['error_php_json'] = 'A extensão PHP <i>json</i> deve estar habilitada. Acesse https://php.net/manual/pt_BR/json.installation.php para saber mais';

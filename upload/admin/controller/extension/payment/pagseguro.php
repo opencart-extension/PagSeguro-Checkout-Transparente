@@ -138,8 +138,34 @@ class ControllerExtensionPaymentPagseguro extends Controller
                     $data['logs_date'][] = preg_replace('/^(\d{4}-\d{2}-\d{2}).+/', '$1', $log->getFilename());
                 }
             }
-        } else {
+        }
+
+        if (!is_dir(PAGSEGURO_LOG) || !is_writable(PAGSEGURO_LOG)) {
             $data['warning'] = sprintf($this->language->get('error_permission_dir'), PAGSEGURO_LOG);
+        }
+
+        if ($this->currency->getValue('BRL') <= 0) {
+            $data['error_currency_code'] = $this->language->get('error_currency_code');
+        } else {
+            $data['error_currency_code'] = false;
+        }
+
+        if (version_compare(PHP_VERSION, '7.3', '>=') < 0) {
+            $data['error_php_version'] = sprintf($this->language->get('error_php_version'), PHP_VERSION);
+        } else {
+            $data['error_php_version'] = false;
+        }
+
+        if (extension_loaded('curl') === false) {
+            $data['error_php_curl'] = $this->language->get('error_php_curl');
+        } else {
+            $data['error_php_curl'] = false;
+        }
+
+        if (extension_loaded('json') === false) {
+            $data['error_php_json'] = $this->language->get('error_php_json');
+        } else {
+            $data['error_php_json'] = false;
         }
 
         $data['action'] = $this->buildUrl('extension/payment/pagseguro');
