@@ -22,6 +22,26 @@ All notable changes to this project will be documented in this file. See [standa
 * remove codigo nao utilizado ([4d4dedd](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/4d4dedda774bce1b3f1dac2b21c99304458c1274))
 * **theme:** adiciona limite de altura para preview do tema ([8d1a084](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/8d1a08477a67617f4054f91a21fd63e09c91a2f6))
 
+## [2.1.0](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/compare/v2.0.1...v2.1.0) (2022-08-18)
+
+
+### Features
+
+* **admin:** adiciona novos campos as configuraçoes ([014ce08](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/014ce08b2c9eb9f2ac71ea60b412c23ecc2f1a97))
+* **admin:** adiciona novos campos as configuraçoes ([b2f77e5](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/b2f77e52d43b5acb755953f6753b7184ff271506))
+* altera metodo responsavel por abrir o boleto ([6ba82f5](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/6ba82f5021d0a360b36f7ad37344f9747d424276))
+* ao visualizar o boleto, acessa a rota `checkout/success` ([bb016f8](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/bb016f88097deb95f4ea5307cb1e902d0ff069c4))
+* **config:** adiciona suporte aa multiplas versoes de layout ([0911e3a](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/0911e3a97fd8ad01bac097381128cf9ee4cd7151))
+
+
+### Bug Fixes
+
+* **lib:** corrige metodos de Logger ([6fafcc8](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/6fafcc859ee6af078cd34e48bc3f4228d9aa7641))
+* **lib:** corrige metodos de Logger ([3ad805b](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/3ad805b5ead854a5bc0ab36fae6d88e6e4b8167d))
+* remove codigo nao utilizado ([dd52ee2](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/dd52ee24c7750c4f14ed7ec4de66b07b80f247f6))
+* remove codigo nao utilizado ([4d4dedd](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/4d4dedda774bce1b3f1dac2b21c99304458c1274))
+* **theme:** adiciona limite de altura para preview do tema ([8d1a084](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/commit/8d1a08477a67617f4054f91a21fd63e09c91a2f6))
+
 # [](https://github.com/opencart-extension/PagSeguro-Checkout-Transparente/compare/v2.0.0...v) (2020-12-14)
 
 
