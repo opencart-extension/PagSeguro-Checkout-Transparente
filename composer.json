@@ -3,7 +3,7 @@
     "description": "Modulo para OpenCart",
     "type": "library",
     "require": {
-        "valdeirpsr/pagseguro": "^1.0",
+        "valdeirpsr/pagseguro": "^1.1",
         "spatie/yaml-front-matter": "^2.0"
     },
     "license": "GPL v2",
